@@ -96,7 +96,7 @@
             
           </div>
         
-        <h1 id="主机发现"><a href="#主机发现" class="headerlink" title="主机发现"></a>主机发现</h1><h2 id="主机发现-1"><a href="#主机发现-1" class="headerlink" title="主机发现"></a>主机发现</h2><h3 id="发现主机-Host-Discovery"><a href="#发现主机-Host-Discovery" class="headerlink" title="发现主机 Host Discovery"></a><strong><strong>发现主机 Host Discovery</strong></strong></h3><p>最有效的主机发现方法是使用<strong>ICMP echo requests</strong></p>
+        <h2 id="主机发现"><a href="#主机发现" class="headerlink" title="主机发现"></a>主机发现</h2><h3 id="发现主机-Host-Discovery"><a href="#发现主机-Host-Discovery" class="headerlink" title="发现主机 Host Discovery"></a><strong><strong>发现主机 Host Discovery</strong></strong></h3><p>最有效的主机发现方法是使用<strong>ICMP echo requests</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">KillMen1@htb[/htb]$ sudo nmap 10.129.2.0/24 -sn -oA tnet | grep <span class="keyword">for</span> | <span class="built_in">cut</span> -d<span class="string">&quot; &quot;</span> -f510.129.2.4</span><br><span class="line">10.129.2.10</span><br><span class="line">10.129.2.11</span><br><span class="line">10.129.2.18</span><br><span class="line">10.129.2.19</span><br><span class="line">10.129.2.20</span><br><span class="line">10.129.2.28</span><br></pre></td></tr></table></figure>
 
 <p>此扫描方法仅在主机防火墙允许的情况下才有效。否则，我们可以使用其他扫描技术来查明主机是否处于活动状态。我们将在<code>Firewall and IDS Evasion</code>中仔细研究这些技术。</p>
@@ -130,19 +130,7 @@
     
     <div class="post-nav">
   
-    <a class="post-nav-item-left" href="/2023/06/29/%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0%20b972894542c544ad929003762cffde33/">
-      <div class="text-align">
-        <svg t="1670570876164"
-             class="icon"
-             viewBox="0 0 1024 1024"
-             width="16"
-             height="16">
-          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
-        </svg>
-        <span class="text-small">上一篇</span>
-      </div>
-      <div>主机发现</div>
-    </a>
+    <div class="post-nav-item-left"></div>
   
   <div class="vhr"></div>
   
