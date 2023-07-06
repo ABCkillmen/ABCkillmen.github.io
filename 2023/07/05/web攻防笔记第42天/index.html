@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第42天 | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第42天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-07-05</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="Ⅰ-数据库管理方式"><a href="#Ⅰ-数据库管理方式" class="headerlink" title="Ⅰ 数据库管理方式"></a>Ⅰ 数据库管理方式</h3><p>mysql里面有内置的管理用户，其中root就是默认数据库管理员用户，网站上面的数据库都在mysql中，由root或一对一用户去管理。</p>
+<p>1、数据库root（自带默认）统一管理</p>
+<p>每个网站的数据库都由root用户统一管理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql</span><br><span class="line">	root（自带默认）</span><br><span class="line">		网站A testA </span><br><span class="line">		网站B testB</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2、数据库一对一管理（不同用户）【推荐】</p>
+<p>自己的网站单独创建数据库用户去管理自己的数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mysql</span><br><span class="line">	数据库名A</span><br><span class="line">		表名</span><br><span class="line">			列名（字段）</span><br><span class="line">				数据</span><br><span class="line">	数据库名B</span><br><span class="line">		表名</span><br><span class="line">			列名（字段）</span><br><span class="line">				数据</span><br><span class="line">				</span><br><span class="line">Assess（单个）</span><br><span class="line">	表名</span><br><span class="line">		列名（字段）</span><br><span class="line">			数据</span><br></pre></td></tr></table></figure>
+
+<p>目的：获取数据</p>
+<p>肯定可以一步步得到信息</p>
+<h3 id="Ⅱ-SQL注入"><a href="#Ⅱ-SQL注入" class="headerlink" title="Ⅱ SQL注入"></a>Ⅱ SQL注入</h3><h4 id="2-1ACCESS-SQLMAP"><a href="#2-1ACCESS-SQLMAP" class="headerlink" title="2.1ACCESS SQLMAP"></a>2.1ACCESS SQLMAP</h4><p>access sqlmap爆破依赖字典，不一定能猜到表名列名。</p>
+<h4 id="2-2-SQL注入原理"><a href="#2-2-SQL注入原理" class="headerlink" title="2.2 SQL注入原理"></a>2.2 SQL注入原理</h4><p>接受的参数值未进行过滤直接带入SQL查询的操作，就是SQL注入产生的原理。</p>
+<p>攻击：利用SQL语句执行你想要的东西（SQL语句能干嘛，注入就能干嘛）</p>
+<p>SQL语句能干嘛 &#x3D; SQL语句由谁决定 &#x3D;&gt; 数据库类型决定 (为什么mysql注入 oracle注入叫法原因)</p>
+<h4 id="2-3-PHP-MYSQL-SQL常规查询"><a href="#2-3-PHP-MYSQL-SQL常规查询" class="headerlink" title="2.3 PHP-MYSQL-SQL常规查询"></a>2.3 <code>PHP-MYSQL-SQL</code>常规查询</h4><p>1、数据库版本-看是否符合information_schema查询-version()：<strong>mysql5.0以上</strong></p>
+<p>2、数据库用户-看是否符合ROOT型注入攻击-user()</p>
+<p>3、当前操作系统-看是否支持大小写或文件路径选择-@@version_compile_os</p>
+<p>4、数据库名字-为后期猜解指定数据库下的表，列做准备-database()</p>
+<h5 id="2-2-1-information-schema"><a href="#2-2-1-information-schema" class="headerlink" title="2.2.1 information_schema"></a>2.2.1 <code>information_schema</code></h5><p><code>MYSQL5.0</code>以上版本：自带的数据库名<code>information_schema</code></p>
+<p><code>information_schema</code>：存储数据库下的数据库名及表名，列名信息的数据库</p>
+<p><code>information_schema.schemata</code>：记录数据库名信息的表</p>
+<p><code>information_schema.tables</code>：记录表名信息的表</p>
+<p><code>information_schema.columns</code>：记录列名信息表</p>
+<p><code>schema_name：information_schema.schemata</code>记录数据库名信息的列名值</p>
+<p><code>table_schema：information_schema.tables</code>记录数据库名的列名值</p>
+<p><code>table_name：information_schema.tables</code>记录表名的列名值</p>
+<p><code>column_name：information_schema.columns</code>记录列名的列名值</p>
+<h5 id="2-2-2-MYSQL注入查询含义-依赖information-schema"><a href="#2-2-2-MYSQL注入查询含义-依赖information-schema" class="headerlink" title="2.2.2 MYSQL注入查询含义 - 依赖information_schema"></a>2.2.2 <code>MYSQL</code>注入查询含义 - 依赖<code>information_schema</code></h5><p>1、order by {阿拉伯数字} ：查询一共有几列列名；</p>
+<p>2、union select 1,2,3,4,5,6 ：看页面回显的数字，可以将其替换成所需目标信息（版本号、数据库名、操作系统等等）；</p>
+<p>3、<code>verson()</code>、<code>database()</code>、<code>user()</code>、<code>@@version_complie_os</code>；</p>
+<p>4、<code>group_concat()</code> ：拼接字符串。<strong>将group by产生的同一个分组中的值连接起来，返回一个字符串结果。</strong></p>
+<p>4.1、<code>group_concat()</code>语法：<strong>group_concat( [distinct] 要连接的字段 [order by 排序字段 asc&#x2F;desc ] [separator ‘分隔符’] )</strong>   中括号可选</p>
+<p>4.2、MySQL中concat()、concat_ws()、group_concat()函数使用技巧与心得：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/257399676">https://zhuanlan.zhihu.com/p/257399676</a></p>
+<p>5、<code>from information_schema.tables where table_schema=&#39;demo01&#39;</code> 固定数据库名(前面查到的<code>datebase()</code>)；</p>
+<p>6、<code>from information_schema.columns where table_name=&#39;admin&#39;</code> 固定表名（5步骤查到了）</p>
+<p>7、limit：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">order by <span class="number">6</span> </span><br><span class="line">union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span></span><br><span class="line">union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="title function_ invoke__">database</span>(),<span class="title function_ invoke__">user</span>(),<span class="number">6</span></span><br><span class="line">union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="title function_ invoke__">version</span>(),@@version_compile_os,<span class="number">6</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">#5查询数据库名demo01下的表名信息（借助information_schema.tables存储查询）</span></span><br><span class="line">union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="title function_ invoke__">group_concat</span>(table_name),<span class="number">6</span> <span class="keyword">from</span> information_schema.tables where table_schema=<span class="string">&#x27;demo01&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#6查询数据库名demo01下的表名admin的列名信息（借助information_schema.columns存储查询）</span></span><br><span class="line">union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="title function_ invoke__">group_concat</span>(column_name),<span class="number">6</span> <span class="keyword">from</span> information_schema.columns where table_schema=<span class="string">&#x27;demo01&#x27;</span> <span class="keyword">and</span> table_name=<span class="string">&#x27;admin&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#7知道表名列名可以一步到位查询</span></span><br><span class="line">union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,username,password,<span class="number">6</span> <span class="keyword">from</span> admin limit <span class="number">0</span>,<span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-4-PHP-MYSQL-SQL跨库查询"><a href="#2-4-PHP-MYSQL-SQL跨库查询" class="headerlink" title="2.4 PHP-MYSQL-SQL跨库查询"></a>2.4 <code>PHP-MYSQL-SQL</code>跨库查询</h4><h5 id="2-4-1-跨库查询概念"><a href="#2-4-1-跨库查询概念" class="headerlink" title="2.4.1 跨库查询概念"></a>2.4.1 跨库查询概念</h5><p>含义：通过B网站的注入点获取A网站的账号密码</p>
+<p>影响条件：当前数据库ROOT用户权限</p>
+<p>测试不同数据库用户：root demo</p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <div class="post-nav-item-left"></div>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/03/HTB-Redeemer/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      HTB-Redeemer
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>
