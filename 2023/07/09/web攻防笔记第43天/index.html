@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title>
       
-        关于我发小打算结昏这件事带给我了什么 | KillMen's Home
+        web攻防笔记第43天 | KillMen's Home
       
     </title>
     <meta name="description" content=""/>
@@ -66,15 +66,19 @@
   <article class="post-content">
     <div class="post-inner">
       <div class="post-content__head">
-        <div class="post-title">关于我发小打算结昏这件事带给我了什么</div>
+        <div class="post-title">web攻防笔记第43天</div>
         <div class="post-info">
           
   
-    <a href="/tags/%E9%9A%8F%E7%AC%94/" class="post-tag">#随笔</a>
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
   
 
 
-          <span class="post-date">2023-07-07</span>
+          <span class="post-date">2023-07-09</span>
         </div>
       </div>
       <div id="postBody" class="post-content__body">
@@ -88,33 +92,46 @@
             
           </div>
         
-        <p>………..</p>
-<p>沉没成本真高啊。非常无语。</p>
-<p>总之她就像被什么东西忽然夺舍了一样。</p>
-<p>我翻到了六年半前的聊天记录了：</p>
-<img src="..\image\6.5.jpg" alt="和我聊天的她" style="zoom:50%;" />
+        <h3 id="为什么注入失败？"><a href="#为什么注入失败？" class="headerlink" title="为什么注入失败？"></a>为什么注入失败？</h3><p>由于开发者对于数据类型和SQL语句写法（框架写法）导致SQL注入拼接失败。</p>
+<p>注释类型包括：单引号’、百分号%’、框架括号’)</p>
+<p>有时候会有无法注释的情况：<code>limit 0, 1</code>、<code>order by</code></p>
+<p>–+</p>
+<h4 id="常见注释类型"><a href="#常见注释类型" class="headerlink" title="常见注释类型"></a>常见注释类型</h4><p>1、数字型(无符号干扰)</p>
+<p><code>select * from news where id=$id;</code></p>
+<p>2、字符型（有符号干扰）</p>
+<p><code>select * from news where id=&#39;$id&#39;;</code></p>
+<p>3、搜索型（有多符号干扰）</p>
+<p><code>select * from news where id like &#39;%$id%&#39;</code></p>
+<p>4、框架型（有各种符号干扰）</p>
+<p><code>select * from news where id=(&#39;$id&#39;);</code></p>
+<p><code>select * from news where (id=&#39;$id&#39;);</code></p>
+<p><strong>文件上传有可能会导致注入！</strong></p>
+<p><code>img = union select</code></p>
+<p><code>img_value &#123; &#39;union select&#39; &#125;</code></p>
+<p>插入数据事件insert</p>
+<p><code>insert news (&quot;title&quot;, &quot;content&quot;, &quot;author&quot;, &quot;date&quot;, &quot;img&quot;)</code></p>
+<h3 id="PHP-MYSQL-数据请求方法（常见）"><a href="#PHP-MYSQL-数据请求方法（常见）" class="headerlink" title="PHP-MYSQL-数据请求方法（常见）"></a><code>PHP-MYSQL-</code>数据请求方法（常见）</h3><p>全局变量方法：<code>GET POST SERVER FILES HTTP</code>头等</p>
+<h5 id="1、GET：URL上"><a href="#1、GET：URL上" class="headerlink" title="1、GET：URL上"></a>1、<code>GET：</code>URL上</h5><h5 id="2、POST：URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数"><a href="#2、POST：URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数" class="headerlink" title="2、POST：URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数"></a>2、<code>POST：</code>URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数</h5><h5 id="3、SERVER：（主要看功能或代码里接收哪个，就改哪个）"><a href="#3、SERVER：（主要看功能或代码里接收哪个，就改哪个）" class="headerlink" title="3、SERVER：（主要看功能或代码里接收哪个，就改哪个）"></a>3、<code>SERVER：</code>（主要看功能或代码里接收哪个，就改哪个）</h5><p><code>User-Agent：</code></p>
+<p>使得服务器能够识别客户使用的操作系统，游览器版本等.（很多数据量大的网站中会记录客户使用的操作系统或浏览器版本等存入数据库中）</p>
+<p><code>Cookie：</code></p>
+<p>网站为了辨别用户身份、进行session跟踪而储存在用户本地终端上的数据</p>
+<p><code>Rerferer：</code>浏览器向 WEB 服务器表明自己是从哪个页面链接过来的</p>
+<p><code>Host：</code>客户端指定自己想访问的WEB服务器的域名&#x2F;IP 地址和端口号</p>
+<h5 id="4、X-Forwarded-For："><a href="#4、X-Forwarded-For：" class="headerlink" title="4、X-Forwarded-For："></a>4、<code>X-Forwarded-For：</code></h5><p>简称<code>XFF</code>头，它代表客户端，也就是<code>HTTP</code>的请求端真实的<code>IP</code>，（通常一些网站的防注入功能会记录请求端真实<code>IP</code>地址并写入数据库or某文件 [<strong>通过修改<code>XXF</code>头可以实现伪造<code>IP</code></strong>]）</p>
+<p>若在代码中X-Forwarded-For获取到的IP变量写进了sql执行语句中，则可以实现注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#源代码中的隐患语句</span><br><span class="line">$sql = &quot;select * from admin where ip=&#x27;$ip&#x27;&quot;;</span><br><span class="line">#数据包中X-Forwarded-For参数（IP）修改</span><br><span class="line">dasdsdas&#x27; union select 1,datebase(),user(),4 and &#x27;1&#x27;=&#x27;1</span><br><span class="line"></span><br><span class="line">#如果把ip写死去判断，有绕过隐患，ip放在配置文件或代码申明中</span><br><span class="line">if（$ip==&#x27;127.0.01&#x27;）&#123;...&#125;</span><br></pre></td></tr></table></figure>
 
-<p>和现在真差万别，就昨晚，未婚夫三个字都从她口中说出了。</p>
-<p>还记得22年过年和她出去玩她说的是她不结婚，去年有阵子还说之后要从老家出来在外面找工作。</p>
-<p>但是，我能有什么办法呢。</p>
-<p>我原本以为她是奥丽娜雅法拉奇那样的人，最后还是沦为听话的傀儡，使用自己的子宫、美色、免费劳动力换取金钱和利益。</p>
-<p>真真可笑啊，她也不是没有女性思想，道理她都懂。实践起来就和精神分裂的病人一样。</p>
-<p>叛逆、觉醒和持续打拳是需要本事的，她没有本事。</p>
-<p>实力弱，说再多原生家庭的问题也是找补。</p>
-<p>和我一起打拳的高中同桌一语道破真相：</p>
-<p><u>就是她自己说的那段话说给以前的她自己她都会嗤之以鼻的程度</u></p>
-<p><u>但现在的她就是强行麻木自己，其实也不能百分百说服现在的自己，但她妥协了懒得抗争了这种感觉</u></p>
-<p><u>可能就是受过伤，但沉溺于受伤，根本就是这个伤不够疼，哪天她体验一下五年三娃婆婆不待见老公不理解那种，身边也没有朋友，自己抑郁到要不行了的时候可能才会激起她的求生欲和反抗欲</u></p>
-<p>是啊。她就是过的太好了。</p>
-<p>我只是惋惜我那死去的发小、故人………</p>
-<p>之后我会和她继续渐行渐远，直到再也没话说。</p>
-<p><strong>我会遇见更多和我相似的女性，我可以和她们一起谈天说地，奶茶言欢。</strong></p>
-<p><strong>我会参与更多惊险刺激的事件，继续我跌宕起伏的日常生活。</strong></p>
-<p><strong>我会有时间钻研我想学的技术，深耕到不可思议的地步，创建出来新的工具、理论、玩法…..</strong></p>
-<p><strong>我会和我的母父争吵，也会被母亲背刺，我更会完全不听他们的。</strong></p>
-<p><strong>我会学好英语去海外留学，尝试一下国外的学生生活究竟是什么样，他们的大学是有多么难毕业。</strong></p>
-<p><strong>我会去全球旅行，会去练习格斗，会剃寸头，会去学必须的法律知识，会有更广阔的视角，会和更多女性并肩作战。</strong></p>
-<p><strong>以我为中心播撒的种子和涟漪会影响到周围更多女性，我们其实从不孤单。</strong></p>
+
+
+<h5 id="功能点"><a href="#功能点" class="headerlink" title="功能点"></a>功能点</h5><p>1、用户登录时</p>
+<p>2、登录判断IP时</p>
+<p>是PHP特性中的<code>$_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;];</code>接受IP的绕过（可伪造，绕过）</p>
+<p>实现：代码配置固定IP去判断-策略绕过</p>
+<p>实现：数据库白名单IP去判断-select注入</p>
+<p>实现：防注入，记录IP去保存数据库-insert注入</p>
+<p>3、文件上传将文件名写入数据库-insert注入</p>
+<h3 id="PHP-MYSQL-数据请求格式"><a href="#PHP-MYSQL-数据请求格式" class="headerlink" title="PHP-MYSQL-数据请求格式"></a><code>PHP-MYSQL-</code>数据请求格式</h3><p>1、数据采用统一格式传输，后端进行格式解析带入数据库（<code>json</code>）</p>
+<p>2、数据采用加密编码传输，后端进行解密解码带入数据库（<code>base64</code>）-<code>CapyfCncoder V3</code></p>
 
       </div>
     </div>
@@ -123,23 +140,11 @@
     
     <div class="post-nav">
   
-    <a class="post-nav-item-left" href="/2023/07/08/Poc%E7%BC%96%E5%86%99%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99/">
-      <div class="text-align">
-        <svg t="1670570876164"
-             class="icon"
-             viewBox="0 0 1024 1024"
-             width="16"
-             height="16">
-          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
-        </svg>
-        <span class="text-small">上一篇</span>
-      </div>
-      <div>Poc编写相关资料</div>
-    </a>
+    <div class="post-nav-item-left"></div>
   
   <div class="vhr"></div>
   
-    <a class="post-nav-item-right" href="/2023/07/05/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC42%E5%A4%A9/">
+    <a class="post-nav-item-right" href="/2023/07/08/Poc%E7%BC%96%E5%86%99%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99/">
       <div class="text-align">
         <span class="text-small">下一篇</span>
         <svg t="1670570876164"
@@ -151,7 +156,7 @@
           <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
         </svg>
       </div>
-      web攻防笔记第42天
+      Poc编写相关资料
     </a>
   
 </div>
