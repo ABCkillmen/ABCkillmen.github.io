@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第47天 | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第47天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-07-28</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h1 id="47"><a href="#47" class="headerlink" title="47"></a>47</h1><h2 id="学习前必读："><a href="#学习前必读：" class="headerlink" title="学习前必读："></a>学习前必读：</h2><p>1、课前一定要明白：<br><strong>无文件解析安全问题上，格式解析是一对一的（不能jpg解析php）<br>换句话来说有解析错误配置或后缀解析漏洞时才能实现格式差异解析</strong></p>
+<p>2、文件上传安全指的是攻击者通过<strong>利用上传实现后门的写入连接后门进行权限控制</strong>的安全问题，对于如何确保这类安全问题，一般会从原生态功能中的文件内容，文件后缀，文件类型等方面判断，但是漏洞可能不仅在本身的代码验证逻辑中出现安全问题，也会在语言版本，语言函数，中间件，引用的第三方编辑器等存在缺陷地方配合利用。另外文件上传也有多个存储逻辑，不同的文件存储方案也会给攻击者带来不一样的挑战！</p>
+<h2 id="测试环境安装参考："><a href="#测试环境安装参考：" class="headerlink" title="测试环境安装参考："></a>测试环境安装参考：</h2><p><a target="_blank" rel="noopener" href="https://github.com/ffffffff0x/f8x">https://github.com/ffffffff0x/f8x</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fuzzdb-project/fuzzdb">https://github.com/fuzzdb-project/fuzzdb</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/sqlsec/upload-labs-docker">https://github.com/sqlsec/upload-labs-docker</a></p>
+<ol>
+<li><p>下载上述资源</p>
+</li>
+<li><p>docker安装</p>
+<p><code>f8x -d</code> 或 <code>f8x -docker</code></p>
+</li>
+<li><p>进入项目文件夹</p>
+<p><code>cd upload-labs-docker</code></p>
+</li>
+<li><p>一键部署运行<br><code>docker-compose up -d</code></p>
+</li>
+</ol>
+<h2 id="upload-labs-docker知识点："><a href="#upload-labs-docker知识点：" class="headerlink" title="upload-labs-docker知识点："></a>upload-labs-docker知识点：</h2><p>1、前端JS</p>
+<aside>
+💡 如何判断是否是前端验证呢？
+首先抓包监听，如果上传文件的时候还没有抓取到数据包，但是浏览器就提示文件类型不正确的话，那么这个多半就是前端校验了
+
+
+</aside>
+
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第一关：使用哥斯拉生成后门在可上传文件类型（如.jpg）中，上传后，因前端验证，后端不验证，所以抓包修改文件类型，直接发送.php文件，再连接就行。</li>
+</ul>
+<p>2、.htaccess（中间件）<br><code>AddType application/x-httpd-php .png</code> </p>
+<p>借助这个配置让.png的命名文件当做类型<code>application/x-httpd-php .png</code>执行（php的类型）</p>
+<p>当做php执行</p>
+<blockquote>
+<p>htaccess 文件是 Apache 服务器中的一个配置文件，它负责相关目录下的网页配置。通过 htaccess 文件，可以帮我们实现：网页301重定向、自定义 404 错误页面、改变文件扩展名、允许&#x2F;阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等功能</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第二关：上传2.php，抓包该参数，文件格式改成.htaccess，内容改成<code>AddType application/x-httpd-php .png</code> ，接着上传2.png，内容包含php木马后门，直接哥斯拉连接2.png</li>
+</ul>
+</blockquote>
+<p>3、MIME类型<br><code>Content-Type：image/png</code> </p>
+<blockquote>
+<p><strong>媒体类型</strong></p>
+<p>（通常称为<strong>Multipurpose Internet Mail Extensions</strong>或<strong>MIME</strong>类型 ）是一种标准，用来表示文档、文件或字节流的性质和格式。</p>
+<p>MIME的组成结构非常简单；由类型与子类型两个字符串中间用 ‘&#x2F;‘ 分隔而组成。不允许空格存在。type 表示可以被分多个子类的独立类别。subtype 表示细分后的每个类型。</p>
+<p>通用的结构为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">type</span>/subtype</span><br></pre></td></tr></table></figure>
+
+<p>MIME类型对大小写不敏感，但是传统写法都是小写。</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第三关：修改类型就行了，验证方式不能只通过一种方式，需要多方位去验证</li>
+</ul>
+</blockquote>
+<p>4、文件头判断<br><code>GIF89a</code> </p>
+<blockquote>
+<p>一个文件里面的内容到底是啥？用惯了Windows的人肯定是看后缀。但是后缀这个东西说改就改，不可靠。所以，最保险的还是把文件类型信息写到文件里面，通常来说，也就是写到文件开头的那几个字节。这是最方便，最快捷的用来辨别一个文件真实内容的方法。</p>
+<p>常见的文件头标志如下：</p>
+<p>JPEG (jpg)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FFD8FF</span><br></pre></td></tr></table></figure>
+
+<p>PNG (png)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">89504E47</span><br></pre></td></tr></table></figure>
+
+<p>GIF (gif)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">47494638</span><br></pre></td></tr></table></figure>
+
+<p>HTML (html)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">68746D6C3E</span><br></pre></td></tr></table></figure>
+
+<p>ZIP Archive (zip)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">504B0304</span><br></pre></td></tr></table></figure>
+
+<p>RAR Archive (rar)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">52617221</span><br></pre></td></tr></table></figure>
+
+<p>Adobe Acrobat (pdf)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">255044462D312E</span><br></pre></td></tr></table></figure>
+
+<p>MS Word&#x2F;Excel (xls.or.doc)，文件头：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">D0CF11E0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第四关：修改上传文件前缀为GIF，然后抓包把类型也改了，上传</li>
+</ul>
+</blockquote>
+<p>5、黑名单-过滤不严<br><code>无递归，pphphp</code>，也没有过滤大小写 </p>
+<p><img src="/../image/replace.png" alt="replace.png"></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第五关：上传一个.pphphp</li>
+</ul>
+<p>6、黑名单-过滤不严<br><code>系统大小写敏感属性</code> </p>
+<p><img src="/../image/head.png" alt="head.png"></p>
+<p>因为题目环境是 Docker 容器运行的 Linux 系统，所以本题人工修改成了 Windows 的特性</p>
+<p><strong>Linux区分大小写，Windows不区分</strong></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第六关：上传一个.Php</li>
+</ul>
+<p>7、低版本GET-%00截断<br><code>自动解码一次 /var/www/html/upload/x.php%00</code> </p>
+<p><em>url上面 %00 （自动解码一次）</em></p>
+<blockquote>
+<p>PHP 内核是由 C 语言实现的，所以使用了 C 语言中的一些字符串处理函数。比如在连接字符串时候， 0 字节<br>(\x00) 将作为字符串结束符。所以在这个地方，攻击者只要在最后加入一个 0 字节，就能截断 file 变量之后的字符串</p>
+<p>这种方法只适用于</p>
+<ul>
+<li>magic_quotes_gpc &#x3D; Off</li>
+<li>PHP 版本小于 5.3.4</li>
+<li><input checked="" disabled="" type="checkbox"> 第七关：确认版本无误后，上传正确格式包含木马的图片文件，抓包，修改GET上传路径，使用%00截断后面的内容</li>
+</ul>
+</blockquote>
+<p>8、低版本POST-%00截断（环境要求与第七题同）<br><code>手工解码一次 ../upload/x.php%00 二次解码</code> </p>
+<p>00截断 是%00解码结果</p>
+<p><em>post下面 %00 （手工解码一次）</em></p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第八关：上传正确格式包含木马的图片文件，抓包，修改POST数据包下面上传路径，使用%00截断后面的内容，接着使用解码解回去发送</li>
+</ul>
+<p>9、黑名单-过滤不严<br><code>php3</code> </p>
+<p>fuzzdbmaster项目中的字典，后缀爆破：attack file-upload altextensions-php.txt</p>
+<p>![head.png](..&#x2F;image&#x2F;head 1.png)</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第九关：抓包，php字典后缀爆破，看长度和响应路径</li>
+</ul>
+<p>10、逻辑不严-条件竞争</p>
+<p>逻辑缺陷-先上传后判断 → 访问即创建代码（访问了自动触发代码 新建一个文件写入后门）</p>
+<p>正确：先判断，后上传<br><code>&lt;?php fputs(fopen(&#39;xiao.php&#39;,&#39;w&#39;),&#39;&lt;?php eval($_REQUEST[1]);?&gt;&#39;);?&gt;</code><br>上传不断发包<br>请求不断发包</p>
+<blockquote>
+<p>条件竞争是指一个系统的运行结果依赖于不受控制的事件的先后顺序。当这些不受控制的事件并没有按照开发者想要的方式运行时，就可能会出现 bug。尤其在当前我们的系统中大量对资源进行共享，如果处理不当的话，就会产生条件竞争漏洞。</p>
+<p>攻击者上传了一个用来生成恶意 shell 的文件，在上传完成和安全检查完成并删除它的间隙，攻击者通过不断地发起访问请求的方法访问了该文件，该文件就会被执行，并且在服务器上生成一个恶意 shell 的文件。至此，该文件的任务就已全部完成，至于后面发现它是一个不安全的文件并把它删除的问题都已经不重要了，因为攻击者已经成功的在服务器中植入了一个shell 文件，后续的一切就都不是问题了。</p>
+<p>不过竞争的马因为生存周期短的原因，所以和普通的 Webshell 不太一样，他的使命是在有限的生命中等待一个有缘人的光顾，然后快速生成一个小 Webshell，落红不是无物，化作春泥更护花（泪目）。</p>
+</blockquote>
+<p>![head.png](..&#x2F;image&#x2F;head 2.png)</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第十关：在文件停留过服务器的一秒内快速访问生成后门，使用Null payloads和continue indefinitely持续访问30010以及30010&#x2F;upload&#x2F;xiao.php，然后一直刷新</li>
+</ul>
+<p>我的电脑好像太慢了，一直刷不出来，绝</p>
+<p>11、二次渲染<br><code>先搞个正常图片，上传导出渲染后的图片</code><br><code>对比保留部分，在保留部分添加后门代码</code><br><code>最后利用提示的文件包含执行图片后门代码</code> </p>
+<p>![head.png](..&#x2F;image&#x2F;head 3.png)</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 第十一关：使用16进制编辑器把后门插入到两个图片保留的一样部分</li>
+</ul>
+<p>12、函数缺陷<br><code>move_uploaded_file 1.php/.</code> </p>
+<p>![head.png](..&#x2F;image&#x2F;head 4.png)</p>
+<p>如果可以让我们自己发挥重命名，那么<code>shell.php/.</code> 可以上传一个php文件</p>
+<p>13、代码审计-数组绕过<br>—————————–174283082921961<br>Content-Disposition: form-data; name&#x3D;”save_name[0]”</p>
+<p><a target="_blank" rel="noopener" href="http://2.php/">http://2.php/</a><br>—————————–174283082921961<br>Content-Disposition: form-data; name&#x3D;”save_name[2]”</p>
+<p>gif</p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/08/02/HTB-Unified/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>HTB-Unified</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/26/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC46%E5%A4%A9/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      web攻防笔记第46天
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

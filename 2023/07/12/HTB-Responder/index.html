@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        HTB-Responder | KillMen's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">HTB-Responder</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/HTB/" class="post-tag">#HTB</a>
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/STARTING-POINT/" class="post-tag">#STARTING POINT</a>
+  
+
+
+          <span class="post-date">2023-07-12</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h1 id="Responder"><a href="#Responder" class="headerlink" title="Responder"></a>Responder</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Windows is the most predominant operating system in today’s world because of its easy-to-use GUI accessibility. About 85% of the market share has become a critical OS to attack. Furthermore, most organizations use Active Directory to set up their Windows domain networks. Microsoft employs NTLM (New Technology LAN Manager) &amp; Kerberos for authentication services. Despite known vulnerabilities, NTLM remains widely deployed even on new systems to maintain compatibility with legacy clients and servers.<br>This lab focuses on how a File Inclusion vulnerability on a webpage being served on a windows machine can be exploited to collect the NetNTLMv2 challenge of the user that is running the web server. We will use a utility called Responder to capture a NetNTLMv2 hash and later use a utility known as john the ripper to test millions of potential passwords to see if they match the one used to create the hash. We will also be taking a deeper look at the working process of NTLM authentication and how the Responder utility captures the challenge. We believe that it’s crucial to understand the under the hood workings of a tool or a framework as it strengthens the foundation of one’s understanding, which aids in the real world exploit scenarios that one might face, which do not appear to be vulnerable at the first look. Let’s dive straight into it.</p>
+<hr>
+<p>Windows是当今世界上最主要的操作系统，因为它易于使用的GUI可访问性。大约85%的市场份额已经成为攻击的关键操作系统。此外，大多数组织都使用Active Directory来设置其Windows域网络。Microsoft使用NTLM（新技术局域网管理器）和Kerberos进行身份验证服务。尽管存在已知的漏洞，NTLM仍然被广泛部署在新系统上，以保持与旧客户端和服务器的兼容性。<br>本实验室的重点是如何利用windows计算机上提供的网页上的文件包含漏洞来收集运行web服务器的用户的NetNTLMv2挑战。我们将使用一个名为Responder的实用程序来捕获NetNTLMv2哈希，然后使用一个称为john the ripper的实用程序测试数百万个潜在密码，看看它们是否与用于创建哈希的密码匹配。我们还将深入了解NTLM身份验证的工作过程，以及响应程序实用程序如何应对这一挑战。我们认为，理解一个工具或框架的幕后工作至关重要，因为它加强了人们理解的基础，有助于在现实世界中利用人们可能面临的场景，而这些场景乍一看并不脆弱。让我们直接切入。</p>
+<h2 id="Enumeration"><a href="#Enumeration" class="headerlink" title="Enumeration"></a>Enumeration</h2><p>We will begin by scanning the host for any open ports and running services with a Nmap scan. We will be using the following flags for the scan:</p>
+<aside>
+📎 p- : This flag scans for all TCP ports ranging from 0-65535
+-sV : Attempts to determine the version of the service running on a port
+--min-rate : This is used to specify the minimum number of packets Nmap should send per
+second; it speeds up the scan as the number goes higher
+
+
+</aside>
+
+<blockquote>
+<p>Nmap如何确定端口上运行的服务？<br>Nmap使用知名服务的端口服务数据库来确定在特定端口上运行的服务。它稍后还会向该端口发送一些特定于服务的请求，以确定服务版本和任何有关它的附加信息。<br>因此，对于特定端口的服务信息，Nmap大多是但并不总是正确的。</p>
+</blockquote>
+<p>According to the results of the Nmap scan, the machine is using Windows as its operating system. Two ports were detected as open having Apache web server running on port 80 along with WinRM on port 5985 .</p>
+<p>根据Nmap扫描的结果，该机器正在使用Windows作为其操作系统。检测到两个端口打开，Apache web服务器在端口80上运行，WinRM在端口5985上运行。</p>
+<aside>
+❓ Windows Remote Management, or WinRM, is a Windows-native built-in remote management protocol that basically uses Simple Object Access Protocol to interact with remote computers and servers, as well as Operating Systems and applications. WinRM allows the user to :
+→ Remotely communicate and interface with hosts
+→ Execute commands remotely on systems that are not local to you but are network accessible.
+→ Monitor, manage and configure servers, operating systems and client machines from a remote location.
+As a pentester, this means that if we can find credentials (typically username and password) for a user who has remote management privileges, we can potentially get a PowerShell shell on the host.
+
+
+</aside>
+
+<aside>
+❓ Windows远程管理（WinRM）是一种Windows本机内置远程管理协议，基本上使用简单对象访问协议与远程计算机和服务器以及操作系统和应用程序进行交互。WinRM允许用户：
+→ 与主机远程通信和接口
+→ 在非本地但可通过网络访问的系统上远程执行命令。
+→ 从远程位置监视、管理和配置服务器、操作系统和客户端机器。
+作为pentester，这意味着如果我们能找到具有远程管理权限的用户的凭据（通常是用户名和密码），我们就有可能在主机上获得PowerShell shell。
+
+
+</aside>
+
+<h2 id="Website-Enumeration"><a href="#Website-Enumeration" class="headerlink" title="Website Enumeration"></a>Website Enumeration</h2><p>On opening Firefox and putting http:&#x2F;&#x2F;[target ip] , the browser returns a message about being unable to find that site. Looking in the URL bar, it now shows <a target="_blank" rel="noopener" href="http://unika.htb/">http://unika.htb</a> . The website has redirected the browser to a new URL, and your host doesn’t know how to find unika.htb . This webserver is employing name-based Virtual Hosting for serving the requests.</p>
+<p>打开Firefox并放入http:&#x2F;&#x2F;[target-ip]后，浏览器会返回一条无法找到该网站的消息。在URL栏中查看，它现在显示<a target="_blank" rel="noopener" href="http://unika.htb.该网站已将浏览器重定向到一个新的url,而您的主机不知道如何找到unika.htb.该web服务器使用基于名称的虚拟主机来满足请求./">http://unika.htb。该网站已将浏览器重定向到一个新的URL，而您的主机不知道如何找到unika.htb。该Web服务器使用基于名称的虚拟主机来满足请求。</a></p>
+<p>Name-Based Virtual hosting is a method for hosting multiple domain names (with separate handling ofeach name) on a single server. This allows one server to share its resources, such as memory and processor cycles, without requiring all the services to be used by the same hostname.<br>The web server checks the domain name provided in the Host header field of the HTTP request and sends a response according to that.</p>
+<p>基于名称的虚拟托管是一种在单个服务器上托管多个域名（每个名称单独处理）的方法。这允许一台服务器共享其资源，例如内存和处理器周期，而不需要同一主机名使用所有服务。<br>web服务器检查HTTP请求的主机头字段中提供的域名，并根据该域名发送响应。<br>The &#x2F;etc&#x2F;hosts file is used to resolve a hostname into an IP address &amp; thus we will need to add an entry in the &#x2F;etc&#x2F;hosts file for this domain to enable the browser to resolve the address for unika.htb .</p>
+<p>&#x2F;etc&#x2F;hosts文件用于将主机名解析为IP地址&amp;因此，我们需要在该域的&#x2F;etc&#x2F;host文件中添加一个条目，以使浏览器能够解析unika.htb的地址。</p>
+<p>Entry in the &#x2F;etc&#x2F;hosts file :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;10.129.136.91 unika.htb&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>Adding this entry in the &#x2F;etc&#x2F;hosts file will enable the browser to resolve the hostname unika.htb to<br>the corresponding IP address &amp; thus make the browser include the HTTP header Host: unika.htb in<br>every HTTP request that the browser sends to this IP address, which will make the server respond with the webpage for unika.htb .</p>
+<p>在&#x2F;etc&#x2F;hosts文件中添加此条目将使浏览器能够将主机名unika.htb解析为相应的IP地址，从而使浏览器在向该IP地址发送的每个HTTP请求中都包含HTTP标头Host:unika.htb，这将使服务器以unika.h结核的网页进行响应。<br>On accessing the web page we are presented with a web designing business landing page.</p>
+<p>在访问网页时，我们会看到一个网页设计业务登录页。</p>
+<p>Checking the site out, we see nothing of particular interest. Although, we notice a language selection option on the navbar EN and changing the option to FR takes us to a French version of the website.</p>
+<p>查看网站，我们没有发现任何特别感兴趣的东西。尽管如此，我们注意到导航栏EN上有一个语言选择选项，将该选项更改为FR会将我们带到该网站的法语版本。</p>
+<p>Noticing the URL, we can see that the french.html page is being loaded by the page parameter, which may potentially be vulnerable to a Local File Inclusion (LFI) vulnerability if the page input is not sanitized.</p>
+<p>注意到URL，我们可以看到french.html页面是由页面参数加载的，如果页面输入没有被清除，它可能会受到本地文件包含（LFI）漏洞的攻击。</p>
+<h2 id="File-Inclusion-Vulnerability"><a href="#File-Inclusion-Vulnerability" class="headerlink" title="File Inclusion Vulnerability"></a>File Inclusion Vulnerability</h2><p>Dynamic websites include HTML pages on the fly using information from the HTTP request to include GET and POST parameters, cookies, and other variables. It is common for a page to “include” another page based on some of these parameters.</p>
+<p>动态网站包括动态HTML页面，使用HTTP请求中的信息，包括GET和POST参数、cookie和其他变量。一个页面通常会根据其中一些参数“包含”另一个页面。</p>
+<aside>
+💡 LFI or Local File Inclusion occurs when an attacker is able to get a website to include a file that was not intended to be an option for this application. A common example is when an application uses the path to a file as input. If the application treats this input as trusted, and the required sanitary checks are not performed on this input, then the attacker can exploit it by using the ../ string in the inputted file name and eventually view sensitive files in the local file system. In some limited cases, an LFI can lead to code execution as well.
+
+
+</aside>
+
+<p>当攻击者能够使网站包含一个不打算作为此应用程序选项的文件时，就会发生LFI或本地文件包含。一个常见的例子是应用程序使用文件的路径作为输入。如果应用程序将此输入视为可信输入，并且未对此输入执行所需的卫生检查，则攻击者可以使用..&#x2F;字符串，并最终查看本地文件系统中的敏感文件。在某些有限的情况下，LFI也可以导致代码执行。</p>
+<aside>
+💡 RFI or Remote File Inclusion is similar to LFI but in this case it is possible for an attacker to load a remote file on the host using protocols like HTTP, FTP etc.
+
+
+</aside>
+
+<p>RFI或远程文件包含类似于LFI，但在这种情况下，攻击者有可能使用HTTP、FTP等协议在主机上加载远程文件。</p>
+<p>We test the page parameter to see if we can include files on the target system in the server response. We will test with some commonly known files that will have the same name across networks, Windows domains, and systems which can be found here. One of the most common files that a penetration tester might attempt to access on a Windows machine to verify LFI is the hosts file, WINDOWS\System32\drivers\etc\hosts (this file aids in the local translation of host names to IP<br>addresses). The ..&#x2F; string is used to traverse back a directory, one at a time. Thus multiple ..&#x2F; strings are included in the URL so that the file handler on the server traverses back to the base directory i.e. C:\ .</p>
+<p>我们测试页面参数，看看是否可以在服务器响应中包括目标系统上的文件。我们将使用一些常见的文件进行测试，这些文件将在网络、Windows域和系统中具有相同的名称，这些文件可以在此处找到。渗透测试人员可能试图在Windows机器上访问以验证LFI的最常见文件之一是hosts文件Windows\System32\drivers\etc\hosts（该文件有助于将主机名本地转换为IP地址）。..&#x2F;字符串用于一次遍历一个目录。因此倍数..&#x2F;字符串包含在URL中，以便服务器上的文件处理程序遍历回基本目录，即C:\。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://unika.htb/index.php?</span><br><span class="line">page=../../../../../../../../windows/system32/drivers/etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>Great, LFI is possible as we can view the contents of the C:\windows\system32\drivers\etc\hosts file in the response.</p>
+<p>很好，LFI是可能的，因为我们可以在响应中查看C:\windows\system32\drivers\etc\hosts文件的内容。<br>The file inclusion, in this case, was made possible because in the backend the include() method of PHP is being used to process the URL parameter page for serving a different webpage for different languages. And because no proper sanitization is being done on this page parameter, we were able to pass malicious input and therefore view the internal system files.<br>在这种情况下，之所以可以包含文件，是因为在后端，PHP的include（）方法被用于处理URL参数页面，以便为不同语言的不同网页提供服务。由于没有对此页面参数进行适当的清理，我们能够传递恶意输入，从而查看内部系统文件。</p>
+<p><strong>What is the include() method in PHP?</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">File <span class="number">1</span> --&gt; vars.php</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$color</span> = <span class="string">&#x27;green&#x27;</span>;</span><br><span class="line"><span class="variable">$fruit</span> = <span class="string">&#x27;apple&#x27;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">#############################################</span></span><br><span class="line">File <span class="number">2</span> --&gt; test.php</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;A <span class="subst">$color</span> <span class="subst">$fruit</span>&quot;</span>; <span class="comment">// output = &quot;A&quot;</span></span><br><span class="line"><span class="keyword">include</span> <span class="string">&#x27;vars.php&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;A <span class="subst">$color</span> <span class="subst">$fruit</span>&quot;</span>; <span class="comment">// output = &quot;A green apple&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.php.net/manual/en/function.include.php">https://www.php.net/manual/en/function.include.php</a></p>
+<p><strong>What is NTLM (New Technology Lan Manager)?</strong></p>
+<p>NTLM is a collection of authentication protocols created by Microsoft. It is a challenge-response<br>authentication protocol used to authenticate a client to a resource on an Active Directory domain.<br>It is a type of single sign-on (SSO) because it allows the user to provide the underlying authentication factor only once, at login.</p>
+<p>NTLM是由Microsoft创建的身份验证协议的集合。它是一种质询-响应身份验证协议，用于将客户端身份验证为Active Directory域上的资源。<br>它是一种单点登录（SSO），因为它只允许用户在登录时提供一次底层身份验证因素。</p>
+<p>The NTLM authentication process is done in the following way :</p>
+<ol>
+<li>The client sends the user name and domain name to the server.</li>
+<li>The server generates a random character string, referred to as the challenge.</li>
+<li>The client encrypts the challenge with the NTLM hash of the user password and sends it back to the server.</li>
+<li>The server retrieves the user password (or equivilent).</li>
+<li>The server uses the hash value retrieved from the security account database to encrypt the challenge string. The value is then compared to the value received from the client. If the values match, the client is authenticated.</li>
+</ol>
+<aside>
+💡 NTLM身份验证过程通过以下方式完成：
+1.客户端将用户名和域名发送给服务器。
+2.服务器生成一个随机字符串，称为挑战。
+3.客户端使用用户密码的NTLM哈希对质询进行加密，并将其发送回服务器。
+4.服务器检索用户密码（或等效密码）。
+5.服务器使用从安全帐户数据库中检索到的哈希值来加密质询字符串。然后将该值与从客户端接收到的值进行比较。如果值匹配，则对客户端进行身份验证。
+
+
+</aside>
+
+<p>NTLM与NTHash与NetNTLMv2</p>
+<p>关于NTLM身份验证的术语很混乱，甚至专业人士也会不时滥用它，所以让我们定义一些关键术语：</p>
+<ul>
+<li>散列函数是一种单向函数，它接受任意数量的数据并返回固定大小的值。<br>通常，结果被称为散列、摘要或指纹。它们用于更安全地存储密码，因为无法将哈希直接转换回原始数据（尽管也有试图从哈希中恢复密码的攻击，我们稍后会看到）。因此，服务器可以存储您的密码散列，当您将密码提交到网站时，它会对您的输入进行散列，并将结果与数据库中的散列进行比较，如果它们匹配，它就会知道您提供了正确的密码。</li>
+<li>NTHash是用于在SAM数据库和域控制器中的Windows系统上存储密码的算法的输出。NTHash通常被称为NTLM哈希，甚至只是NTLM，这非常具有误导性&#x2F;混淆性。</li>
+<li>当NTLM协议想要通过网络进行身份验证时，它会使用如上所述的质询&#x2F;响应模型。NetNTLMv2质询&#x2F;响应是一个专门格式化为包括质询和响应的字符串。这通常被称为NetNTLMv2哈希，但实际上并不是哈希。尽管如此，它通常被称为哈希，因为我们以同样的方式攻击它。您将看到NetNTLMv2对象被称为NTLMv2，甚至被混淆为NTLM。</li>
+</ul>
+<h2 id="Using-Responder"><a href="#Using-Responder" class="headerlink" title="Using Responder"></a>Using Responder</h2>
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/13/%E5%8E%86%E7%BB%8F%E5%8D%81%E5%B9%B4%E6%89%BE%E5%AF%BB%E6%AF%95%E7%94%9F%E7%83%AD%E7%88%B1%E4%B9%8B%E4%BA%8B/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>历经十年找寻毕生热爱之事</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/11/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC44%E5%A4%A9/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      web攻防笔记第44天
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">莫</div><div class="matts">挨</div><div class="matts">姥</div><div class="matts">子</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">乐</div><div class="matts">骟</div><div class="matts">好</div><div class="matts">弑</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:假的@email.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzI3NzQ4NDkzNg==&mid=2247484469&idx=1&sn=8a442bb67397f52cce5c38c3f9b41e36&chksm=eb64c0d2dc1349c40d2e1bb55615ae28b3f2951be22f00717b9ade98c851082e42dc666ab45d#rd">微信公众号</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:假的@email.com">假的@email.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">KillMen's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>
