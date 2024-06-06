@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title>
       
-        web攻防笔记第49天 | KillMen's Home
+        语言 | KillMen's Home
       
     </title>
     <meta name="description" content=""/>
@@ -36,8 +36,7 @@
     <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
     
     
-  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
-  
+  <link rel="stylesheet" type="text/css" href="/css/category.css" />
 
   <meta name="generator" content="Hexo 6.3.0"></head>
   <body>
@@ -65,86 +64,29 @@
     </div>
     <div class="body">
       
-  <article class="post-content">
-    <div class="post-inner">
-      <div class="post-content__head">
-        <div class="post-title">web攻防笔记第49天</div>
-        <div class="post-info">
+  <div class="tag-page-title">#语言</div>
+  <div class="post-list">
+    
+      <div class="post-card">
+        <div class="post__head">
+          <a href="/2024/02/03/%E5%BE%B7%E8%AF%AD%E8%87%AA%E5%AD%A6/" class="post-title hover-line">德语自学</a>
+        </div>
+        <div class="post__body">
           
-  
-    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
-  
-    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
-  
-    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
-  
-
-
-          <span class="post-date">2023-08-27</span>
+          <div class="post-excerpt"></div>
         </div>
-      </div>
-      <div id="postBody" class="post-content__body">
-        <div id="tocAnchor" class="toc-anchor">
-          <ol id="toc" class="post-toc">
+        <div class="post__foot">
+          <div class="post-tags">
             
-          </ol>
-        </div>
-        
-          <div class="post-gallery">
+              <a href="/tags/%E8%AF%AD%E8%A8%80/" class="post-tag">#语言</a>
+            
+              <a href="/tags/%E5%AD%A6%E4%B9%A0/" class="post-tag">#学习</a>
+            
+              <a href="/tags/%E5%BE%B7%E8%AF%AD/" class="post-tag">#德语</a>
             
           </div>
-        
-        <h2 id="文件-解析方案-执行权限-amp-解码还原"><a href="#文件-解析方案-执行权限-amp-解码还原" class="headerlink" title="文件-解析方案-执行权限&amp;解码还原"></a>文件-解析方案-执行权限&amp;解码还原</h2><p>1、执行权限 文件上传后存储目录不给执行权限</p>
-<p>2、解码还原 数据做存储，解析固定（文件后缀名无关） 文件上传后利用编码传输解码还原</p>
-<h2 id="文件-存储方案-分站存储-amp-OSS对象"><a href="#文件-存储方案-分站存储-amp-OSS对象" class="headerlink" title="文件-存储方案-分站存储&amp;OSS对象"></a>文件-存储方案-分站存储&amp;OSS对象</h2><p>1、分站存储 <a target="_blank" rel="noopener" href="http://upload.xiaodi8.com/">upload.xiaodi8.com</a> 上传 <a target="_blank" rel="noopener" href="http://images.xiaodi8.com/">images.xiaodi8.com</a> 存储</p>
-<p>2、OSS对象 Access控制-OSS对象存储-Bucket对象</p>
-<p>访问只是下载，永远只是下载，传上去后门也没用。</p>
-<h2 id="如何判断"><a href="#如何判断" class="headerlink" title="如何判断"></a>如何判断</h2><p>执行权限：上传后无法访问403【换另目录上传】</p>
-<p>解码还原：上传后抓包看RequestURL，是data:image&#x2F;png;base64,一长串编码符号数据【无解】</p>
-<p>分站存储：看图片地址和上传域名不是一样的【无解】</p>
-<p>OSS对象：看URL或者去访问一下上传的地址，打开就下载【无解】</p>
-<h2 id="安全绕过"><a href="#安全绕过" class="headerlink" title="安全绕过"></a>安全绕过</h2><p>以上方案除目录设置权限如能换目录解析绕过外，其他均无解</p>
-
+        </div>
       </div>
-    </div>
-  </article>
-  <div class="post__foot">
-    
-    <div class="post-nav">
-  
-    <a class="post-nav-item-left" href="/2023/08/27/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC51%E5%A4%A9/">
-      <div class="text-align">
-        <svg t="1670570876164"
-             class="icon"
-             viewBox="0 0 1024 1024"
-             width="16"
-             height="16">
-          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
-        </svg>
-        <span class="text-small">上一篇</span>
-      </div>
-      <div>web攻防笔记第51天</div>
-    </a>
-  
-  <div class="vhr"></div>
-  
-    <a class="post-nav-item-right" href="/2023/08/02/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC48%E5%A4%A9/">
-      <div class="text-align">
-        <span class="text-small">下一篇</span>
-        <svg t="1670570876164"
-             class="icon"
-             viewBox="0 0 1024 1024"
-             transform="scale(-1,-1)"
-             width="16"
-             height="16">
-          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
-        </svg>
-      </div>
-      web攻防笔记第48天
-    </a>
-  
-</div>
-
     
     
   </div>
@@ -241,8 +183,6 @@
     </div>
     
     
-  
-  
-
+    
   </body>
 </html>
