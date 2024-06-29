@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title>
       
-        游戏笔记-深圳I/O | KillMen's Home
+        游戏-深圳I/O | KillMen's Home
       
     </title>
     <meta name="description" content=""/>
@@ -68,7 +68,7 @@
   <article class="post-content">
     <div class="post-inner">
       <div class="post-content__head">
-        <div class="post-title">游戏笔记-深圳I/O</div>
+        <div class="post-title">游戏-深圳I/O</div>
         <div class="post-info">
           
   
@@ -92,7 +92,58 @@
             
           </div>
         
-        
+        <h3 id="第一关-安全摄像头"><a href="#第一关-安全摄像头" class="headerlink" title="第一关  安全摄像头"></a>第一关  安全摄像头</h3><p>这关很简单。按照示例基本可以猜个八九不离十。</p>
+<p><strong>slp</strong>：让CPU进入sleep状态，规定睡眠时间单元。</p>
+<p><strong>mov</strong>：真实指令。数据传送。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mov 100 p1	#向引脚p1发送方波</span><br><span class="line">slp 3	#前3个时间单元内为100状态</span><br><span class="line">mov 0 p1</span><br><span class="line">slp 3</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#傻瓜算法-设计1</span><br><span class="line">#成本6元，60用电量，12代码行。</span><br><span class="line">mov 0 p0</span><br><span class="line">slp 4</span><br><span class="line">mov 100 p0</span><br><span class="line">slp 2</span><br><span class="line">mov 0 p0 </span><br><span class="line">slp 1</span><br><span class="line">mov 100 p0</span><br><span class="line">slp 1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="第二关-工厂模型替换件"><a href="#第二关-工厂模型替换件" class="headerlink" title="第二关 工厂模型替换件"></a>第二关 工厂模型替换件</h3><p>看了一下输入输出波，第一关那种设计1傻瓜移跳完全不得行了，那要到上百行里去了。</p>
+<p><strong>acc</strong>：主存储器，可以存储-999~999的整数。内部计算。所有数学计算都将</p>
+<p>使用并修改 acc 的值。</p>
+<p><strong>mul</strong>：将第一个操作数的值与 acc 存储器的值相乘，并将结果存入 acc 存储器。</p>
+<p><strong>提示：将控制输入的信号值乘以2以后，复制到控制输出。</strong><br><strong>步进可以观察acc中的数值以及控制输入输出的数值，有助于理解。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#设计1-成本3，240用电量，4代码行</span><br><span class="line">mov p0 acc	#将p0输入信号存储在acc存储器中</span><br><span class="line">mul 2	#将2与acc存储器中的数值相乘，并将结果存入acc中。</span><br><span class="line">mov acc p1	#将acc的值发送到p1控制输出。</span><br><span class="line">slp 1	#推进时间1</span><br></pre></td></tr></table></figure>
+
+<h3 id="娱乐时间：解锁纸牌游戏"><a href="#娱乐时间：解锁纸牌游戏" class="headerlink" title="娱乐时间：解锁纸牌游戏"></a>娱乐时间：解锁纸牌游戏</h3><p>哈哈哈哈哈哈，摸鱼，启动！</p>
+<p>啊啊啊，感觉很复杂，完全没有头绪呢….这游戏中的游戏真的能通关吗？</p>
+<p>目前思路：</p>
+<ol>
+<li>开场先观察中发空哪个好露出。然后开始凑牌。</li>
+<li>空白下方有9先移9。</li>
+<li>局势不对重开！重开！</li>
+<li>和羊了个羊一样每局不一定有解</li>
+</ol>
+<h3 id="第三关-诊断脉冲生成器"><a href="#第三关-诊断脉冲生成器" class="headerlink" title="第三关 诊断脉冲生成器"></a>第三关 诊断脉冲生成器</h3><p>提示：有条件执行结构。根据按钮的输入不同，脉冲输出也不同。</p>
+<p><strong>teq</strong>：测试第一个操作数 (A) 是否等于第二个操作数 (B) 的值</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>条件</strong></th>
+<th align="center"><strong>对</strong>‘+’ 指令的作用</th>
+<th align="center"><strong>对</strong>‘-’ 指令的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">A 等于 B</td>
+<td align="center">允许执行</td>
+<td align="center">禁止执行</td>
+</tr>
+<tr>
+<td align="center">A 不等于 B</td>
+<td align="center">禁止执行</td>
+<td align="center">允许执行</td>
+</tr>
+</tbody></table>
+<p>答案不唯一。</p>
+<p>观察脉冲，发现未按按钮（p0&#x3D;0）输出p1也为0；按下按钮时，形成10波。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#设计1-成本3，164用电量，7代码行</span><br><span class="line">  teq p0 100	</span><br><span class="line">+ mov 100 p1	</span><br><span class="line">+ slp 1</span><br><span class="line">+ mov 0 p1</span><br><span class="line">+ slp 1</span><br><span class="line">- mov 0 p1</span><br><span class="line">- slp 1</span><br><span class="line"></span><br><span class="line">#新设计2-同上，无差别</span><br><span class="line">  teq p0 0</span><br><span class="line">+ mov 0 p1</span><br><span class="line">+ slp 1</span><br><span class="line">- mov 100 p1</span><br><span class="line">- slp 1</span><br><span class="line">- mov 0 p1</span><br><span class="line">- slp 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="第四关-动画ESPORSTS标志"><a href="#第四关-动画ESPORSTS标志" class="headerlink" title="第四关  动画ESPORSTS标志"></a>第四关  动画ESPORSTS标志</h3><p>换音乐了！不错！带感！</p>
+
       </div>
     </div>
   </article>
