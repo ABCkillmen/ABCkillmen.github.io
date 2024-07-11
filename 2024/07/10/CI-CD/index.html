@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     <title>
       
-        game-greyhack | KillMen's Home
+        CI/CD | KillMen's Home
       
     </title>
     <meta name="description" content=""/>
@@ -68,17 +68,21 @@
   <article class="post-content">
     <div class="post-inner">
       <div class="post-content__head">
-        <div class="post-title">game-greyhack</div>
+        <div class="post-title">CI/CD</div>
         <div class="post-info">
           
   
+    <a href="/tags/CI/" class="post-tag">#CI</a>
+  
+    <a href="/tags/CD/" class="post-tag">#CD</a>
+  
     <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
   
-    <a href="/tags/%E6%B8%B8%E6%88%8F/" class="post-tag">#游戏</a>
+    <a href="/tags/%E6%B5%8B%E8%AF%95/" class="post-tag">#测试</a>
   
 
 
-          <span class="post-date">2024-06-30</span>
+          <span class="post-date">2024-07-10</span>
         </div>
       </div>
       <div id="postBody" class="post-content__body">
@@ -92,28 +96,7 @@
             
           </div>
         
-        <h2 id="ch1-network-online"><a href="#ch1-network-online" class="headerlink" title="ch1 network online"></a>ch1 network online</h2><p>Terminal Programs &gt; Network Commands category in the following order:</p>
-<ol>
-<li><p>airmon</p>
-<p><strong>Usage: airmon [start:stop] [net interface]</strong><br>Example: airmon start wlan0</p>
-<p>Used to enable &#x3D;&#x3D;monitor mode&#x3D;&#x3D; on wireless interfaces.<br>It may also be used to go back from &#x3D;&#x3D;monitor mode&#x3D;&#x3D; to &#x3D;&#x3D;managed mode&#x3D;&#x3D;.<br>Entering the airmon command without parameters will show the interfaces status.</p>
-<p>It is the first step to be able to get the connection &#x3D;&#x3D;password&#x3D;&#x3D; of a wifi router. The network card needs to be activated in &#x3D;&#x3D;monitor mode&#x3D;&#x3D;.</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//command: airmon</span><br><span class="line">cryptools = include_lib(<span class="string">&quot;/lib/crypto.so&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> cryptools <span class="keyword">then</span> <span class="built_in">exit</span>(<span class="string">&quot;Error: Missing crypto library&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> params.<span class="built_in">len</span> &gt; <span class="number">0</span> <span class="keyword">and</span> (params.<span class="built_in">len</span> != <span class="number">2</span> <span class="keyword">or</span> params[<span class="number">0</span>] == <span class="string">&quot;-h&quot;</span> <span class="keyword">or</span> params[<span class="number">0</span>] == <span class="string">&quot;--help&quot;</span>) <span class="keyword">then</span> <span class="built_in">exit</span>(command_info(<span class="string">&quot;airmon_usage&quot;</span>))</span><br><span class="line"></span><br><span class="line">computer = get_shell.host_computer</span><br><span class="line">formatOutput = <span class="string">&quot;Interface Chipset Monitor_Mode\n&quot;</span></span><br><span class="line"><span class="keyword">if</span> params.<span class="built_in">len</span> == <span class="number">0</span> <span class="keyword">then</span>	<span class="built_in">exit</span>(format_columns(formatOutput + computer.network_devices))</span><br><span class="line">option = params[<span class="number">0</span>]</span><br><span class="line">device = params[<span class="number">1</span>]</span><br><span class="line"><span class="keyword">if</span> option != <span class="string">&quot;start&quot;</span> <span class="keyword">and</span> option != <span class="string">&quot;stop&quot;</span> <span class="keyword">then</span> <span class="built_in">exit</span>(command_info(<span class="string">&quot;airmon_usage&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">output</span> = cryptools.airmon(option, device)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">output</span> <span class="keyword">then</span> <span class="built_in">exit</span>(<span class="string">&quot;airmon: &quot;</span> + device + <span class="string">&quot; not found&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> typeof(<span class="built_in">output</span>) == <span class="string">&quot;string&quot;</span> <span class="keyword">then</span> <span class="built_in">exit</span>(<span class="built_in">output</span>)</span><br><span class="line"><span class="built_in">print</span>(format_columns(formatOutput + computer.network_devices))</span><br></pre></td></tr></table></figure>
-
-
-</li>
-<li><p>iwlist</p>
-<p><strong>Usage: iwlist [net device]</strong><br>Example: iwlist wlan0</p>
-<p>Shows the list of wifi networks visible from your computer.</p>
-<p>[Usage Details]</p>
-<p>Once the iwlist command is executed the output will show something similar to this:<br>&#x3D;&#x3D;BSSID                     PWR   ESSID&#x3D;&#x3D;<br>&#x3D;&#x3D;14:C7:E5:46:D9:F5  65%   corpdevice&#x3D;&#x3D;</p>
-<p>&#x3D;&#x3D;BSSID&#x3D;&#x3D; is the identifier of the device.<br>&#x3D;&#x3D;PWR&#x3D;&#x3D; is the coverage that reaches the Wi-Fi network installed in your PC in a range of 0% to 100%. The higher this number is, the closer your device is to your location and you can capture the packets faster.<br>&#x3D;&#x3D;ESSID&#x3D;&#x3D; is the name of the router access point.</p>
-</li>
-<li><p>aireplay</p>
-</li>
-<li><p>aircrack</p>
-</li>
-</ol>
+        <embed src="./7thCS50.pdf" width="100%" height="750" type="application/pdf">
 
       </div>
     </div>
@@ -122,23 +105,11 @@
     
     <div class="post-nav">
   
-    <a class="post-nav-item-left" href="/2024/07/10/CI-CD/">
-      <div class="text-align">
-        <svg t="1670570876164"
-             class="icon"
-             viewBox="0 0 1024 1024"
-             width="16"
-             height="16">
-          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
-        </svg>
-        <span class="text-small">上一篇</span>
-      </div>
-      <div>CI/CD</div>
-    </a>
+    <div class="post-nav-item-left"></div>
   
   <div class="vhr"></div>
   
-    <a class="post-nav-item-right" href="/2024/06/29/%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%9C%B3I-O/">
+    <a class="post-nav-item-right" href="/2024/06/30/game-greyhack/">
       <div class="text-align">
         <span class="text-small">下一篇</span>
         <svg t="1670570876164"
@@ -150,7 +121,7 @@
           <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
         </svg>
       </div>
-      游戏-深圳I/O
+      game-greyhack
     </a>
   
 </div>
