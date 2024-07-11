@@ -1,5 +1,24 @@
+@font-face {
+  font-family: sourceHanSerif;
+  src: url("/font/SourceHanSerifCN/regular.ttf");
+  font-weight: normal;
+}
+@font-face {
+  font-family: sourceHanSerif;
+  src: url("/font/SourceHanSerifCN/bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: sourceSans;
+  src: url("/font/SourceSans3VF-Roman.ttf");
+}
+@font-face {
+  font-family: sourceSans;
+  src: url("/font/SourceSans3VF-Italic.ttf");
+  font-style: italic;
+}
 html {
-  font-family: sans-serif;
+  font-family: sourceSans, sans-serif;
   font-size: 18px;
   color: #555;
   text-align: justify;
@@ -89,10 +108,6 @@ pre,
 code {
   font-family: consolas, Menlo, monospace, 'PingFang SC', 'Microsoft YaHei';
 }
-pre.mermaid {
-  background: none;
-  text-align: center;
-}
 figure.highlight {
   margin: 20px 0;
   overflow: auto;
@@ -157,10 +172,6 @@ figure.highlight .gutter pre {
   overflow: hidden;
 }
 mjx-container {
-  overflow: auto hidden;
-}
-.math.disply {
-  display: block;
   overflow: auto hidden;
 }
 .wall-main {
