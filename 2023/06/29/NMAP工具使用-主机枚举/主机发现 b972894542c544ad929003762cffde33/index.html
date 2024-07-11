@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <title>
+      
+        主机发现 | FlowsecNagi's Home
+      
+    </title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    
+      <link rel="apple-touch-icon"
+            sizes="180x180"
+            href="/images/apple-touch-icon.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/images/favicon-32x32.png"/>
+    
+    
+      <link rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/images/favicon-16x16.png"/>
+    
+    
+      <link rel="mask-icon"
+            href="/images/logo.svg"
+            color=""/>
+    
+    
+    <link rel="stylesheet" type="text/css" href="/css/layout.css"/>
+    
+    
+  <link rel="stylesheet" type="text/css" href="/css/post.css"/>
+  
+
+  <meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <div class="head">
+      <div class="nav">
+        <a href="/" class="nav-logo">
+          <img alt="logo" height="60px" width="60px" src="/images/logo.svg" />
+        </a>
+        <input id="navBtn" type="checkbox"/>
+        <div class="nav-menu">
+          
+            
+              <a class="nav-menu-item" href="/%E7%A2%8E%E7%A2%8E%E5%BF%B5">反抗者</a>
+            
+              <a class="nav-menu-item" href="/%E5%AD%A6%E4%B9%A0">逃亡之路</a>
+            
+              <a class="nav-menu-item" href="/%E5%8E%AE%E6%9D%80%E6%88%98%E5%9C%BA">战场</a>
+            
+              <a class="nav-menu-item" href="/%E7%A7%91%E7%A0%94">研究所</a>
+            
+          
+        </div>
+        <label class="nav-btn" for="navBtn"></label>
+      </div>
+    </div>
+    <div class="body">
+      
+  <article class="post-content">
+    <div class="post-inner">
+      <div class="post-content__head">
+        <div class="post-title">主机发现</div>
+        <div class="post-info">
+          
+  
+    <a href="/tags/%E7%AC%94%E8%AE%B0/" class="post-tag">#笔记</a>
+  
+    <a href="/tags/HTB%E5%AD%A6%E9%99%A2/" class="post-tag">#HTB学院</a>
+  
+    <a href="/tags/%E5%B7%A5%E5%85%B7/" class="post-tag">#工具</a>
+  
+    <a href="/tags/nmap/" class="post-tag">#nmap</a>
+  
+    <a href="/tags/%E4%B8%BB%E6%9C%BA%E6%9E%9A%E4%B8%BE/" class="post-tag">#主机枚举</a>
+  
+
+
+          <span class="post-date">2023-06-29</span>
+        </div>
+      </div>
+      <div id="postBody" class="post-content__body">
+        <div id="tocAnchor" class="toc-anchor">
+          <ol id="toc" class="post-toc">
+            
+          </ol>
+        </div>
+        
+          <div class="post-gallery">
+            
+          </div>
+        
+        <h2 id="主机发现"><a href="#主机发现" class="headerlink" title="主机发现"></a>主机发现</h2><h3 id="发现主机-Host-Discovery"><a href="#发现主机-Host-Discovery" class="headerlink" title="发现主机 Host Discovery"></a><strong><strong>发现主机 Host Discovery</strong></strong></h3><p>最有效的主机发现方法是使用<strong>ICMP echo requests</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap 10.129.2.0/24 -sn -oA tnet | grep <span class="hljs-keyword">for</span> | <span class="hljs-built_in">cut</span> -d<span class="hljs-string">&quot; &quot;</span> -f510.129.2.4<br>10.129.2.10<br>10.129.2.11<br>10.129.2.18<br>10.129.2.19<br>10.129.2.20<br>10.129.2.28<br></code></pre></td></tr></table></figure>
+
+<p>此扫描方法仅在主机防火墙允许的情况下才有效。否则，我们可以使用其他扫描技术来查明主机是否处于活动状态。我们将在<code>Firewall and IDS Evasion</code>中仔细研究这些技术。</p>
+<h3 id="扫描IP列表-Scan-IP-List"><a href="#扫描IP列表-Scan-IP-List" class="headerlink" title="扫描IP列表 Scan IP List"></a><strong><strong>扫描IP列表 Scan IP List</strong></strong></h3><p><code>Nmap</code>为我们提供了使用列表并从此列表中读取主机的选项，而不是手动定义或键入它们（内部渗透直接给了我们主机目标IP List）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ <span class="hljs-built_in">cat</span> hosts.lst10.129.2.4<br>10.129.2.10<br>10.129.2.11<br>10.129.2.18<br>10.129.2.19<br>10.129.2.20<br>10.129.2.28<br></code></pre></td></tr></table></figure>
+
+<p>可以把扫描IP和发现主机写进同一行命令中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap -sn -oA tnet -iL hosts.lst | grep <span class="hljs-keyword">for</span> | <span class="hljs-built_in">cut</span> -d<span class="hljs-string">&quot; &quot;</span> -f510.129.2.18<br>10.129.2.19<br>10.129.2.20<br></code></pre></td></tr></table></figure>
+
+<p>在此示例中，我们看到 7 个主机中只有 3 个处于活动状态。请记住，这可能意味着其他主机由于其防火墙配置而忽略默认的<strong>ICMP 回显请求。</strong>由于<code>Nmap</code>没有收到响应，它将这些主机标记为不活动。</p>
+<h3 id="扫描多个IP"><a href="#扫描多个IP" class="headerlink" title="扫描多个IP"></a><strong><strong>扫描多个IP</strong></strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap -sn -oA tnet 10.129.2.18-20| grep <span class="hljs-keyword">for</span> | <span class="hljs-built_in">cut</span> -d<span class="hljs-string">&quot; &quot;</span> -f510.129.2.18<br>10.129.2.19<br>10.129.2.20<br></code></pre></td></tr></table></figure>
+
+<h3 id="扫描单个IP"><a href="#扫描单个IP" class="headerlink" title="扫描单个IP"></a><strong><strong>扫描单个IP</strong></strong></h3><p>在扫描单个主机的开放端口及其服务之前，我们首先必须确定它是否处于活动状态。为此，我们可以使用与之前相同的方法。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA hostStarting Nmap 7.80 ( https://nmap.org ) at 2020-06-14 23:59 CEST<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.2.18<br>Host is up (0.087s latency).<br>MAC Address: DE:AD:00:00:BE:EF<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 0.11 seconds<br></code></pre></td></tr></table></figure>
+
+<p>如果我们禁用端口扫描（<code>-sn</code>），Nmap会使用ICMP回显请求（<code>-PE</code>）自动ping扫描。一旦发送了这样的请求，如果ping主机处于活动状态，我们通常会收到ICMP回复。更有趣的事实是，我们之前的扫描并没有做到这一点，因为在Nmap发送ICMP回显请求之前，它会发送<code>ARP ping</code>，从而得到ARP回复。我们可以通过“<code>--packet trace</code>”选项来确认这一点。为了确保发送ICMP回显请求，我们还为此定义了选项（<code>-PE</code>）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host -PE --packet-trace Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 00:08 CEST<br>SENT (0.0074s) ARP who-has 10.129.2.18 tell 10.10.14.2<br>RCVD (0.0309s) ARP reply 10.129.2.18 is-at DE:AD:00:00:BE:EF<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.2.18<br>Host is up (0.023s latency).<br>MAC Address: DE:AD:00:00:BE:EF<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 0.05 seconds<br></code></pre></td></tr></table></figure>
+
+<p>确定 Nmap 为什么将我们的目标标记为“alive”的另一种方法是使用“<code>--reason</code>”选项。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host -PE --reason Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 00:10 CEST<br>SENT (0.0074s) ARP who-has 10.129.2.18 tell 10.10.14.2<br>RCVD (0.0309s) ARP reply 10.129.2.18 is-at DE:AD:00:00:BE:EF<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.2.18<br>Host is up, received arp-response (0.028s latency).<br>MAC Address: DE:AD:00:00:BE:EF<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 0.03 seconds<br></code></pre></td></tr></table></figure>
+
+<p>我们在这里看到，Nmap确实仅通过ARP请求和ARP回复来检测主机是否存活。 要禁用 ARP 请求并使用所需的 ICMP 回显请求扫描我们的目标，我们可以通过设置“<code>--disable-arp-ping</code>”选项来禁用 ARP ping。 然后我们可以再次扫描目标并查看发送和接收的数据包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">KillMen1@htb[/htb]$ sudo nmap 10.129.2.18 -sn -oA host -PE --packet-trace --disable-arp-ping Starting Nmap 7.80 ( https://nmap.org ) at 2020-06-15 00:12 CEST<br>SENT (0.0107s) ICMP [10.10.14.2 &gt; 10.129.2.18 Echo request (<span class="hljs-built_in">type</span>=8/code=0) <span class="hljs-built_in">id</span>=13607 <span class="hljs-built_in">seq</span>=0] IP [ttl=255 <span class="hljs-built_in">id</span>=23541 iplen=28 ]<br>RCVD (0.0152s) ICMP [10.129.2.18 &gt; 10.10.14.2 Echo reply (<span class="hljs-built_in">type</span>=0/code=0) <span class="hljs-built_in">id</span>=13607 <span class="hljs-built_in">seq</span>=0] IP [ttl=128 <span class="hljs-built_in">id</span>=40622 iplen=28 ]<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.2.18<br>Host is up (0.086s latency).<br>MAC Address: DE:AD:00:00:BE:EF<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 0.11 seconds<br></code></pre></td></tr></table></figure>
+
+<p>更多主机发现策略：<a target="_blank" rel="noopener" href="https://nmap.org/book/host-discovery-strategies.html">https://nmap.org/book/host-discovery-strategies.html</a></p>
+
+      </div>
+    </div>
+  </article>
+  <div class="post__foot">
+    
+    <div class="post-nav">
+  
+    <a class="post-nav-item-left" href="/2023/06/30/HTB-Meow/">
+      <div class="text-align">
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+        <span class="text-small">上一篇</span>
+      </div>
+      <div>HTB-Meow</div>
+    </a>
+  
+  <div class="vhr"></div>
+  
+    <a class="post-nav-item-right" href="/2023/06/29/NMAP%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-%E4%B8%BB%E6%9C%BA%E6%9E%9A%E4%B8%BE%EF%BC%88%E6%80%BB%E7%9B%AE%E5%BD%95%EF%BC%89/">
+      <div class="text-align">
+        <span class="text-small">下一篇</span>
+        <svg t="1670570876164"
+             class="icon"
+             viewBox="0 0 1024 1024"
+             transform="scale(-1,-1)"
+             width="16"
+             height="16">
+          <path d="M384 512L731.733333 202.666667c17.066667-14.933333 19.2-42.666667 4.266667-59.733334-14.933333-17.066667-42.666667-19.2-59.733333-4.266666l-384 341.333333c-10.666667 8.533333-14.933333 19.2-14.933334 32s4.266667 23.466667 14.933334 32l384 341.333333c8.533333 6.4 19.2 10.666667 27.733333 10.666667 12.8 0 23.466667-4.266667 32-14.933333 14.933333-17.066667 14.933333-44.8-4.266667-59.733334L384 512z" p-id="14596"/>
+        </svg>
+      </div>
+      NMAP工具使用-主机枚举（总目录）
+    </a>
+  
+</div>
+
+    
+    
+  </div>
+
+    </div>
+    <div class="foot">
+      <div class="foot-inner">
+        <div class="foot__head">
+          
+            <div class="foot-line">
+              <div class="matts">人</div><div class="matts">人</div><div class="matts">为</div><div class="matts">我</div>
+            </div>
+          
+            <div class="foot-line">
+              <div class="matts">我</div><div class="matts">为</div><div class="matts">人</div><div class="matts">人</div>
+            </div>
+          
+        </div>
+        <div class="foot__body">
+          
+            <div class="foot-item">
+              <div class="foot-item__head">朋友</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link"
+                         height="20px"
+                         width="20px"
+                         src="/images/icon/icon-link.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">Theme Tranquility</a>
+                  </div>
+                
+                <div class="text">
+                  <img alt="link"
+                       height="20px"
+                       width="20px"
+                       src="/images/icon/icon-link+.svg"/>
+                  <a class="foot-link"
+                     href="mailto:flow63681@gmail.com?subject=%E7%94%B3%E8%AF%B7%20Hozen.site%20%E7%9A%84%E5%8F%8B%E9%93%BE%E4%BD%8D%E7%BD%AE">
+                  申请友链</a>
+                </div>
+              </div>
+            </div>
+          
+          
+            <div class="foot-item">
+              <div class="foot-item__head">账号</div>
+              <div class="foot-item__body">
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-github.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://github.com/ABCkillmen">github</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-wx.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.freebuf.com/author/FlowsecNagi">Freebuf</a>
+                  </div>
+                
+                  <div class="text">
+                    <img alt="link" height="20px" width="20px" src="/images/logo-zh.svg"/>
+                    <a class="foot-link" target="_blank" rel="noopener" href="https://www.zhihu.com/">知乎</a>
+                  </div>
+                
+              </div>
+            </div>
+          
+          <div class="foot-item">
+            <div class="foot-item__head">联系</div>
+            <div class="foot-item__body">
+              <div class="text">
+                <img alt="link"
+                     height="20px"
+                     width="20px"
+                     src="/images/icon/icon-email.svg"/>
+                <a class="foot-link" href="mailto:flow63681@gmail.com">flow63681@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="copyright">
+          <a href="http://example.com">FlowsecNagi's Home</a> &nbsp;|&nbsp;由&nbsp;<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>&nbsp;及&nbsp;
+          <svg width="20" height="20" viewBox="0 0 725 725">
+            <path fill-rule="evenodd" fill="rgb(221, 221, 221)"
+            d="M145.870,236.632 L396.955,103.578 L431.292,419.44 L156.600,522.53 L145.870,236.632 Z" />
+            <path fill-rule="evenodd" fill="rgb(159, 159, 159)"
+            d="M396.955,103.578 L564.345,234.486 L611.558,513.469 L431.292,419.44 L396.955,103.578 Z" />
+            <path fill-rule="evenodd" fill="rgb(0, 0, 0)"
+            d="M431.292,419.44 L611.558,513.469 L358.327,595.18 L156.600,522.53 L431.292,419.44 Z" />
+          </svg>
+          <a target="_blank" rel="noopener" href="https://github.com/hooozen/hexo-theme-tranquility">致远</a>&nbsp;驱动
+        </div>
+      </div>
+    </div>
+    
+    
+  
+  
+
+  </body>
+</html>
