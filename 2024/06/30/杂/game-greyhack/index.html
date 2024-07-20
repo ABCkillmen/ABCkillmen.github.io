@@ -28,15 +28,14 @@
 <meta property="og:description" content="ch1 network onlineTerminal Programs &gt; Network Commands category in the following order:  airmon Usage: airmon [start:stop] [net interface]Example: airmon start wlan0 Used to enable &#x3D;&#x3D;moni">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-06-30T15:32:17.000Z">
-<meta property="article:modified_time" content="2024-07-18T08:04:52.725Z">
+<meta property="article:modified_time" content="2024-07-20T12:28:08.465Z">
 <meta property="article:author" content="FlowsecNagi">
-<meta property="article:tag" content="笔记">
-<meta property="article:tag" content="游戏">
+<meta property="article:tag" content="game">
 <meta name="twitter:card" content="summary">
   
   
   
-  <meta name="keywords" content="笔记,游戏">
+  <meta name="keywords" content="game">
 
   <!-- feed -->
   
@@ -69,7 +68,7 @@
 <div class="widgets">
 
 
-<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/07/20/%E5%B7%A5%E5%85%B7/netcat%E5%AE%9E%E7%8E%B0/"><span class="title">NetCat实现</span></a><a class="item title" href="/2024/07/19/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/03SSH%E7%88%86%E7%A0%B4/"><span class="title">03 应急响应-SSH爆破</span></a><a class="item title" href="/2024/07/18/%E6%9D%82/game-screeps/"><span class="title">game-screeps</span></a><a class="item title" href="/2024/06/30/%E6%9D%82/game-greyhack/"><span class="title">game-greyhack</span></a><a class="item title" href="/2024/07/15/%E6%9D%82/SourceControl/"><span class="title">Source Control-GitLab, SonarQube and Gerrit</span></a></div></widget>
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/06/29/%E6%9D%82/%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%9C%B3I-O/"><span class="title">game-ShenZhenI/O</span></a><a class="item title" href="/2024/07/18/%E6%9D%82/game-screeps/"><span class="title">game-screeps</span></a><a class="item title" href="/2024/06/30/%E6%9D%82/game-greyhack/"><span class="title">game-greyhack</span></a><a class="item title" href="/2024/07/20/%E5%B7%A5%E5%85%B7/netcat%E5%AE%9E%E7%8E%B0/"><span class="title">NetCat实现</span></a><a class="item title" href="/2023/07/08/%E6%BC%8F%E6%B4%9E/Poc%E7%BC%96%E5%86%99%E7%9B%B8%E5%85%B3%E8%B5%84%E6%96%99/"><span class="title">Poc编写相关资料</span></a></div></widget>
 </div>
 
 </div></aside><div class="l_main" id="main">
@@ -81,8 +80,8 @@
 <div class="article banner top">
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
-<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E6%B8%B8%E6%88%8F/">游戏</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-06-30T15:32:17.000Z">2024-06-30</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-18T08:04:52.725Z">2024-07-18</time></span></div></div></div>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Game/">Game</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-06-30T15:32:17.000Z">2024-06-30</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-20T12:28:08.465Z">2024-07-20</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -99,7 +98,7 @@
 <p><strong>Usage: airmon [start:stop] [net interface]</strong><br>Example: airmon start wlan0</p>
 <p>Used to enable &#x3D;&#x3D;monitor mode&#x3D;&#x3D; on wireless interfaces.<br>It may also be used to go back from &#x3D;&#x3D;monitor mode&#x3D;&#x3D; to &#x3D;&#x3D;managed mode&#x3D;&#x3D;.<br>Entering the airmon command without parameters will show the interfaces status.</p>
 <p>It is the first step to be able to get the connection &#x3D;&#x3D;password&#x3D;&#x3D; of a wifi router. The network card needs to be activated in &#x3D;&#x3D;monitor mode&#x3D;&#x3D;.</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs lua">//command: airmon<br>cryptools = include_lib(<span class="hljs-string">&quot;/lib/crypto.so&quot;</span>)<br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cryptools <span class="hljs-keyword">then</span> <span class="hljs-built_in">exit</span>(<span class="hljs-string">&quot;Error: Missing crypto library&quot;</span>)<br><span class="hljs-keyword">if</span> params.<span class="hljs-built_in">len</span> &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> (params.<span class="hljs-built_in">len</span> != <span class="hljs-number">2</span> <span class="hljs-keyword">or</span> params[<span class="hljs-number">0</span>] == <span class="hljs-string">&quot;-h&quot;</span> <span class="hljs-keyword">or</span> params[<span class="hljs-number">0</span>] == <span class="hljs-string">&quot;--help&quot;</span>) <span class="hljs-keyword">then</span> <span class="hljs-built_in">exit</span>(command_info(<span class="hljs-string">&quot;airmon_usage&quot;</span>))<br><br>computer = get_shell.host_computer<br>formatOutput = <span class="hljs-string">&quot;Interface Chipset Monitor_Mode\n&quot;</span><br><span class="hljs-keyword">if</span> params.<span class="hljs-built_in">len</span> == <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>    <span class="hljs-built_in">exit</span>(format_columns(formatOutput + computer.network_devices))<br>option = params[<span class="hljs-number">0</span>]<br>device = params[<span class="hljs-number">1</span>]<br><span class="hljs-keyword">if</span> option != <span class="hljs-string">&quot;start&quot;</span> <span class="hljs-keyword">and</span> option != <span class="hljs-string">&quot;stop&quot;</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">exit</span>(command_info(<span class="hljs-string">&quot;airmon_usage&quot;</span>))<br><br><span class="hljs-built_in">output</span> = cryptools.airmon(option, device)<br><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-built_in">output</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">exit</span>(<span class="hljs-string">&quot;airmon: &quot;</span> + device + <span class="hljs-string">&quot; not found&quot;</span>)<br><span class="hljs-keyword">if</span> typeof(<span class="hljs-built_in">output</span>) == <span class="hljs-string">&quot;string&quot;</span> <span class="hljs-keyword">then</span> <span class="hljs-built_in">exit</span>(<span class="hljs-built_in">output</span>)<br><span class="hljs-built_in">print</span>(format_columns(formatOutput + computer.network_devices))<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs mscript">//command: airmon<br>cryptools = include_lib(&quot;/lib/crypto.so&quot;)<br>if not cryptools then exit(&quot;Error: Missing crypto library&quot;)<br>if params.len &gt; 0 and (params.len != 2 or params[0] == &quot;-h&quot; or params[0] == &quot;--help&quot;) then exit(command_info(&quot;airmon_usage&quot;))<br><br>computer = get_shell.host_computer<br>formatOutput = &quot;Interface Chipset Monitor_Mode\n&quot;<br>if params.len == 0 then    exit(format_columns(formatOutput + computer.network_devices))<br>option = params[0]<br>device = params[1]<br>if option != &quot;start&quot; and option != &quot;stop&quot; then exit(command_info(&quot;airmon_usage&quot;))<br><br>output = cryptools.airmon(option, device)<br>if not output then exit(&quot;airmon: &quot; + device + &quot; not found&quot;)<br>if typeof(output) == &quot;string&quot; then exit(output)<br>print(format_columns(formatOutput + computer.network_devices))<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>iwlist</p>
 <p><strong>Usage: iwlist [net device]</strong><br>Example: iwlist wlan0</p>
@@ -122,7 +121,7 @@
     </section>
     </div>
 </article>
-<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/07/10/%E6%9D%82/CI-CD/">CI/CD</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/06/29/%E6%9D%82/%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%9C%B3I-O/">游戏-深圳I/O</a></div></section></div>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/07/10/%E6%9D%82/CI-CD/">CI/CD</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/06/29/%E6%9D%82/%E6%B8%B8%E6%88%8F%E7%AC%94%E8%AE%B0-%E6%B7%B1%E5%9C%B3I-O/">game-ShenZhenI/O</a></div></section></div>
 
 
 
