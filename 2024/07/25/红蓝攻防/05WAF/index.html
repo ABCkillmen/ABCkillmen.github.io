@@ -1,0 +1,782 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>05 基础防御-WAF - FlowsecNagi's</title>
+
+  
+    <meta name="description" content="1 WAF介绍所谓WAF，即Web Application Firewall，网络应用防火墙，是通过一系列执行针对HTTP&#x2F;HTTPS的安全策略来为web应用提供安全防护的产品。有别于传统的防火墙，WAF专门针对应用层web应用而设计，能够起到防止流量攻击、SQL注入、XSS攻击等作用。 1.1 WAF分类通常而言，WAF可以分为以下4类：  软件型WAF：本身是一个软件，部署在服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="05 基础防御-WAF">
+<meta property="og:url" content="http://example.com/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/">
+<meta property="og:site_name" content="FlowsecNagi&#39;s">
+<meta property="og:description" content="1 WAF介绍所谓WAF，即Web Application Firewall，网络应用防火墙，是通过一系列执行针对HTTP&#x2F;HTTPS的安全策略来为web应用提供安全防护的产品。有别于传统的防火墙，WAF专门针对应用层web应用而设计，能够起到防止流量攻击、SQL注入、XSS攻击等作用。 1.1 WAF分类通常而言，WAF可以分为以下4类：  软件型WAF：本身是一个软件，部署在服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/01firewall.png">
+<meta property="og:image" content="http://example.com/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/02close.png">
+<meta property="og:image" content="http://example.com/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/03conf.png">
+<meta property="og:image" content="http://example.com/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/04.png">
+<meta property="article:published_time" content="2024-07-25T11:01:14.000Z">
+<meta property="article:modified_time" content="2024-07-25T11:30:08.738Z">
+<meta property="article:author" content="FlowsecNagi">
+<meta property="article:tag" content="Emergency Response">
+<meta property="article:tag" content="Blue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/01firewall.png">
+  
+  
+  
+  <meta name="keywords" content="Emergency Response,Blue">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://gcore.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://ts1.cn.mm.bing.net/th/id/R-C.0fa4f35979fc5e67ad5e5c35da6c70d7?rik=YZ1K7LVgF8WMFQ&riu=http%3a%2f%2fn.sinaimg.cn%2ffront%2f574%2fw910h464%2f20190105%2fiIl6-hrfcctm8375747.png&ehk=Q%2fmgtnAkdu6eq58TlsM%2f%2b8wByTOZ%2fYUhvGbQU7GUwCg%3d&risl=&pid=ImgRaw&r=0" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">FlowsecNagi's</div><div class="sub normal cap">CyberSecurity</div><div class="sub hover cap" style="opacity:0"> The Righteous Partner</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/wiki/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="生活" href="/life/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/07/25/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/05WAF/"><span class="title">05 基础防御-WAF</span></a><a class="item title" href="/2024/07/22/%E6%9D%82/Jenkins/"><span class="title">Jenkins and Auto Testing</span></a><a class="item title" href="/2024/07/24/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"><span class="title">python官方文档学习记录-基础教程</span></a><a class="item title" href="/2024/07/21/%E9%98%85%E8%AF%BB/%E5%93%B2%E5%AD%A6%E7%9A%84%E5%8E%86%E7%A8%8B4th%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><span class="title">哲学的历程4th-阅读笔记</span></a><a class="item title" href="/2024/07/23/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/04%E5%8B%92%E7%B4%A2%E7%97%85%E6%AF%92/"><span class="title">04 应急响应-勒索病毒</span></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top"><img class="bg lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img-baofun.zhhainiao.com/fs/0a13188055e512295cf90d5cf1c7614c.jpg">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Emergency-Response/">Emergency Response</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-07-25T11:01:14.000Z">2024-07-25</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-25T11:30:08.738Z">2024-07-25</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>05 基础防御-WAF</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><hr>
+<h2 id="1-WAF介绍"><a href="#1-WAF介绍" class="headerlink" title="1 WAF介绍"></a>1 WAF介绍</h2><p>所谓WAF，即Web Application Firewall，网络应用防火墙，是通过一系列执行针对HTTP&#x2F;HTTPS的安全策略来为web应用提供安全防护的产品。有别于传统的防火墙，WAF专门针对应用层web应用而设计，能够起到防止流量攻击、SQL注入、XSS攻击等作用。</p>
+<h3 id="1-1-WAF分类"><a href="#1-1-WAF分类" class="headerlink" title="1.1 WAF分类"></a>1.1 WAF分类</h3><p>通常而言，WAF可以分为以下4类：</p>
+<ol>
+<li><p>软件型WAF：本身是一个软件，部署在服务器上，检测是否存在web攻击。</p>
+</li>
+<li><p>硬件型WAF：本身是一款硬件，可以有多种部署方式，如果是串联到链路中，则可以拦截恶意流量，如果是以旁路的形式部署，则只能记录攻击但是不能拦截。硬件型WAF一般而言比软件型WAF更加昂贵，但是检测速度快，不易成为网站瓶颈。</p>
+</li>
+<li><p>云WAF：我们可以将云WAF简单理解为带有WAF功能的CDN(内容分发网络)，因为其实现机理与CDN基本相同，都是通过更改目标站点的DNS记录，使其指向云WAF，然后对站点的访问进行过滤。云WAF通常以反向代理的方式进行工作，其最大的优点是方便快捷，但是如果攻击者能够找到站点的真实IP地址，那么云WAF就存在被直接绕过的风险。</p>
+</li>
+<li><p>站点内置WAF：所谓站点内置WAF，即网站的开发者考虑到站点的安全性，将一些过滤功能写成代码，嵌入到站点内，或者直接嵌入到页面代码中，或者以一个单独的文件列出，然后被相关页面所引用。这种WAE的灵活性非常高，因为是直接开发在页面上，因此可以针对一项非常具体的业务，乃至一个微小的功能来实现检测和规律，但是相应的其通用型就比较低了。</p>
+</li>
+</ol>
+<h3 id="1-2-WAF常见功能"><a href="#1-2-WAF常见功能" class="headerlink" title="1.2 WAF常见功能"></a>1.2 WAF常见功能</h3><p>①审计设备：对于系统自身安全相关的下列事件产生审计记录</p>
+<ol>
+<li><p>管理员登录后进行的操作行为;</p>
+</li>
+<li><p>对安全策略进行添加、修改、删除等操作行为;</p>
+</li>
+<li><p>对管理角色进行增加、删除和属性修改等操作行为;</p>
+</li>
+<li><p>对其他安全功能配置参数的设置或更新等行为。</p>
+</li>
+</ol>
+<p>②访问控制设备：用来控制对Web应用的访问，既包括主动安全模式也包括被动安全模式。<br>③架构及网络设计工具：当运行在反向代理模式，他们被用来分配职能，集中控制，虚拟基础结构等。<br>④WEB应用加固工具。</p>
+<p>这些功能增强了被保护Web应用的安全性，它不仅能够屏蔽WEB应用固有弱点，而且能够保护WEB应用编程错误导致的安全隐患。</p>
+<h3 id="1-3-WAF防护原理"><a href="#1-3-WAF防护原理" class="headerlink" title="1.3 WAF防护原理"></a>1.3 WAF防护原理</h3><p>WAF之所以能够起到对网络应用进行防护的作用，主要是基于以下手段：</p>
+<ol>
+<li><p>异常检测机制:拒绝不符合HTTP标准的请求。</p>
+</li>
+<li><p>白名单&#x2F;黑名单：采取白名单或者黑名单的方式，对HTTP内容进行验证。</p>
+</li>
+<li><p>基于规则和基于异常的保护：定义一些安全规则或者异常状态，基于此对服务器进行安全防护。</p>
+</li>
+<li><p>状态管理：对会话进行防护。</p>
+</li>
+<li><p>信息泄露保护：防止服务器信息泄露。</p>
+</li>
+<li><p>扫描器识别：WAF对于一些扫描器会进行识别并禁止扫描，常用的扫描器识别技术有<br>①扫描器指纹。<br>②单IP+cookie指定时间内访问触发规则次数。<br>③验证码验证。</p>
+</li>
+</ol>
+<h2 id="2-openresty"><a href="#2-openresty" class="headerlink" title="2 openresty"></a>2 openresty</h2><h3 id="2-1-介绍"><a href="#2-1-介绍" class="headerlink" title="2.1 介绍"></a>2.1 介绍</h3><p>Openresty是在Nginx 的基础上集成开发了 Lua 语言实现高性能的扩展功能，在不降低原来Nginx 性能的情况下通过Lua 语言的功能增加诸如更细致的访问控制、集成数据库和缓存访问、web 应用安全访问等多种功能。</p>
+<h3 id="2-2-安装（CentOS-7）"><a href="#2-2-安装（CentOS-7）" class="headerlink" title="2.2 安装（CentOS 7）"></a>2.2 安装（CentOS 7）</h3><p>1、更新软件</p>
+<p><code>yum -y update</code></p>
+<p>2、添加openresty仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://openresty.org/package/centos/openresty.repo<br><span class="hljs-built_in">mv</span> openresty.repo /etc/yum.repos.d/<br></code></pre></td></tr></table></figure>
+
+<p>3、安装openresty</p>
+<p><code>yum -y install openresty</code></p>
+<p>4、安装命令行工具resty</p>
+<p><code>yum install -y openresty-resty</code></p>
+<p>5、发布新版本后，更新软件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">yum check-update <span class="hljs-comment">#列出所有可更新的软件清单</span><br>yum update &lt;package_name&gt; <span class="hljs-comment">#更新指定的软件</span><br></code></pre></td></tr></table></figure>
+
+<p>6、启动naigx</p>
+<p><code>/usr/local/openresty/nginx/sbin/nginx</code></p>
+<p>7、访问http:&#x2F;&#x2F;[ip]:80</p>
+<p>8、切换root，修改配置</p>
+<p>其他系统安装，参考官方文章：</p>
+<p><a target="_blank" rel="noopener" href="https://openresty.org/cn/installation.html">https://openresty.org/cn/installation.html</a></p>
+<h3 id="2-3-配置"><a href="#2-3-配置" class="headerlink" title="2.3 配置"></a>2.3 配置</h3><h4 id="2-3-1-防火墙"><a href="#2-3-1-防火墙" class="headerlink" title="2.3.1 防火墙"></a>2.3.1 防火墙</h4><p>不能从别的IP访问，查看防火墙状态：<code>systemctl status firewalld</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="01firewall.png"></p>
+<p>关闭防火墙命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">systemctl stop firewa]ld <span class="hljs-comment">#关闭防火墙</span><br>systemctl <span class="hljs-built_in">disable</span> firewa1ld <span class="hljs-comment">#关闭开机自启动，可选</span><br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="02close.png"></p>
+<p>关闭防火墙后可以从其他IP访问</p>
+<h4 id="2-3-2-创建网页"><a href="#2-3-2-创建网页" class="headerlink" title="2.3.2 创建网页"></a>2.3.2 创建网页</h4><p>默认安装路径是<code>/usr/1oca1/openresty</code>，修改nginx配置文件，可以创建自己的网页</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash">vi /usr/local/openresty/nginx/conf/nginx.conf<br><span class="hljs-comment"># 在server中添加如下location字段:</span><br>location /hi &#123;<br>    default_type text/html;<br>    content_by_lua_block&#123;<br>    ngx.say(<span class="hljs-string">&quot;hello openrastry!&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>测试配置文件并重启：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">/usr/1ocal/openresty/nginx/sbin/nginx -t <span class="hljs-comment">#测试配置文件是否正确，显示success，说明配置文件修改成功</span><br>/usr/ocal/openresty/nginx/sbin/nginx -s reload <span class="hljs-comment">#重新加载配置文件</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-3-3-配置PHP"><a href="#2-3-3-配置PHP" class="headerlink" title="2.3.3 配置PHP"></a>2.3.3 配置PHP</h4><p>1、安装php</p>
+<p><code>yum install -y php</code></p>
+<p>2、修改配置文件usr&#x2F;local&#x2F;openresty&#x2F;nagix&#x2F;conf&#x2F;nginx.conf</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#去掉这部分的注释，并修改/script为$document_root</span><br>location ~\.php$ &#123;<br>    root           html;<br>    fastcgi_pass   127.0.0.1:9000;<br>    fastcgi_index  index.php;<br>    fastcgi_param  SCRIPT FILENAME    $document_root<span class="hljs-variable">$fastcgi_script_name</span>;<br>    include        fastcgi params;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="03conf.png"></p>
+<p>3、找到php.ini</p>
+<p>centos中文件路径为：<code>/etc/php.ini</code></p>
+<p>找不到配置文件时，可以使用命令搜索文件：<code>find/*-name php.ini</code></p>
+<p>去掉<code>cgi.fix_pathinfo=1</code>前面的注释</p>
+<p>4、开启php-cgi：</p>
+<p><code>php-cgi -b 127.0.0.1:9000 -c /etc/php.ini</code></p>
+<p>5、重载nginx配置：</p>
+<p><code>/usr/local/openresty/nginx/sbin/nginx -s reload</code></p>
+<p>之后再去目录下php文件可以执行解析。</p>
+<h2 id="3-WAF使用"><a href="#3-WAF使用" class="headerlink" title="3 WAF使用"></a>3 WAF使用</h2><h3 id="3-1-部署WAF"><a href="#3-1-部署WAF" class="headerlink" title="3.1 部署WAF"></a>3.1 部署WAF</h3><p>1、克隆WAF代码：<code>git clone https://github.com/unixhot/waf.git</code></p>
+<p>2、将下载的waf文件夹复制到<code>/usr/local/openresty/nginx/conf/</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cp</span> -r ./waf/waf /usr/local/openresty/nginx/conf/<br></code></pre></td></tr></table></figure>
+
+<p>3、修改waf中的config.lua文件，配置日志文件、规则文件路径、跳转地址，并根据需要修改触发WAF的显示信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash">--<span class="hljs-built_in">log</span> <span class="hljs-built_in">dir</span><br>config_1og_dir =<span class="hljs-string">&quot;/var/1og/nginx&quot;</span><br>--rule setting<br>config_rule_dir =<span class="hljs-string">&quot;/usr/local/openresty/nginx/conf/waf/rule-config&quot;</span><br>--<span class="hljs-keyword">if</span> config_waf_output ,setting url<br>config_waf_redirect_url = <span class="hljs-string">&quot;https://www.baidu.com&quot;</span> <span class="hljs-comment"># 触发WAF时的显示信息</span><br>&lt;body&gt;<br>&lt;h1 align=<span class="hljs-string">&quot;center&quot;</span>&gt; 欢迎白帽子进行授权安全测试<br>&lt;/body&gt;<br></code></pre></td></tr></table></figure>
+
+<p>4、赋予日志文件权限：<code>chmod -R 777 /var/log/nginx</code></p>
+<p>5、开启WAF：打开<code>/usr/local/openresty/nginx/conf/nginx.conf</code>，在<code>http&#123;&#125;</code>中增加如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment">#WAF</span><br>    lua shared dict imit 50m;<br>    1ua_package_path <span class="hljs-string">&quot;/usr/local/openresty/nginx/conf/waf/?.1ua&quot;</span>;<br>    init_by_lua_file <span class="hljs-string">&quot;/usr/local/openresty/nginx/conf/waf/init.lua&quot;</span>;<br>    access_by_1ua_file <span class="hljs-string">&quot;/usr/ocal/openresty/nginx/conf/waf/access.lua&quot;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>6、建立resty的软连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ln</span> -s /usr/1ocal/openresty/lualib/resty/ /usr/local/openresty/nginx/conf/waf/resty<br></code></pre></td></tr></table></figure>
+
+<p>7、检查配置文件并重载nginx服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">/usr/lcoal/openresty/nginx/sbin/nginx -t<br>/usr/1coal/openresty/nginx/sbin/nginx -s reload<br></code></pre></td></tr></table></figure>
+
+<p>WAF部署好了，现在访问木马文件会被拦截。</p>
+<p>管理者查看日志目录：<code>/var/log/nginx</code></p>
+<p>扫描工具大面积403说明目标网站有WAF。</p>
+<h3 id="3-2-理解WAF"><a href="#3-2-理解WAF" class="headerlink" title="3.2 理解WAF"></a>3.2 理解WAF</h3><p>WAF简单描述，就是解析HTTP请求(协议解析模块)，规则检测(规则模块)，做不同的防御动作(动作模块)，并将防御过程(日志模块)记录下来。所以本文中的WAF的实现由五个模块(配置模块、协议解析模块、规则模块、动作模块、错误处理模块)组成。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="04.png"></p>
+<ol>
+<li><p>支持IP白名单和黑名单功能，直接将黑名单的IP访问拒绝。</p>
+</li>
+<li><p>支持URL白名单，将不需要过滤的URL进行定义。</p>
+</li>
+<li><p>支持User-Agent的过滤，匹配自定义规则中的条目，然后进行处理(返回403)。</p>
+</li>
+<li><p>支持CC攻击防护，单个URL指定时间的访问次数，超过设定值，直接返回403。</p>
+</li>
+<li><p>支持Cookie过滤，匹配自定义规则中的条目，然后进行处理(返回403)。</p>
+</li>
+<li><p>支持URL过滤，匹配自定义规则中的条目，如果用户请求的URL包含这些，返回403。</p>
+</li>
+<li><p>支持URL参数过滤，原理同上。</p>
+</li>
+<li><p>支持日志记录，将所有拒绝的操作，记录到日志中去。</p>
+</li>
+<li><p>日志记录为JSON格式，便于日志分析，例如使用ELK进行攻击日志收集、存储、搜索和展示。</p>
+</li>
+</ol>
+<h3 id="3-3-配置过滤规则"><a href="#3-3-配置过滤规则" class="headerlink" title="3.3 配置过滤规则"></a>3.3 配置过滤规则</h3><p>waf&#x2F;access.lua文件配置了检测顺序：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">waf</span> <span class="hljs-title">main</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">    if white_ip_check()</span></span> <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> black ip_check() <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> user_agent_attack_check()<span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> cc_attack_check() <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> cookie attack_check()<span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> white url_check() <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> url attack_check() <span class="hljs-keyword">then</span><br>    <span class="hljs-keyword">elseif</span> url_args_attack_check()<span class="hljs-keyword">then</span><br>    <span class="hljs-comment">--elseif post attack_check() then</span><br>    <span class="hljs-keyword">else</span><br>        <span class="hljs-keyword">return</span><br>    <span class="hljs-keyword">end</span><br><span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<p>过滤规则在waf&#x2F;relu-config&#x2F;下，可根据需求自行调整，每条规则需换行，或者用|分割。</p>
+<h4 id="3-3-1-IP白名单"><a href="#3-3-1-IP白名单" class="headerlink" title="3.3.1 IP白名单"></a>3.3.1 IP白名单</h4><p><code>waf/rule-config/whiteip.rule</code>添加IP地址，对于这些地址发起的请求，WAF不会拦截。</p>
+<h4 id="3-3-2-IP黑名单"><a href="#3-3-2-IP黑名单" class="headerlink" title="3.3.2 IP黑名单"></a>3.3.2 IP黑名单</h4><p><code>waf/rule-config/blackip.rule</code>添加IP地址</p>
+<h4 id="3-3-3-user-agent配置"><a href="#3-3-3-user-agent配置" class="headerlink" title="3.3.3 user-agent配置"></a>3.3.3 user-agent配置</h4><p>WAF可以检测请求中user-agent字段，并拦截带有指定user-agent值的请求。</p>
+<p><code>waf/rule-config/useragent.rule</code>添加</p>
+<h4 id="3-3-4-其他过滤规则"><a href="#3-3-4-其他过滤规则" class="headerlink" title="3.3.4 其他过滤规则"></a>3.3.4 其他过滤规则</h4><ol>
+<li><p>args.rule里面的规则get参数进行过滤的</p>
+</li>
+<li><p>url.rule是只在get请求url过滤的规则</p>
+</li>
+<li><p>post.rule是只在post请求过滤的规则</p>
+</li>
+<li><p>cookie.rule是对cookie中数据的过滤规则</p>
+</li>
+<li><p>whiteurl.rule是这是url的白名单</p>
+</li>
+</ol>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文由FlowsecNagi编写，采用非商业性使用-相同方式共享 4.0 国际](<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a>) 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/07/24/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/python%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/">python官方文档学习记录-基础教程</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="ABCkillmen/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">FlowsecNagi</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-WAF%E4%BB%8B%E7%BB%8D"><span class="toc-text">1 WAF介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-WAF%E5%88%86%E7%B1%BB"><span class="toc-text">1.1 WAF分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-WAF%E5%B8%B8%E8%A7%81%E5%8A%9F%E8%83%BD"><span class="toc-text">1.2 WAF常见功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-WAF%E9%98%B2%E6%8A%A4%E5%8E%9F%E7%90%86"><span class="toc-text">1.3 WAF防护原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-openresty"><span class="toc-text">2 openresty</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%8B%E7%BB%8D"><span class="toc-text">2.1 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AE%89%E8%A3%85%EF%BC%88CentOS-7%EF%BC%89"><span class="toc-text">2.2 安装（CentOS 7）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E9%85%8D%E7%BD%AE"><span class="toc-text">2.3 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-text">2.3.1 防火墙</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-%E5%88%9B%E5%BB%BA%E7%BD%91%E9%A1%B5"><span class="toc-text">2.3.2 创建网页</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-3-%E9%85%8D%E7%BD%AEPHP"><span class="toc-text">2.3.3 配置PHP</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-WAF%E4%BD%BF%E7%94%A8"><span class="toc-text">3 WAF使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%83%A8%E7%BD%B2WAF"><span class="toc-text">3.1 部署WAF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%90%86%E8%A7%A3WAF"><span class="toc-text">3.2 理解WAF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E9%85%8D%E7%BD%AE%E8%BF%87%E6%BB%A4%E8%A7%84%E5%88%99"><span class="toc-text">3.3 配置过滤规则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-1-IP%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-text">3.3.1 IP白名单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-2-IP%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-text">3.3.2 IP黑名单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-3-user-agent%E9%85%8D%E7%BD%AE"><span class="toc-text">3.3.3 user-agent配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-4-%E5%85%B6%E4%BB%96%E8%BF%87%E6%BB%A4%E8%A7%84%E5%88%99"><span class="toc-text">3.3.4 其他过滤规则</span></a></li></ol></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #beaudar');
+  util.viewportLazyload(el, load_beaudar, false);
+
+  function load_beaudar() {
+    if (!el) return;
+    try {
+      el.innerHTML = '';
+    } catch (error) {
+      console.error(error);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://beaudar.lipk.org/client.js';
+    script.async = true;
+    for (const key of Object.keys(el.attributes)) {
+      const attr = el.attributes[key];
+      if (['class', 'id'].includes(attr.name) === false) {
+        script.setAttribute(attr.name, attr.value);
+      }
+    }
+    el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
