@@ -28,7 +28,7 @@
 <meta property="og:description" content="1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011021">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-20T11:56:56.000Z">
-<meta property="article:modified_time" content="2024-07-26T17:13:28.944Z">
+<meta property="article:modified_time" content="2024-07-27T06:08:08.758Z">
 <meta property="article:author" content="FlowsecNagi">
 <meta property="article:tag" content="tools">
 <meta property="article:tag" content="devolop">
@@ -84,7 +84,7 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Tools/">Tools</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/Tools/Tools-Implementation/">Tools Implementation</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-07-20T11:56:56.000Z">2024-07-20</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-26T17:13:28.944Z">2024-07-27</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-07-20T11:56:56.000Z">2024-07-20</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-07-27T06:08:08.758Z">2024-07-27</time></span></div></div></div>
     
     <div class="bottom only-title">
       
@@ -116,13 +116,11 @@
 
 <div class="tag-plugin colorful note" color="yellow"><div class="title">在3.4版本发生变更:</div><div class="body"><p>增加了对 <em>input</em> 关键字参数的支持。</p></div></div> 
 
-<div class="tag-plugin colorful note" color="yellow"><div class="title">在3.6版本发生变更:</div><div class="body"><p>增加了 <em>encoding</em> 和 <em>errors</em>。详情参见 [<code>run()</code>](<a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/subprocess.html#subprocess.run">https://docs.python.org/zh-cn/3/library/subprocess.html#subprocess.run</a> subprocess.run)。</p></div></div>
+<div class="tag-plugin colorful note" color="yellow"><div class="title">在3.6版本发生变更:</div><div class="body"><p>增加了 <em>encoding</em> 和 <em>errors</em>。详情参见 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/subprocess.html#subprocess.run"><code>run()</code></a>。</p></div></div>
 
 <div class="tag-plugin colorful note" color="green"><div class="title">Added&nbsp;in&nbsp;version&nbsp;3.7:</div><div class="body"><p><em>text</em> 作为 <em>universal_newlines</em> 的一个更具可读性的别名被添加。</p></div></div> 
 
 <div class="tag-plugin colorful note" color="yellow"><div class="title">在3.12版本发生变更:</div><div class="body"><p>针对 <code>shell=True</code> 改变的 Windows shell 搜索顺序。 当前目录和 <code>%PATH%</code> 会被替换为 <code>%COMSPEC%</code> 和 <code>%SystemRoot%\System32\cmd.exe</code>。 因此，在当前目录中投放一个命名为 <code>cmd.exe</code> 的恶意程序不会再起作用。</p></div></div> 
-
-
 
 <h2 id="shlex——-简单的词法分析"><a href="#shlex——-简单的词法分析" class="headerlink" title="shlex—— 简单的词法分析"></a>shlex—— 简单的词法分析</h2><p><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/shlex.html#shlex.shlex" title="shlex.shlex"><code>shlex</code></a> 类可用于编写类似 Unix shell 的简单词法分析程序。通常可用于编写“迷你语言”（如 Python 应用程序的运行控制文件）或解析带引号的字符串。</p>
 <p><a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/shlex.html#module-shlex" title="shlex: Simple lexical analysis for Unix shell-like languages."><code>shlex</code></a> 模块中定义了以下函数：</p>
@@ -130,7 +128,7 @@
 <p>在 3.12 版本发生变更: 传入 <code>None</code> 作为 <em>s</em> 参数现在会引发异常，而不是读取 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3.12/library/sys.html#sys.stdin" title="sys.stdin"><code>sys.stdin</code></a>。</p>
 <hr>
 <p>备注：将 shell 命令拆分为参数序列的方式可能并不很直观，特别是在复杂的情况下。 <a target="_blank" rel="noopener" href="https://docs.python.org/zh-cn/3/library/shlex.html#shlex.split" title="shlex.split"><code>shlex.split()</code></a> 可以演示如何确定 <em>args</em> 适当的拆分形式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> shlex, subprocess<br><span class="hljs-meta">&gt;&gt;&gt; </span>command_line = <span class="hljs-built_in">input</span>()<br>/<span class="hljs-built_in">bin</span>/vikings -<span class="hljs-built_in">input</span> eggs.txt -output <span class="hljs-string">&quot;spam spam.txt&quot;</span> -cmd <span class="hljs-string">&quot;echo &#x27;$MONEY&#x27;&quot;</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>args = shlex.split(command_line)<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(args)<br>[<span class="hljs-string">&#x27;/bin/vikings&#x27;</span>, <span class="hljs-string">&#x27;-input&#x27;</span>, <span class="hljs-string">&#x27;eggs.txt&#x27;</span>, <span class="hljs-string">&#x27;-output&#x27;</span>, <span class="hljs-string">&#x27;spam spam.txt&#x27;</span>, <span class="hljs-string">&#x27;-cmd&#x27;</span>, <span class="hljs-string">&quot;echo &#x27;$MONEY&#x27;&quot;</span>]<br>&gt;&gt;&gt;p = subprocess.Popen(args) <span class="hljs-comment"># Success!</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">import</span> shlex, subprocess<br><span class="hljs-meta">&gt;&gt;&gt; </span>command_line = <span class="hljs-built_in">input</span>()<br>/<span class="hljs-built_in">bin</span>/vikings -<span class="hljs-built_in">input</span> eggs.txt -output <span class="hljs-string">&quot;spam spam.txt&quot;</span> -cmd <span class="hljs-string">&quot;echo &#x27;$MONEY&#x27;&quot;</span><br><span class="hljs-meta">&gt;&gt;&gt; </span>args = shlex.split(command_line)<br><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">print</span>(args)<br>[<span class="hljs-string">&#x27;/bin/vikings&#x27;</span>, <span class="hljs-string">&#x27;-input&#x27;</span>, <span class="hljs-string">&#x27;eggs.txt&#x27;</span>, <span class="hljs-string">&#x27;-output&#x27;</span>, <span class="hljs-string">&#x27;spam spam.txt&#x27;</span>, <span class="hljs-string">&#x27;-cmd&#x27;</span>, <span class="hljs-string">&quot;echo &#x27;$MONEY&#x27;&quot;</span>]<br><span class="hljs-meta">&gt;&gt;&gt; </span>p = subprocess.Popen(args) <span class="hljs-comment"># Success!</span><br></code></pre></td></tr></table></figure>
 
 <p>特别注意，由 shell 中的空格分隔的选项（例如 <em>-input</em>）和参数（例如 <em>eggs.txt</em> ）位于分开的列表元素中，而在需要时使用引号或反斜杠转义的参数在 shell （例如包含空格的文件名或上面显示的 <em>echo</em> 命令）是单独的列表元素。</p>
 <hr>
