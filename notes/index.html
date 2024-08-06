@@ -17,18 +17,18 @@
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
   <meta name="theme-color" content="#f9fafb">
   
-  <title>备忘录：这是一个笔记 - FlowsecNagi's</title>
+  <title>备忘录：配置博客主题遇到的问题 - FlowsecNagi's</title>
 
   
-    <meta name="description" content="…试验ing">
+    <meta name="description" content="悬而未决的问题放几天就忽然解决了...">
 <meta property="og:type" content="website">
-<meta property="og:title" content="这是一个笔记">
+<meta property="og:title" content="配置博客主题遇到的问题">
 <meta property="og:url" content="http://example.com/notes/">
 <meta property="og:site_name" content="FlowsecNagi&#39;s">
-<meta property="og:description" content="…试验ing">
+<meta property="og:description" content="悬而未决的问题放几天就忽然解决了...">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-08-06T11:11:11.163Z">
-<meta property="article:modified_time" content="2024-08-06T11:11:11.163Z">
+<meta property="article:published_time" content="2024-08-06T12:06:11.798Z">
+<meta property="article:modified_time" content="2024-08-06T12:06:11.798Z">
 <meta property="article:author" content="FlowsecNagi">
 <meta name="twitter:card" content="summary">
   
@@ -53,7 +53,7 @@
 </head>
 <body>
 
-<div class="l_cover wiki"><article class="cover-wrap md-text"><div class="cover-title"><span>备忘录</span></div><div class="start-wrap"><a class="button start gradient" href="#start">开始使用</a></div></article></div><hr>
+<div class="l_cover wiki"><article class="cover-wrap md-text"><div class="cover-title"><span>备忘录</span></div><div class="description">悬而未决的问题放几天就忽然解决了...</div><div class="start-wrap"><a class="button start gradient" href="#start">开始使用</a></div></article></div><hr>
 
 <div class="l_body s:aa content tech" id="start" layout="page" ><aside class="l_left"><div class="leftbar-container">
 
@@ -85,18 +85,32 @@
   <div class="content">
     <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
 <span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki">文档</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/notes/">备忘录</a></div>
-<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2024-08-06T11:11:11.163Z">2024-08-06</time></span></div></div></div>
+<div class="flex-row" id="post-meta"><span class="text created">更新于：<time datetime="2024-08-06T12:06:11.798Z">2024-08-06</time></span></div></div></div>
     
     <div class="bottom only-title">
       
       <div class="text-area">
-        <h1 class="text title"><span>这是一个笔记</span></h1>
+        <h1 class="text title"><span>配置博客主题遇到的问题</span></h1>
         
       </div>
     </div>
     
   </div>
-  </div><article class="md-text content"><p>…试验ing</p>
+  </div><article class="md-text content"><h2 id="豆瓣书籍页面"><a href="#豆瓣书籍页面" class="headerlink" title="豆瓣书籍页面"></a>豆瓣书籍页面</h2><p><a target="_blank" rel="noopener" href="https://abckillmen.github.io/douban/books/">https://abckillmen.github.io/douban/books/</a></p>
+<h3 id="豆瓣书籍页面的左右侧边栏自定义设置问题"><a href="#豆瓣书籍页面的左右侧边栏自定义设置问题" class="headerlink" title="豆瓣书籍页面的左右侧边栏自定义设置问题"></a>豆瓣书籍页面的左右侧边栏自定义设置问题</h3><p>引入插件：hexo-douban</p>
+<p>Stellar 主题版本：1.29.1</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://sumorio.com/wiki/Hexo/304stellar+douban.html">苏末了 - Hexo-Stellar 展示豆瓣影评|书评|乐评</a></p>
+<p>问题：<em>豆瓣自动生成的页面似乎是直接生成进 public ，不会部署i ndex.md 了，然后写在 widgets.yml 中的自定义组件写在站点主结构树中并不加载显示…</em></p>
+<p>解决：总设置 config.yml 里 douban 下的 layout 布局改成了自定义的 page ！参考官方文档后，将标签变量 customize_layout 改为 layout</p>
+<h3 id="豆瓣页面部署加载后为0的问题"><a href="#豆瓣页面部署加载后为0的问题" class="headerlink" title="豆瓣页面部署加载后为0的问题"></a>豆瓣页面部署加载后为0的问题</h3><p>引入插件：hexo-douban</p>
+<p>Stellar 主题版本：1.29.1</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://sumorio.com/wiki/Hexo/304stellar+douban.html">苏末了 - Hexo-Stellar 展示豆瓣影评|书评|乐评</a></p>
+<p>问题：<em>主题本地 public 下 html 可以正常显示豆瓣书单列表，部署后加载全是0，不再显示</em></p>
+<p>解决：后来阅读 hexo-douban 官方文档发现还需要加入兼容参数：“swup: 是否兼容 swup 。支持 script 热加载，解决一些 single-page 主题的加载问题，默认 false 。”</p>
+<h2 id="动态友链相关"><a href="#动态友链相关" class="headerlink" title="动态友链相关"></a>动态友链相关</h2><h3 id="使用-vercel-api-仍然加载缓慢的问题"><a href="#使用-vercel-api-仍然加载缓慢的问题" class="headerlink" title="使用 vercel api 仍然加载缓慢的问题"></a>使用 vercel api 仍然加载缓慢的问题</h3><p>参考：官方文档 <a target="_blank" rel="noopener" href="https://xaoxuu.com/wiki/stellar/tag-plugins/data/#%E6%95%B0%E6%8D%AE%E6%89%98%E7%AE%A1%E4%B8%8E%E5%8A%A0%E9%80%9F">Stellar：数据类标签组件（6个） - XAOXUU</a>、<a target="_blank" rel="noopener" href="https://zfe.space/post/python-issues-api.html">教程：github&#x2F;gitee issues的友链信息自动生成json及api调用 | 小冰博客</a></p>
+<p>Stellar 主题版本：1.29.1</p>
+<p>问题：<em>参照小冰博客动态友链嫁接部署到 vercel api 仍然加载缓慢，得开梯子才可以加载成功。</em></p>
+<p>解决：经过<a target="_blank" rel="noopener" href="https://sumorio.com/friends/">朋友圈 - 苏末了</a>的解答，使用<code>api:https://api.vlts.cc/output_data/v2/</code>这个api域名即可。</p>
 
 <div class="article-footer fs14"></div>
 </article>
@@ -123,7 +137,14 @@
 <footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/topic/">专栏</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/categories/">分类</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/tags/">标签</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/archives/">归档</a></div><div class="sitemap-group"><span class="fs15">列表</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/wiki/">项目列表</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/douban/books/">书籍列表</a></div><div class="sitemap-group"><span class="fs15">社交</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/friends/">友链</a><a target="_blank" rel="noopener" href="https://github.com/ABCkillmen">GitHub</a><a target="_blank" rel="noopener" href="https://space.bilibili.com/496999871">bilibili</a></div><div class="sitemap-group"><span class="fs15">更多</span><a target="_blank" rel="noopener" href="https://chatgpt.com/">科学ChatGPT</a><a target="_blank" rel="noopener" href="http://nav.luckysec.cn/">网安导航网站</a><a target="_blank" rel="noopener" href="https://sumorio.top/">其他导航网站</a></div></div><div class="text"><p>本站由 <a href="/">FlowsecNagi</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
 </div></footer>
 <div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
-</aside><div class='float-panel blur'>
+<div class="widgets">
+
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B1%86%E7%93%A3%E4%B9%A6%E7%B1%8D%E9%A1%B5%E9%9D%A2"><span class="toc-text">豆瓣书籍页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B1%86%E7%93%A3%E4%B9%A6%E7%B1%8D%E9%A1%B5%E9%9D%A2%E7%9A%84%E5%B7%A6%E5%8F%B3%E4%BE%A7%E8%BE%B9%E6%A0%8F%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98"><span class="toc-text">豆瓣书籍页面的左右侧边栏自定义设置问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B1%86%E7%93%A3%E9%A1%B5%E9%9D%A2%E9%83%A8%E7%BD%B2%E5%8A%A0%E8%BD%BD%E5%90%8E%E4%B8%BA0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">豆瓣页面部署加载后为0的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%8F%8B%E9%93%BE%E7%9B%B8%E5%85%B3"><span class="toc-text">动态友链相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-vercel-api-%E4%BB%8D%E7%84%B6%E5%8A%A0%E8%BD%BD%E7%BC%93%E6%85%A2%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">使用 vercel api 仍然加载缓慢的问题</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
   <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
   </button>
