@@ -1,0 +1,930 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>某厂产业教育 - XSS漏洞原理与验证 - FlowsecNagi's</title>
+
+  
+    <meta name="description" content="XSS验证实验目的通过本实验，掌握XSS漏洞的原理以及XSS漏洞的验证方法。 实验环境 操作机：Win10用户名：Administrator密码：Sangfor!7890 靶机：Apache + PHP 实验地址：http:&#x2F;&#x2F;ip&#x2F;xss&#x2F;03&#x2F;xss.html  实验原理构造弹窗的代码提交，浏览器在执行该代码后就会执行弹框的操作，弹框的目的是验证提交的JS代码是否被执行，从而验证XSS漏洞是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某厂产业教育 - XSS漏洞原理与验证">
+<meta property="og:url" content="http://example.com/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A5RXSS%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/">
+<meta property="og:site_name" content="FlowsecNagi&#39;s">
+<meta property="og:description" content="XSS验证实验目的通过本实验，掌握XSS漏洞的原理以及XSS漏洞的验证方法。 实验环境 操作机：Win10用户名：Administrator密码：Sangfor!7890 靶机：Apache + PHP 实验地址：http:&#x2F;&#x2F;ip&#x2F;xss&#x2F;03&#x2F;xss.html  实验原理构造弹窗的代码提交，浏览器在执行该代码后就会执行弹框的操作，弹框的目的是验证提交的JS代码是否被执行，从而验证XSS漏洞是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image21121923021970695sdu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image211219230729245sfzcc.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image211219230819436omlk0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image211219231213706gzbxw.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image211219231238078xx8b9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image211219231329963xgyf0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image21121923135359848x62.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image2107202250480441v66t.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image2107202251444019o0u6.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720225243480lmdna.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720225338353kfcjm.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image21072023065851416xgr.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image2107202314194452f9x0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720231309000dqbb2.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720231652881c73in.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720231723979a2h8r.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image2107202321434204wpe4.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720232607015k6zc5.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720232629735u2o7w.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720232808755ymnyi.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720235038059w5a89.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720235212442loulu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107210000209073tz4x.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107210020530316djs0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107210001215342hqlc.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720235421332jxzin.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210720/image210720235512608o83oh.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721000318307111hl.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721000534003hopyo.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721001405787nmxi7.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721001446415uqdhd.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721001519356guyc4.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721001617220ysviq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107210019559503kiuu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721002018634ooius.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220155337917rldpf.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220155910737cflxd.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image2112201559568868wd85.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220160329438mga20.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image2112201607589065qpls.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image2112201609428262zb09.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107211037178789iot1.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721103850244iru5m.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721104512855845tm.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107211047431953z55s.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721104816798260z9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721105905272u83wd.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107211100433766chcr.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721110512096lq8ur.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220161914316xyip0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220161951538cpduf.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220162041519dqnnw.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image21122016223382795dyp.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image2112201626456246r6y1.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220162912021v044o.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20211220/image211220171638295fc15e.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721112358858ujvqo.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107211139090571y8i7.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721115020372pvnz2.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721120454884m5bol.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721120701443n0xiz.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721120728920ja3yu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image21072112104764778pkq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721161232673hso7o.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721161529354ug6uw.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721161606681g7vdc.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721162243611jgtiy.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image210721162434297w2v9s.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107211624527543mklt.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210721/image2107211625592134smht.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606115432002z15s4.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606115655390w21pc.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606131334773v0p3n.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606145252822s9zez.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606150349459u9pwu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061517438913krhb.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061528305405vl6f.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image22060616195379791c2r.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162008459u7952.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162124467bigtd.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162136178oii7j.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061621484384vmci.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061623041925k40e.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162316434fdcne.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162352449zpzyz.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061624052211njy9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162414881es2e4.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image22060616252518357qo0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061626207636j7li.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061628143141xlcq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606162825549dekk7.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163340057dxnzq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163354102i1lkj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163529706h76mj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163354102i1lkj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163607063q7nu9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163354102i1lkj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image22060616385037093n1m.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163903902ryypq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606163954214l70pf.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image2206061640037634il8r.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606164037896q5e5b.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606164047412botge.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606164056401rbzic.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606164640606sxe98.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image22060617124612263k8b.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606171259622ja880.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606164304341zp4qk.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image22060616431378123n04.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220606/image220606164322613xiaqr.png">
+<meta property="article:published_time" content="2024-09-13T08:35:21.000Z">
+<meta property="article:modified_time" content="2024-09-13T10:17:21.648Z">
+<meta property="article:author" content="FlowsecNagi">
+<meta property="article:tag" content="sxf">
+<meta property="article:tag" content="Red">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://oss.edu.sangfor.com.cn/file/20211219/image21121923021970695sdu.png">
+  
+  
+  
+  <meta name="keywords" content="sxf,Red">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://gcore.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://ts1.cn.mm.bing.net/th/id/R-C.0fa4f35979fc5e67ad5e5c35da6c70d7?rik=YZ1K7LVgF8WMFQ&riu=http%3a%2f%2fn.sinaimg.cn%2ffront%2f574%2fw910h464%2f20190105%2fiIl6-hrfcctm8375747.png&ehk=Q%2fmgtnAkdu6eq58TlsM%2f%2b8wByTOZ%2fYUhvGbQU7GUwCg%3d&risl=&pid=ImgRaw&r=0" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">FlowsecNagi's</div><div class="sub normal cap">CyberSecurity</div><div class="sub hover cap" style="opacity:0"> The Righteous Partner</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/wiki/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="书单" href="/douban/books/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="m10 3-5 18"/><path d="m19 3-5 18"/><path d="m22 9h-18"/><path d="m20 16h-18"/></g></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A3R%E5%B8%B8%E8%A7%81Web%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E/"><span class="title">某厂产业教育 - 常见Web安全漏洞</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A4RSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - SQL注入漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A1B%E4%B8%8B%E4%B8%80%E4%BB%A3%E9%98%B2%E7%81%AB%E5%A2%99%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B8%8E%E8%BF%90%E7%BB%B4%E5%AE%9E%E9%AA%8C/"><span class="title">某厂产业教育 - 下一代防火墙基础原理与运维</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%BD%AE/"><span class="title">某厂产业教育 - 安全管理配置与事件处置</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A9R%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 逻辑漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A8R%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 文件上传漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A7R%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 命令执行漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A6R%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 文件包含漏洞原理与验证</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/ABCkillmen" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://upyun.thatcdn.cn/public/img/icon/github-logo2.png"/></a><a class="social" href="https://space.bilibili.com/496999871" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://upyun.thatcdn.cn/public/img/icon/bilibili-icon.png"/></a><a class="social" href="https://bbs.kanxue.com/user-home-1003534.htm" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://ts1.cn.mm.bing.net/th/id/R-C.6ff325e2ab94cfa51d678943808345b0?rik=045603wmD6AGdQ&riu=http%3a%2f%2fwww.jishu5.com%2fzb_users%2fupload%2f2019%2f11%2f201911201574240171673139.ico&ehk=EvDX7cWgAg89OTp1F8UydnT2J%2be0YVgy4bEdU8RBuMc%3d&risl=&pid=ImgRaw&r=0"/></a><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a><a class="social" href="https://chatgpt.com/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://ts1.cn.mm.bing.net/th/id/R-C.8d6346690b45333baac63802d0455b34?rik=MuRClPiEz%2bhDOA&riu=http%3a%2f%2fwww.kuaipng.com%2fUploads%2fpic%2fw%2f2023%2f03-18%2f136304%2fwater_136304_698_698_.png&ehk=I11eZ90lqzt37nYuYls%2bRv3rnSxNYsVE9bXgqJDMFWU%3d&risl=&pid=ImgRaw&r=0"/></a><a class="social" href="http://nav.luckysec.cn/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://i.52112.com/icon/256/20181207/26085/1291337.png"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top"><img class="bg lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://img.saraba1st.com/forum/202006/27/103803zbxukulu4k4cnbgr.jpg">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Experiments/">Experiments</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-09-13T08:35:21.000Z">2024-09-13</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-09-13T10:17:21.648Z">2024-09-13</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>某厂产业教育 - XSS漏洞原理与验证</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><hr>
+<h1 id="XSS验证"><a href="#XSS验证" class="headerlink" title="XSS验证"></a>XSS验证</h1><h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握XSS漏洞的原理以及XSS漏洞的验证方法。</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/03/xss.html">http://ip/xss/03/xss.html</a></li>
+</ul>
+<h2 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h2><p>构造弹窗的代码提交，浏览器在执行该代码后就会执行弹框的操作，弹框的目的是验证提交的JS代码是否被执行，从而验证XSS漏洞是否存在。</p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/03/xss.html">http://ip/xss/03/xss.html</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image21121923021970695sdu.png" alt="image.png"></p>
+<p>2、利用验证XSS漏洞常用的弹窗语句，在文本框中输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(/xss/)\&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>点击“搜索”按钮，验证页面是否弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image211219230729245sfzcc.png" alt="image.png"></p>
+<p>3、页面成功弹窗<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image211219230819436omlk0.png" alt="image.png"></p>
+<p>5、返回到<a target="_blank" rel="noopener" href="http://ip/xss/03/xss.html%E9%A1%B5%E9%9D%A2%EF%BC%8C%E5%88%A9%E7%94%A8%E9%AA%8C%E8%AF%81XSS%E6%BC%8F%E6%B4%9E%E5%85%B6%E4%BB%96%E5%BC%B9%E7%AA%97%E8%AF%AD%E5%8F%A5%EF%BC%8C%E5%9C%A8%E6%96%87%E6%9C%AC%E6%A1%86%E4%B8%AD%E8%BE%93%E5%85%A5">http://ip/xss/03/xss.html页面，利用验证XSS漏洞其他弹窗语句，在文本框中输入</a>“<script>confirm(/xss/)</script>“，点击“搜索”按钮，验证页面是否弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image211219231213706gzbxw.png" alt="image.png"></p>
+<p>6、页面成功弹窗<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image211219231238078xx8b9.png" alt="image.png"></p>
+<p>7、利用验证XSS漏洞其他弹窗语句，在文本框中输入”<script>prompt(/xss/)</script>“，点击“搜索”按钮，验证页面是否弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image211219231329963xgyf0.png" alt="image.png"></p>
+<p>8、页面成功弹窗<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211219/image21121923135359848x62.png" alt="image.png"></p>
+<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握XSS漏洞的验证方法，通过构造弹框代码提交，查看页面是否弹框，从而验证页面是否存在XSS漏洞。</p>
+<h1 id="XSS漏洞分类"><a href="#XSS漏洞分类" class="headerlink" title="XSS漏洞分类"></a>XSS漏洞分类</h1><h2 id="实验目的-1"><a href="#实验目的-1" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握XSS的原理和利用方法，通过三个类型的不同演示掌握XSS的不同分类以及之间的区别。</p>
+<h2 id="实验环境-1"><a href="#实验环境-1" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/dvwa/login.php">http://ip/dvwa/login.php</a></li>
+</ul>
+<h2 id="实验原理-1"><a href="#实验原理-1" class="headerlink" title="实验原理"></a>实验原理</h2><p>借助DVWA靶场，通过不同分类的演示效果，掌握XSS不同分类之间的区别。</p>
+<h2 id="实验步骤-1"><a href="#实验步骤-1" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="反射型XSS"><a href="#反射型XSS" class="headerlink" title="反射型XSS"></a>反射型XSS</h3><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/dvwa/login.php">http://ip/dvwa/login.php</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image2107202250480441v66t.png" alt="image.png"></p>
+<p>2、输入Username：admin和Password：password，登陆靶场<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image2107202251444019o0u6.png" alt="image.png"></p>
+<p>3、首先选中”DVWA Security”，调整级别为”Low”级别提交<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720225243480lmdna.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720225338353kfcjm.png" alt="image.png"></p>
+<p>4、选中”XSS（Reflected）”，跳转到反射型XSS环境下<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image21072023065851416xgr.png" alt="image.png"></p>
+<p>5、在文本框内输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(666)&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>点击“Submit”，提交输入的payload，弹框，触发XSS漏洞<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image2107202314194452f9x0.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720231309000dqbb2.png" alt="image.png"></p>
+<p>6、右击，查看页面源代码<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720231652881c73in.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720231723979a2h8r.png" alt="image.png"></p>
+<p>7、点击快捷键“Ctrl + F”，在代码中搜索</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">alert<br></code></pre></td></tr></table></figure>
+
+<p>发现提交的payload被写进了页面的代码中</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image2107202321434204wpe4.png" alt="image.png"></p>
+<p>8、切换为靶场页面，点击其他任意位置，比如点击“CSRF”，然后再点击”XSS（Reflected）”，无任何反应，说明反射型XSS是非持久性的<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720232607015k6zc5.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720232629735u2o7w.png" alt="image.png"></p>
+<h3 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h3><p>1、选中”XSS（Stored）”，跳转到存储型XSS环境下<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720232808755ymnyi.png" alt="image.png"></p>
+<p>2、在留言板中填写payload<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720235038059w5a89.png" alt="image.png"></p>
+<p>3、点击“Sign Guestbook”，提交填写的payload，弹框，触发XSS漏洞<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720235212442loulu.png" alt="image.png"></p>
+<p>4、点击“确定”，右击，查看页面源代码<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107210000209073tz4x.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107210020530316djs0.png" alt="image.png"></p>
+<p>5、点击快捷键“Ctrl + F”，在代码中搜索</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">alert<br></code></pre></td></tr></table></figure>
+
+<p>发现提交的payload被写进了页面的代码中<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107210001215342hqlc.png" alt="image.png"></p>
+<p>6、切换为靶场页面，点击其他任意位置，比如点击“CSRF”，然后再点击”XSS（Stored）”，再次弹框，说明存储型XSS是持久性的<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720235421332jxzin.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210720/image210720235512608o83oh.png" alt="image.png"></p>
+<h3 id="DOM型XSS"><a href="#DOM型XSS" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h3><p>1、选中”XSS（DOM）”，跳转到DOM型XSS环境下<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721000318307111hl.png" alt="image.png"></p>
+<p>2、点击“Select”，提交选择的数据<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721000534003hopyo.png" alt="image.png"></p>
+<p>3、在URL中的default的值更改为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(666)&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>提交payload，弹框，触发XSS漏洞<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721001405787nmxi7.png" alt="image.png"></p>
+<p>4、点击“确定”，右击，查看页面源代码<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721001446415uqdhd.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721001519356guyc4.png" alt="image.png"></p>
+<p>5、点击快捷键“Ctrl + F”，在代码中搜索</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">alert<br></code></pre></td></tr></table></figure>
+
+<p>发现提交的payload未写进页面的代码中<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721001617220ysviq.png" alt="image.png"></p>
+<p>6、切换为靶场页面，点击其他任意位置，比如点击“CSRF”，然后再点击”XSS（DOM）”，无任何反应，说明DOM型XSS是非持久性的<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107210019559503kiuu.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721002018634ooius.png" alt="image.png"></p>
+<h2 id="实验总结-1"><a href="#实验总结-1" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握XSS的简单利用以及不同的分类之间的区别。</p>
+<h1 id="反射型XSS-1"><a href="#反射型XSS-1" class="headerlink" title="反射型XSS"></a>反射型XSS</h1><h2 id="实验目的-2"><a href="#实验目的-2" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握XSS漏洞的原理以及根据XSS漏洞不同分类的方法，掌握反射型XSS的特点。</p>
+<h2 id="实验环境-2"><a href="#实验环境-2" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/04/xss.html">http://ip/xss/04/xss.html</a></li>
+</ul>
+<h2 id="实验原理-2"><a href="#实验原理-2" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面的搜索框位置，输入内容后会输出到页面中，尝试构造弹窗语句，看代码是否执行，从而判断是否存在XSS漏洞。</p>
+<h2 id="实验步骤-2"><a href="#实验步骤-2" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/04/xss.html">http://ip/xss/04/xss.html</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220155337917rldpf.png" alt="image.png"></p>
+<p>2、在搜索框的位置，输入“sangfor”，点击搜索按钮，查看页面变化<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220155910737cflxd.png" alt="image.png"></p>
+<p>3、提交的内容显示在页面中<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image2112201559568868wd85.png" alt="image.png"></p>
+<p>4、返回搜索框页面，构造弹框语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(/xss/)\&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>查看页面是否弹窗<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220160329438mga20.png" alt="image.png"></p>
+<p>5、点击“搜索”，页面成功弹窗<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image2112201607589065qpls.png" alt="image.png"></p>
+<p>6、点击“确定”，右击，查看页面源代码，发现提交的payload成功写入页面中，并且是非持久型XSS，说明是反射型XSS<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image2112201609428262zb09.png" alt="image.png"></p>
+<h2 id="实验总结-2"><a href="#实验总结-2" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握反射型XSS的特点，根据挖掘出来的该XSS漏洞是非持久性的，并且数据流量走向是浏览器到后端，再到浏览器，提交的payload成功写入页面中，结合XSS漏洞不同分类的方法，验证反射型XSS的特点。</p>
+<h1 id="反射型XSS-2"><a href="#反射型XSS-2" class="headerlink" title="反射型XSS"></a>反射型XSS</h1><h2 id="实验目的-3"><a href="#实验目的-3" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，判断挖掘出来的XSS漏洞属于什么类型的。</p>
+<h2 id="实验环境-3"><a href="#实验环境-3" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/webug/pentest/test/9/">http://ip/webug/pentest/test/9/</a></li>
+</ul>
+<h2 id="实验原理-3"><a href="#实验原理-3" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面点击，找到URL中传参位置，构造Payload使其弹框，根据不同分类特点判断漏洞类型。</p>
+<h2 id="实验步骤-3"><a href="#实验步骤-3" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/webug/pentest/test/9/">http://ip/webug/pentest/test/9/</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107211037178789iot1.png" alt="image.png"></p>
+<p>2、页面没有任何信息，只有一个超链接，点击超链接，发现URL中有传参的位置<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721103850244iru5m.png" alt="image.png"></p>
+<p>3、将URL中的参数值更改为“xss”，发现页面中的数据更改<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721104512855845tm.png" alt="image.png"></p>
+<p>4、将URL中的参数值更改为XSS验证的payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(666)&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>页面弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107211047431953z55s.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721104816798260z9.png" alt="image.png"></p>
+<p>5、点击“确定”，右击，查看页面源代码，发现提交的payload被写入页面中<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721105905272u83wd.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107211100433766chcr.png" alt="image.png"></p>
+<p>6、返回网站页面，点击超链接，页面未弹框，需要重新提交payload，说明该网站的XSS漏洞是非持久性的，从而判断出该网站的XSS漏洞是反射型XSS<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721110512096lq8ur.png" alt="image.png"></p>
+<h2 id="实验总结-3"><a href="#实验总结-3" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，判断挖掘出来的XSS漏洞是非持久性的，且提交的payload会写入页面中，属于反射型XSS。</p>
+<h1 id="存储型XSS-1"><a href="#存储型XSS-1" class="headerlink" title="存储型XSS"></a>存储型XSS</h1><h2 id="实验目的-4"><a href="#实验目的-4" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握XSS漏洞的原理以及根据XSS漏洞不同分类的方法，掌握存储型XSS的特点。</p>
+<h2 id="实验环境-4"><a href="#实验环境-4" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/05/xss.html">http://ip/xss/05/xss.html</a></li>
+</ul>
+<h2 id="实验原理-4"><a href="#实验原理-4" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面的文本框位置，输入内容后会保存到数据库中，通过访问不同的id可以访问到内容，尝试构造弹窗语句插入到数据库中，再通过id访问调用弹框语句，看代码是否执行，从而判断是否存在XSS漏洞。</p>
+<h2 id="实验步骤-4"><a href="#实验步骤-4" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/05/xss.html">http://ip/xss/05/xss.html</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220161914316xyip0.png" alt="image.png"></p>
+<p>2、在文本框的位置，输入“sangfor”，点击提交按钮，查看页面变化<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220161951538cpduf.png" alt="image.png"></p>
+<p>3、页面显示“1”，访问<a target="_blank" rel="noopener" href="http://ip/xss/05/result.php?id=1%EF%BC%8C%E6%9F%A5%E7%9C%8B%E9%A1%B5%E9%9D%A2%E5%8F%98%E5%8C%96">http://ip/xss/05/result.php?id=1，查看页面变化</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220162041519dqnnw.png" alt="image.png"></p>
+<p>4、页面显示提交的内容，说明通过id的访问可以将提交的内容调用，显示到页面中<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image21122016223382795dyp.png" alt="image.png"></p>
+<p>5、返回提交内容页面，构造弹框语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(/xss/)\&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>查看页面是否弹窗</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image2112201626456246r6y1.png" alt="image.png"></p>
+<p>6、点击“提交”，页面没有弹窗，访问<a target="_blank" rel="noopener" href="http://ip/xss/05/result.php?id=3%EF%BC%8C%E6%9F%A5%E7%9C%8B%E9%A1%B5%E9%9D%A2%E5%8F%98%E5%8C%96">http://ip/xss/05/result.php?id=3，查看页面变化</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220162912021v044o.png" alt="image.png"></p>
+<p>6、页面成功弹窗，并且是持久性的xss<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20211220/image211220171638295fc15e.png" alt="image.png"></p>
+<h2 id="实验总结-4"><a href="#实验总结-4" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握存储型XSS的特点，根据挖掘出来的该XSS漏洞是持久性的，并且数据流量走向是浏览器到后端到数据库，再到后端到浏览器，提交的payload成功写入数据库中，结合XSS漏洞不同分类的方法，验证存储型XSS的特点。</p>
+<h1 id="存储型XSS漏洞挖掘"><a href="#存储型XSS漏洞挖掘" class="headerlink" title="存储型XSS漏洞挖掘"></a>存储型XSS漏洞挖掘</h1><h2 id="实验目的-5"><a href="#实验目的-5" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，判断挖掘出来的XSS漏洞属于什么类型的。</p>
+<h2 id="实验环境-5"><a href="#实验环境-5" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/webug/pentest/test/10/">http://ip/webug/pentest/test/10/</a></li>
+</ul>
+<h2 id="实验原理-5"><a href="#实验原理-5" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面留言板位置，构造Payload使其弹框，根据不同分类特点判断漏洞类型。</p>
+<h2 id="实验步骤-5"><a href="#实验步骤-5" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/webug/pentest/test/10/">http://ip/webug/pentest/test/10/</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721112358858ujvqo.png" alt="image.png"></p>
+<p>2、页面只有留言板，在留言板中输入“xss”，提交留言<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107211139090571y8i7.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721115020372pvnz2.png" alt="image.png"></p>
+<p>3、在留言板中提交payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(666)&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>页面弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721120454884m5bol.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721120701443n0xiz.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721120728920ja3yu.png" alt="image.png"></p>
+<p>4、点击“确定”，刷新页面，再次弹框，不需要重新提交payload，说明该网站的XSS漏洞是持久性的，从而判断出该网站的XSS漏洞是存储型XSS<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image21072112104764778pkq.png" alt="image.png"></p>
+<h2 id="实验总结-5"><a href="#实验总结-5" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，判断挖掘出来的XSS漏洞是持久性的，用户每次访问该页面都会触发弹框，属于存储型XSS。</p>
+<h1 id="DOM型XSS-1"><a href="#DOM型XSS-1" class="headerlink" title="DOM型XSS"></a>DOM型XSS</h1><h2 id="实验目的-6"><a href="#实验目的-6" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握XSS漏洞的原理以及根据XSS漏洞不同分类的方法，掌握DOM型XSS的特点。</p>
+<h2 id="实验环境-6"><a href="#实验环境-6" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/06/index.php">http://ip/xss/06/index.php</a></li>
+</ul>
+<h2 id="实验原理-6"><a href="#实验原理-6" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面URL的位置，传入”message”参数，从而构造Payload使其弹框，掌握DOM型XSS的特点。</p>
+<h2 id="实验步骤-6"><a href="#实验步骤-6" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/06/index.php">http://ip/xss/06/index.php</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721161232673hso7o.png" alt="image.png"></p>
+<p>2、页面没有任何有用信息，只是把URL地址输入在页面中，右键，查看页面源代码<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721161529354ug6uw.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721161606681g7vdc.png" alt="image.png"></p>
+<p>3、从代码中可以看出需要传递“message”的参数，并截取参数后的值写入到页面中，返回页面给“message”参数传递一个值<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721162243611jgtiy.png" alt="image.png"></p>
+<p>4、将“message”参数的值改为payload</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;script&gt;alert(666)&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>弹框</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image210721162434297w2v9s.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107211624527543mklt.png" alt="image.png"></p>
+<p>5、点击“确定”，右击，查看页面源代码，发现提交的payload未写入页面中，说明是DOM型XSS<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210721/image2107211625592134smht.png" alt="image.png"></p>
+<h2 id="实验总结-6"><a href="#实验总结-6" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握DOM型XSS的特点，根据挖掘出来的该XSS漏洞是非持久性的，并且数据流量走向是URL到浏览器，未经过后端，提交的payload未写入页面中，结合XSS漏洞不同分类的方法，验证DOM型XSS的特点。</p>
+<h1 id="DOM型XSS漏洞挖掘"><a href="#DOM型XSS漏洞挖掘" class="headerlink" title="DOM型XSS漏洞挖掘"></a>DOM型XSS漏洞挖掘</h1><h2 id="实验目的-7"><a href="#实验目的-7" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，判断挖掘出来的XSS漏洞属于什么类型的。</p>
+<h2 id="实验环境-7"><a href="#实验环境-7" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/06/dom1.php">http://ip/xss/06/dom1.php</a></li>
+</ul>
+<h2 id="实验原理-7"><a href="#实验原理-7" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面URL的位置，传入”name”参数，从而构造Payload使其弹框，掌握DOM型XSS的特点。</p>
+<h2 id="实验步骤-7"><a href="#实验步骤-7" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/06/dom1.php">http://ip/xss/06/dom1.php</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606115432002z15s4.png" alt="image.png"></p>
+<p>2、页面没有任何有用信息，在URL中传入name参数并赋值，访问<a target="_blank" rel="noopener" href="http://ip/xss/06/dom1.php?name=sangfor%EF%BC%8C%E9%A1%B5%E9%9D%A2%E6%98%BE%E7%A4%BAname%E5%8F%82%E6%95%B0%E7%9A%84%E5%80%BC">http://ip/xss/06/dom1.php?name=sangfor，页面显示name参数的值</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606115655390w21pc.png" alt="image.png"></p>
+<p>3、构造XSS验证语句，传入name参数，成功弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606131334773v0p3n.png" alt="image.png"></p>
+<h2 id="实验总结-7"><a href="#实验总结-7" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，构造XSS验证语句，使页面弹框；判断挖掘出来的XSS漏洞是非持久性的，用户每次访问该页面都需要构造一次payload才会触发弹框，属于DOM型XSS。</p>
+<h1 id="DOM型XSS漏洞挖掘-1"><a href="#DOM型XSS漏洞挖掘-1" class="headerlink" title="DOM型XSS漏洞挖掘"></a>DOM型XSS漏洞挖掘</h1><h2 id="实验目的-8"><a href="#实验目的-8" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，判断挖掘出来的XSS漏洞属于什么类型的。</p>
+<h2 id="实验环境-8"><a href="#实验环境-8" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/06/dom2.php">http://ip/xss/06/dom2.php</a></li>
+</ul>
+<h2 id="实验原理-8"><a href="#实验原理-8" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面文本框的位置，传入提交的数据，从而构造Payload使其弹框，掌握DOM型XSS的特点。</p>
+<h2 id="实验步骤-8"><a href="#实验步骤-8" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/06/dom2.php">http://ip/xss/06/dom2.php</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606145252822s9zez.png" alt="image.png"></p>
+<p>2、在文本框中输入任意字符串，比如“xss”，然后点击“替换”，页面字符串发生替换<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606150349459u9pwu.png" alt="image.png"></p>
+<p>3、构造XSS验证语句</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">&lt;img src=1  _onerror=alert(1)&gt;<br></code></pre></td></tr></table></figure>
+
+<p>输入文本框，成功弹框<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061517438913krhb.png" alt="image.png"></p>
+<h2 id="实验总结-8"><a href="#实验总结-8" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握挖掘XSS漏洞的方法以及根据XSS漏洞不同分类的特点，构造XSS验证语句，使页面弹框；判断挖掘出来的XSS漏洞是非持久性的，用户每次访问该页面都需要构造一次payload才会触发弹框，属于DOM型XSS。</p>
+<h1 id="XSS-Payload构造及变形"><a href="#XSS-Payload构造及变形" class="headerlink" title="XSS Payload构造及变形"></a>XSS Payload构造及变形</h1><h2 id="实验目的-9"><a href="#实验目的-9" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握构造各种XSS的Payload，从而绕过XSS的防护，使其弹框，挖掘XSS漏洞。</p>
+<h2 id="实验环境-9"><a href="#实验环境-9" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li>操作机：Win10<br>用户名：Administrator<br>密码：Sangfor!7890</li>
+<li>靶机：Apache + PHP</li>
+<li>实验地址：<a target="_blank" rel="noopener" href="http://ip/xss/07/index.php">http://ip/xss/07/index.php</a></li>
+</ul>
+<h2 id="实验原理-9"><a href="#实验原理-9" class="headerlink" title="实验原理"></a>实验原理</h2><p>在页面中，网站通常会对用户的输入进行过滤，可以构造各种不同的Payload以及对Payload进行变形，使其绕过验证进行弹框，挖掘XSS漏洞。</p>
+<h2 id="实验步骤-9"><a href="#实验步骤-9" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1、登陆”Attack”操作机，打开浏览器，访问<a target="_blank" rel="noopener" href="http://ip/xss/07/index.php">http://ip/xss/07/index.php</a><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061528305405vl6f.png" alt="image.png"></p>
+<h3 id="Payload构造"><a href="#Payload构造" class="headerlink" title="Payload构造"></a>Payload构造</h3><p>2、在文本域中输入构造的Payload，利用【&lt;&gt;】构造标签<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image22060616195379791c2r.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162008459u7952.png" alt="image.png"></p>
+<p>3、利用HTML标签的属性值<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162124467bigtd.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162136178oii7j.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061621484384vmci.png" alt="image.png"></p>
+<p>4、利用事件<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061623041925k40e.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162316434fdcne.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162352449zpzyz.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061624052211njy9.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162414881es2e4.png" alt="image.png"></p>
+<h3 id="Payload变形"><a href="#Payload变形" class="headerlink" title="Payload变形"></a>Payload变形</h3><p>5、大小写<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image22060616252518357qo0.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061626207636j7li.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061628143141xlcq.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606162825549dekk7.png" alt="image.png"></p>
+<p>6、引号<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163340057dxnzq.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163354102i1lkj.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163529706h76mj.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163354102i1lkj.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163607063q7nu9.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163354102i1lkj.png" alt="image.png"></p>
+<p>7、【&#x2F;】代替空格<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image22060616385037093n1m.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163903902ryypq.png" alt="image.png"></p>
+<p>8、Tab与回车<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606163954214l70pf.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image2206061640037634il8r.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606164037896q5e5b.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606164047412botge.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606164056401rbzic.png" alt="image.png"></p>
+<p>9、编码<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606164640606sxe98.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image22060617124612263k8b.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606171259622ja880.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606164304341zp4qk.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image22060616431378123n04.png" alt="image.png"><br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220606/image220606164322613xiaqr.png" alt="image.png"></p>
+<h2 id="实验总结-9"><a href="#实验总结-9" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，掌握Web网站在对用户输入进行过滤，但是过滤不严格时，可以构造各种不同的Payload以及对XSS的Payload进行变形，使其绕过过滤机制，使网站弹框，从而挖掘XSS漏洞。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文由FlowsecNagi编写，采用非商业性使用-相同方式共享 4.0 国际](<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a>) 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A3R%E5%B8%B8%E8%A7%81Web%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E/">某厂产业教育 - 常见Web安全漏洞</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A6R%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/">某厂产业教育 - 文件包含漏洞原理与验证</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="ABCkillmen/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/topic/">专栏</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/categories/">分类</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/tags/">标签</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/archives/">归档</a></div><div class="sitemap-group"><span class="fs15">列表</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/wiki/">项目列表</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/douban/books/">书籍列表</a></div><div class="sitemap-group"><span class="fs15">社交</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/friends/">友链</a><a target="_blank" rel="noopener" href="https://github.com/ABCkillmen">GitHub</a><a target="_blank" rel="noopener" href="https://space.bilibili.com/496999871">bilibili</a></div><div class="sitemap-group"><span class="fs15">更多</span><a target="_blank" rel="noopener" href="https://chatgpt.com/">科学ChatGPT</a><a target="_blank" rel="noopener" href="http://nav.luckysec.cn/">网安导航网站</a><a target="_blank" rel="noopener" href="https://sumorio.top/">其他导航网站</a></div></div><div class="text"><p>本站由 <a href="/">FlowsecNagi</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+<widget class="widget-wrapper tagcloud"><div class="widget-header dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/Blue/" style="font-size: 18.67px;" class="tag -6">Blue</a> <a href="/tags/CD/" style="font-size: 12px;" class="tag -0">CD</a> <a href="/tags/CI/" style="font-size: 14.67px;" class="tag -2">CI</a> <a href="/tags/Emergency-Response/" style="font-size: 16px;" class="tag -3">Emergency Response</a> <a href="/tags/HTB/" style="font-size: 20px;" class="tag -7">HTB</a> <a href="/tags/HTB%E5%AD%A6%E9%99%A2/" style="font-size: 12px;" class="tag -0">HTB学院</a> <a href="/tags/Jenkins/" style="font-size: 12px;" class="tag -0">Jenkins</a> <a href="/tags/PDF/" style="font-size: 13.33px;" class="tag -1">PDF</a> <a href="/tags/Poc/" style="font-size: 12px;" class="tag -0">Poc</a> <a href="/tags/Red/" style="font-size: 18.67px;" class="tag -6">Red</a> <a href="/tags/STARTING-POINT/" style="font-size: 18.67px;" class="tag -6">STARTING POINT</a> <a href="/tags/Source-Control/" style="font-size: 12px;" class="tag -0">Source Control</a> <a href="/tags/computational-neuroscience/" style="font-size: 12px;" class="tag -0">computational neuroscience</a> <a href="/tags/cryptography/" style="font-size: 12px;" class="tag -0">cryptography</a> <a href="/tags/devolop/" style="font-size: 12px;" class="tag -0">devolop</a> <a href="/tags/diary/" style="font-size: 13.33px;" class="tag -1">diary</a> <a href="/tags/english/" style="font-size: 14.67px;" class="tag -2">english</a> <a href="/tags/game/" style="font-size: 14.67px;" class="tag -2">game</a> <a href="/tags/listening/" style="font-size: 12px;" class="tag -0">listening</a> <a href="/tags/metaphysics/" style="font-size: 12px;" class="tag -0">metaphysics</a> <a href="/tags/nc/" style="font-size: 12px;" class="tag -0">nc</a> <a href="/tags/nmap/" style="font-size: 12px;" class="tag -0">nmap</a> <a href="/tags/philosophy/" style="font-size: 13.33px;" class="tag -1">philosophy</a> <a href="/tags/php/" style="font-size: 12px;" class="tag -0">php</a> <a href="/tags/python/" style="font-size: 14.67px;" class="tag -2">python</a> <a href="/tags/read/" style="font-size: 17.33px;" class="tag -4">read</a> <a href="/tags/science/" style="font-size: 13.33px;" class="tag -1">science</a> <a href="/tags/speaking/" style="font-size: 12px;" class="tag -0">speaking</a> <a href="/tags/sxf/" style="font-size: 21.33px;" class="tag -8">sxf</a> <a href="/tags/testing/" style="font-size: 13.33px;" class="tag -1">testing</a> <a href="/tags/tools/" style="font-size: 12px;" class="tag -0">tools</a> <a href="/tags/web%E5%BC%80%E5%8F%91/" style="font-size: 12px;" class="tag -0">web开发</a> <a href="/tags/web%E6%94%BB%E9%98%B2/" style="font-size: 21.33px;" class="tag -8">web攻防</a> <a href="/tags/xiaodi8/" style="font-size: 22.67px;" class="tag -9">xiaodi8</a> <a href="/tags/xss/" style="font-size: 12px;" class="tag -0">xss</a> <a href="/tags/%E4%B8%BB%E6%9C%BA%E6%9E%9A%E4%B8%BE/" style="font-size: 12px;" class="tag -0">主机枚举</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 12px;" class="tag -0">博客搭建</a> <a href="/tags/%E5%93%8E%E5%B0%B1%E6%98%AF%E7%8E%A9/" style="font-size: 13.33px;" class="tag -1">哎就是玩</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 12px;" class="tag -0">学习</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 13.33px;" class="tag -1">工具</a> <a href="/tags/%E5%BE%B7%E8%AF%AD/" style="font-size: 12px;" class="tag -0">德语</a> <a href="/tags/%E5%BF%83%E7%90%86%E5%92%A8%E8%AF%A2/" style="font-size: 12px;" class="tag -0">心理咨询</a> <a href="/tags/%E6%B5%8B%E8%AF%95/" style="font-size: 12px;" class="tag -0">测试</a> <a href="/tags/%E6%BC%8F%E6%B4%9E/" style="font-size: 12px;" class="tag -0">漏洞</a> <a href="/tags/%E7%A7%91%E5%B9%BB/" style="font-size: 13.33px;" class="tag -1">科幻</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 24px;" class="tag -10">笔记</a> <a href="/tags/%E8%A7%81%E9%9D%A2%E5%88%86%E4%BA%AB%E4%BC%9A/" style="font-size: 12px;" class="tag -0">见面分享会</a> <a href="/tags/%E8%AF%AD%E8%A8%80/" style="font-size: 12px;" class="tag -0">语言</a> <a href="/tags/%E9%93%81%E7%94%B2%E4%BE%9D%E7%84%B6%E5%9C%A8/" style="font-size: 12px;" class="tag -0">铁甲依然在</a> <a href="/tags/%E9%98%85%E8%AF%BB/" style="font-size: 14.67px;" class="tag -2">阅读</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 14.67px;" class="tag -2">随笔</a> <a href="/tags/%E9%9A%90%E8%97%8F%E5%86%85%E5%AE%B9/" style="font-size: 12px;" class="tag -0">隐藏内容</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 13.33px;" class="tag -1">靶场</a></div></widget>
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E9%AA%8C%E8%AF%81"><span class="toc-text">XSS验证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS%E6%BC%8F%E6%B4%9E%E5%88%86%E7%B1%BB"><span class="toc-text">XSS漏洞分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-1"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-1"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-1"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-1"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8BXSS"><span class="toc-text">反射型XSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8BXSS"><span class="toc-text">存储型XSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DOM%E5%9E%8BXSS"><span class="toc-text">DOM型XSS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-1"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8BXSS-1"><span class="toc-text">反射型XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-2"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-2"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-2"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-2"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-2"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E5%9E%8BXSS-2"><span class="toc-text">反射型XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-3"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-3"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-3"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-3"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-3"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8BXSS-1"><span class="toc-text">存储型XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-4"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-4"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-4"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-4"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-4"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%9E%8BXSS%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">存储型XSS漏洞挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-5"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-5"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-5"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-5"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-5"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DOM%E5%9E%8BXSS-1"><span class="toc-text">DOM型XSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-6"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-6"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-6"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-6"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-6"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DOM%E5%9E%8BXSS%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">DOM型XSS漏洞挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-7"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-7"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-7"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-7"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-7"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DOM%E5%9E%8BXSS%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98-1"><span class="toc-text">DOM型XSS漏洞挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-8"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-8"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-8"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-8"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-8"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS-Payload%E6%9E%84%E9%80%A0%E5%8F%8A%E5%8F%98%E5%BD%A2"><span class="toc-text">XSS Payload构造及变形</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-9"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-9"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-9"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-9"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Payload%E6%9E%84%E9%80%A0"><span class="toc-text">Payload构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Payload%E5%8F%98%E5%BD%A2"><span class="toc-text">Payload变形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-9"><span class="toc-text">实验总结</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #beaudar');
+  util.viewportLazyload(el, load_beaudar, false);
+
+  function load_beaudar() {
+    if (!el) return;
+    try {
+      el.innerHTML = '';
+    } catch (error) {
+      console.error(error);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://beaudar.lipk.org/client.js';
+    script.async = true;
+    for (const key of Object.keys(el.attributes)) {
+      const attr = el.attributes[key];
+      if (['class', 'id'].includes(attr.name) === false) {
+        script.setAttribute(attr.name, attr.value);
+      }
+    }
+    el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>

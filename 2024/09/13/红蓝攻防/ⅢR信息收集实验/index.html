@@ -1,0 +1,1275 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1" theme-name="Stellar" theme-version="1.29.1">
+  
+  <meta name="generator" content="Hexo 6.3.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">
+  <meta name="theme-color" content="#f9fafb">
+  
+  <title>某厂产业教育 - 信息收集实验 - FlowsecNagi's</title>
+
+  
+    <meta name="description" content="DNS信息查询综合实验【目的】  希望学生可以利用相关工具与平台针对一个企业的DNS、IP信息进行收集，同时以此希望学生能够提高对企业网络资产信息保护的意识。 【预计完成时间】   45分钟。 实验环境123操作机：kali    用户名：root    密码：Sangfor!7890  【环境】 设备需求   Linux操作系统的电脑  Windows操作系统的电脑    配置说明   系统能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某厂产业教育 - 信息收集实验">
+<meta property="og:url" content="http://example.com/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A2R%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E5%AE%9E%E9%AA%8C/">
+<meta property="og:site_name" content="FlowsecNagi&#39;s">
+<meta property="og:description" content="DNS信息查询综合实验【目的】  希望学生可以利用相关工具与平台针对一个企业的DNS、IP信息进行收集，同时以此希望学生能够提高对企业网络资产信息保护的意识。 【预计完成时间】   45分钟。 实验环境123操作机：kali    用户名：root    密码：Sangfor!7890  【环境】 设备需求   Linux操作系统的电脑  Windows操作系统的电脑    配置说明   系统能">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261528057/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261530037/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261533053/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261535057/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261545002/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261546004/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261547059/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261549033/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261551008/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261551049/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261601015/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261606010/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261637053/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261639029/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261627030/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261628004/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261634058/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/202105261644003/image.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210528/image210528110336952ubo1f.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210528/image210528110947297h4vsp.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210528/image210528111219643w32yi.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210528/image2105281114510650y4ml.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210528/image2105281129568190dyrb.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531102227218a6co6.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531102640345lv58u.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531102745108564b6.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531105822277jls72.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image21053115404233469o7a.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531154746444b6llz.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531154913954m763r.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531155113732nsimi.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531155506883tj1l0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531155824847caybf.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531160011536kjdg7.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image21053116244783775xdy.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531162517875hpfh4.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image210531161627181isjzr.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210531/image21053116221703174ppw.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602170504136hxzeq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602172951591zsmlq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602175611264oojbz.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602183549111y8x90.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602173325903nktf0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602174941417oedok.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image2106021751402055zdch.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image210602192613118cufru.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image2106021931393382fkhh.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image2106021955094429tu48.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210602/image2106022006338177u5u5.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20230707/image230707165935927gx8xl.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image21060113065966734b1h.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image2106011309167117udty.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601131458398m5ene.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image2106011320156285jlwn.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601132434752rpmcx.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image2106011326554007qdty.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image2106011720598538imqi.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601165849784ezc70.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601170116242fakez.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601170248883hjrdh.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601170429818t81pi.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image21060117144283905qp3.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image2106011716044431cfl7.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210601/image210601171857148qll3o.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image240517163332802gab6v.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image240517163725198gq5vw.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image240517163909209lx8zf.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image240517163958346mhmy9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image2106031041338725hby6.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603104230179upb3o.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image240517164433436m2ggz.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220310/image220310115942576undt5.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image2405171646120144ktfu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603104505596z0yr9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603104931812yq58z.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image2405171716242825y7d9.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20240517/image240517171729092amw5e.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image2106031106414428tr9t.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603111330285qbgda.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603112400993umwkd.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603112753941tttbv.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603113132173acsvj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210603/image210603113344977eiy4q.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604205517217lo1n3.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604205823451kblxm.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604210139950fbk9y.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604210312263tujxv.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604210803520asp2l.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604210928752h2epi.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604211142727sv2cv.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604211549959sj2t6.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image2106042116225053wcld.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image21060421170829767bfe.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604212016425ok5mj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604212125359fpr98.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image2106042123238353hdwq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604212807203yt27j.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604213001853k711o.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604213127986iuhoj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210604/image210604213352376yoxbu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210608/image210608114725248t8fdj.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image2106051738086984xm36.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605173827134zm9r1.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605173913527xruac.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605173937436ny6e0.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image2106051740095815n2ni.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image21060517404069412v42.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174057291nys51.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174114150ti8cp.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174219784ow6ov.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174328581c7rlh.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174410396v1tcf.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174507062bd6ix.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174528575aft2j.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605174602871z8s2m.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210608/image2106081153257542nxwe.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605175729340nlfzp.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image210605175818157vdhz8.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210605/image2106051758476997jp47.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210719/image2107191714256280s2zu.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210719/image210719171514502wsg6j.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210719/image210719171613532vhj5z.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210719/image210719171714105kmv2p.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625140022362igp87.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625140218906xs6at.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625141321438s2kiz.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625141919547v8x37.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image2106251521072599933k.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625152257608xdemq.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625152500209xgr1w.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625180331390yj3w1.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625193742671qh2p3.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20210625/image210625194048634uy5ou.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507143224300m1hfr.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507144458549s1nem.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image22050714502083088h8k.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image2205071457166568h5q5.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507150831333ngswn.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507151444880q9wnh.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507151804849y6dw7.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image2205071522279128p1gs.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507152430976olv3w.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507152734104j0yd6.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507153108777v07t8.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507153239190d1l1z.png">
+<meta property="og:image" content="https://oss.edu.sangfor.com.cn/file/20220507/image220507153355291g9q8w.png">
+<meta property="article:published_time" content="2024-09-13T07:22:37.000Z">
+<meta property="article:modified_time" content="2024-09-13T10:16:55.847Z">
+<meta property="article:author" content="FlowsecNagi">
+<meta property="article:tag" content="sxf">
+<meta property="article:tag" content="Red">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://oss.edu.sangfor.com.cn/file/202105261528057/image.png">
+  
+  
+  
+  <meta name="keywords" content="sxf,Red">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.29.1">
+
+  
+
+  
+    
+<link rel="stylesheet" href="https://gcore.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+
+  
+
+  
+</head>
+<body>
+
+<div class="l_body s:aa content tech" id="start" layout="post" ><aside class="l_left"><div class="leftbar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://ts1.cn.mm.bing.net/th/id/R-C.0fa4f35979fc5e67ad5e5c35da6c70d7?rik=YZ1K7LVgF8WMFQ&riu=http%3a%2f%2fn.sinaimg.cn%2ffront%2f574%2fw910h464%2f20190105%2fiIl6-hrfcctm8375747.png&ehk=Q%2fmgtnAkdu6eq58TlsM%2f%2b8wByTOZ%2fYUhvGbQU7GUwCg%3d&risl=&pid=ImgRaw&r=0" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">FlowsecNagi's</div><div class="sub normal cap">CyberSecurity</div><div class="sub hover cap" style="opacity:0"> The Righteous Partner</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="文档" href="/wiki/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="书单" href="/douban/books/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="m10 3-5 18"/><path d="m19 3-5 18"/><path d="m22 9h-18"/><path d="m20 16h-18"/></g></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A3R%E5%B8%B8%E8%A7%81Web%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E/"><span class="title">某厂产业教育 - 常见Web安全漏洞</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A4RSQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - SQL注入漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A1B%E4%B8%8B%E4%B8%80%E4%BB%A3%E9%98%B2%E7%81%AB%E5%A2%99%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B8%8E%E8%BF%90%E7%BB%B4%E5%AE%9E%E9%AA%8C/"><span class="title">某厂产业教育 - 下一代防火墙基础原理与运维</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E9%85%8D%E7%BD%AE%E4%B8%8E%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%BD%AE/"><span class="title">某厂产业教育 - 安全管理配置与事件处置</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A9R%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 逻辑漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A8R%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 文件上传漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A7R%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 命令执行漏洞原理与验证</span></a><a class="item title" href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A6R%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/"><span class="title">某厂产业教育 - 文件包含漏洞原理与验证</span></a></div></widget>
+</div>
+<footer class="footer dis-select"><div class="social-wrap"><a class="social" href="https://github.com/ABCkillmen" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://upyun.thatcdn.cn/public/img/icon/github-logo2.png"/></a><a class="social" href="https://space.bilibili.com/496999871" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://upyun.thatcdn.cn/public/img/icon/bilibili-icon.png"/></a><a class="social" href="https://bbs.kanxue.com/user-home-1003534.htm" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://ts1.cn.mm.bing.net/th/id/R-C.6ff325e2ab94cfa51d678943808345b0?rik=045603wmD6AGdQ&riu=http%3a%2f%2fwww.jishu5.com%2fzb_users%2fupload%2f2019%2f11%2f201911201574240171673139.ico&ehk=EvDX7cWgAg89OTp1F8UydnT2J%2be0YVgy4bEdU8RBuMc%3d&risl=&pid=ImgRaw&r=0"/></a><a class="social" onclick="switchTheme()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><path fill="currentColor" fill-rule="evenodd" d="M582.4 326.4c-140.8 0-256 115.2-256 256s115.2 256 256 256 256-115.2 256-256-115.2-256-256-256z m0 448c-70.4 0-131.2-36.8-164.8-92.8 12.8 3.2 27.2 4.8 40 4.8 121.6 0 219.2-99.2 219.2-219.2 0-17.6-1.6-35.2-6.4-52.8 60.8 32 102.4 96 102.4 169.6 1.6 104-84.8 190.4-190.4 190.4zM582.4 262.4c17.6 0 32-14.4 32-32v-128c0-17.6-14.4-32-32-32s-32 14.4-32 32v128c0 17.6 14.4 32 32 32zM262.4 582.4c0-17.6-14.4-32-32-32h-128c-17.6 0-32 14.4-32 32s14.4 32 32 32h128c17.6 0 32-14.4 32-32zM310.4 356.8c6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6 12.8-12.8 12.8-32 0-44.8l-91.2-91.2c-12.8-12.8-32-12.8-44.8 0-12.8 12.8-12.8 32 0 44.8l91.2 91.2zM944 220.8c-12.8-12.8-32-12.8-44.8 0l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-33.6 0-44.8zM310.4 808l-91.2 91.2c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.4 9.6 22.4 9.6 8 0 16-3.2 22.4-9.6l91.2-91.2c12.8-12.8 12.8-32 0-44.8-11.2-11.2-32-11.2-44.8 0z"></path></svg></a><a class="social" href="https://chatgpt.com/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://ts1.cn.mm.bing.net/th/id/R-C.8d6346690b45333baac63802d0455b34?rik=MuRClPiEz%2bhDOA&riu=http%3a%2f%2fwww.kuaipng.com%2fUploads%2fpic%2fw%2f2023%2f03-18%2f136304%2fwater_136304_698_698_.png&ehk=I11eZ90lqzt37nYuYls%2bRv3rnSxNYsVE9bXgqJDMFWU%3d&risl=&pid=ImgRaw&r=0"/></a><a class="social" href="http://nav.luckysec.cn/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://i.52112.com/icon/256/20181207/26085/1291337.png"/></a></div></footer>
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top"><img class="bg lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://ts1.cn.mm.bing.net/th/id/R-C.ec4632192c015f78e995f5152a793668?rik=tZzJS9gIoh7BhQ&riu=http%3a%2f%2fimg-blog.csdnimg.cn%2fimg_convert%2fd04208e25fe528b744be9c074b75668d.png&ehk=DcFtEz%2ftS2GkqmnkAuMGUOHJ%2f2BwCS12Lonltsbr%2b5M%3d&risl=&pid=ImgRaw&r=0">
+  <div class="content">
+    <div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/Experiments/">Experiments</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-09-13T07:22:37.000Z">2024-09-13</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-09-13T10:16:55.847Z">2024-09-13</time></span></div></div></div>
+    
+    <div class="bottom only-title">
+      
+      <div class="text-area">
+        <h1 class="text title"><span>某厂产业教育 - 信息收集实验</span></h1>
+        
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><hr>
+<h1 id="DNS信息查询综合实验"><a href="#DNS信息查询综合实验" class="headerlink" title="DNS信息查询综合实验"></a>DNS信息查询综合实验</h1><h3 id="【目的】"><a href="#【目的】" class="headerlink" title="【目的】"></a>【目的】</h3><p>  希望学生可以利用相关工具与平台针对一个企业的DNS、IP信息进行收集，同时以此希望学生能够提高对企业网络资产信息保护的意识。</p>
+<h3 id="【预计完成时间】"><a href="#【预计完成时间】" class="headerlink" title="【预计完成时间】"></a>【预计完成时间】</h3><p>   45分钟。</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>    用户名：root    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h3 id="【环境】"><a href="#【环境】" class="headerlink" title="【环境】"></a>【环境】</h3><ol>
+<li><strong>设备需求</strong></li>
+</ol>
+<ul>
+<li><p>Linux操作系统的电脑</p>
+</li>
+<li><p>Windows操作系统的电脑</p>
+</li>
+</ul>
+<ol start="2">
+<li><strong>配置说明</strong></li>
+</ol>
+<ul>
+<li>系统能够正常访问互联网</li>
+</ul>
+<ol start="3">
+<li><strong>环境测试</strong></li>
+</ol>
+<ul>
+<li>使用<code>ping</code>、<code>nslookup</code>、<code>whois</code>等命令，能够对域名做正确的DNS解析</li>
+</ul>
+<h3 id="【工具】"><a href="#【工具】" class="headerlink" title="【工具】"></a>【工具】</h3><ul>
+<li>whois</li>
+<li>nslookup</li>
+<li>dig</li>
+<li>subDomainsBrute</li>
+<li>IP反查</li>
+</ul>
+<h3 id="【原理】"><a href="#【原理】" class="headerlink" title="【原理】"></a>【原理】</h3><p>  域名系统（英文：Domain Name<br>System，DNS）是因特网的一项服务，它作为将域名和IP地址相互映射的一个分布式数据库，能够使人更方便的访问互联网。DNS<br>使用TCP和UDP端口53。当前，对于每一级域名长度的限制是63个字符，域名总长度则不能超过253个字符。</p>
+<p>  当个人或者企业实体注册域名时需要注册许多信息，注册隐私的设置各种各样，我们可以搜集这些信息并用来验证IP空间。根据这个线索，可以寻找属于该个人或者企业实体的其他网站信息，甚至于核心员工的号码和地址。</p>
+<h3 id="【步骤】"><a href="#【步骤】" class="headerlink" title="【步骤】"></a>【步骤】</h3><h4 id="1-利用相关命令进行针对域名的信息收集。"><a href="#1-利用相关命令进行针对域名的信息收集。" class="headerlink" title="1. 利用相关命令进行针对域名的信息收集。"></a>1. 利用相关命令进行针对域名的信息收集。</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">- 确定目标：sangforedu.com.cn、sangfor.com.cn<br><br>- 本次实验需要对该目标下的域名、IP进行信息收集。<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-使用-whois-命令对该域名进行查询：-whois-sangforedu-com-cn"><a href="#2-使用-whois-命令对该域名进行查询：-whois-sangforedu-com-cn" class="headerlink" title="2. 使用 whois 命令对该域名进行查询： whois sangforedu.com.cn"></a>2. 使用 <code>whois</code> 命令对该域名进行查询： <code>whois sangforedu.com.cn</code></h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261528057/image.png" alt="image.png"></p>
+<p>这里我们又发现一个新的域名：<code>sangfor.com.cn</code>，继续利用<code>whois</code>进行查询：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261530037/image.png" alt="image.png"></p>
+<p>其中比较重要的有邮箱、电话号码、姓名，在后期社会工程学攻击中可能有用。</p>
+<p>通过查询出的邮箱，在利用<a target="_blank" rel="noopener" href="http://whois.chinaz.com/">站长之家</a>网站提供的几个域名反查工具进一步查询：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261533053/image.png" alt="image.png"></p>
+<p>又可发现一些新的域名： <code>gbasic.cn</code>、<code>securelogin.com.cn</code>等等。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261535057/image.png" alt="image.png"></p>
+<p>利用whois进行相关正向反向查询的介绍就到这里，学生可自行对其他邮箱、电话、联系人姓名进行whois反查，获取更多的信息。</p>
+<h4 id="3-利用nslookup工具进行域名查询-windows中的命令提示符中进行操作，kali终端中使用dig进行查询，详见第4步）。"><a href="#3-利用nslookup工具进行域名查询-windows中的命令提示符中进行操作，kali终端中使用dig进行查询，详见第4步）。" class="headerlink" title="3. 利用nslookup工具进行域名查询(windows中的命令提示符中进行操作，kali终端中使用dig进行查询，详见第4步）。"></a>3. 利用<code>nslookup</code>工具进行域名查询(windows中的命令提示符中进行操作，kali终端中使用<code>dig</code>进行查询，详见第4步）。</h4><p>查询A类型记录：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261545002/image.png" alt="image.png"></p>
+<p>查询MX类型记录：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261546004/image.png" alt="image.png"></p>
+<h4 id="4-利用dig工具查询各类DNS的解析。"><a href="#4-利用dig工具查询各类DNS的解析。" class="headerlink" title="4. 利用dig工具查询各类DNS的解析。"></a>4. 利用<code>dig</code>工具查询各类DNS的解析。</h4><p>直接查询域名：<code>dig sangfor.com.cn</code> （或者：<code>dig @DNSServerIP domain</code>）</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261547059/image.png" alt="image.png"></p>
+<p>指向负责解析的DNS主机：<code>dig sangfor.com.cn @8.8.8.8</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261549033/image.png" alt="image.png"></p>
+<p>查询NS记录：<code>dig sangfor.com.cn NS</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261551008/image.png" alt="image.png"></p>
+<p>查询TXT记录：<code>dig sangfor.com.cn TXT</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261551049/image.png" alt="image.png"></p>
+<h4 id="5-使用DNS子域名爆破工具，针对子域名进行爆破，同时解析出对应的IP地址。"><a href="#5-使用DNS子域名爆破工具，针对子域名进行爆破，同时解析出对应的IP地址。" class="headerlink" title="5. 使用DNS子域名爆破工具，针对子域名进行爆破，同时解析出对应的IP地址。"></a>5. 使用DNS子域名爆破工具，针对子域名进行爆破，同时解析出对应的IP地址。</h4><p>在<a target="_blank" rel="noopener" href="https://github.com/">github</a>上查找<a target="_blank" rel="noopener" href="https://github.com/lijiejie/subDomainsBrute">subDomainsBrute工具</a>。</p>
+<p>使用git clone命令将工具下载下来,并赋予”subDomainBrute.py”文件执行权限。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261601015/image.png" alt="image.png"></p>
+<p>该工具的帮助文档及参数说明（注意，使用python3进行执行）</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261606010/image.png" alt="image.png"></p>
+<p>使用该工具。</p>
+<p><code>python3 subDomainsBrute.py --full -t 10 sangfor.com.cn -w</code></p>
+<p>使用<code>-w</code>进行扩展扫描，增大命中概率。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261637053/image.png" alt="image.png"></p>
+<p>通过子域名的爆破，可以进一步明确企业网络资产（有哪些域名、域名对应什么系统、域名集中的C段地址等等），这是攻击者、防御者都需要时刻关注的方面。</p>
+<p>扫描完成后，会在该工具同目录下，生成对应的文本文件，最终获取的子域名结果如下：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261639029/image.png" alt="image.png"></p>
+<h4 id="6-利用多地Ping工具，查看域名真实IP。"><a href="#6-利用多地Ping工具，查看域名真实IP。" class="headerlink" title="6. 利用多地Ping工具，查看域名真实IP。"></a>6. 利用多地Ping工具，查看域名真实IP。</h4><p>一些站点为了能够让用户获得更好的体验与提高安全性，会采用CDN技术对网站进行加速，因此在使用<code>nslookup</code>等工具进行本地查询时，可能无法获取到网站的真实IP地址。</p>
+<p>这种情况下，通常采用多个地点对网站进行访问，查看解析结果的方式来确定是否使用CDN。</p>
+<p>在浏览器中输入<code>http://ping.chinaz.com/sangfor.com.cn</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261627030/image.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261628004/image.png" alt="image.png"></p>
+<h4 id="7-针对部分IP进行信息收集"><a href="#7-针对部分IP进行信息收集" class="headerlink" title="7. 针对部分IP进行信息收集"></a>7. 针对部分IP进行信息收集</h4><p>通过上述步骤，可以将确定的集中在某一C段IP进行查询，确定是否属于该企业。</p>
+<p>选取子域名爆破结果中多次出现的一个IP（C段）： <code>whois 222.126.229.179</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261634058/image.png" alt="image.png"></p>
+<p>查询出该地址所以段的相关信息，地理位置等信息，多个IP地址查询出的信息，进行交叉分析，可能会有较全面的信息内容。</p>
+<p>或者在网上采用IP地址反查，可能查出更多信息。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/202105261644003/image.png" alt="image.png"></p>
+<h3 id="【总结】"><a href="#【总结】" class="headerlink" title="【总结】"></a>【总结】</h3><ul>
+<li>本实验主要通过利用各类DNS、IP查询工具，进行网络信息进行收集。</li>
+<li>通过本次实验学生应该掌握DNS、IP信息收集的相关知识、工具。</li>
+</ul>
+<h1 id="DNS域传输实验"><a href="#DNS域传输实验" class="headerlink" title="DNS域传输实验"></a>DNS域传输实验</h1><h2 id="实验目的"><a href="#实验目的" class="headerlink" title="实验目的"></a>实验目的</h2><p>  通过此次实验，希望学生体验dns域传输漏洞原理及危害。</p>
+<h2 id="实验环境-1"><a href="#实验环境-1" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>    用户名：root    密码：Sangfor!7890<br><br>靶机：Ubuntu20.04<br><br>    用户名：root    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理"><a href="#实验原理" class="headerlink" title="实验原理"></a>实验原理</h2><p>DNS作为重要的互联网基础设施，难免成为黑客的重点攻击目标，服务的稳定性尤为重要。</p>
+<p>DNS服务器分为：主服务器、备份服务器和缓存服务器。在主备服务器之间同步数据库，需要使用“DNS域传送”。域传送是指后备服务器从主服务器拷贝数据，并用得到的数据更新自身数据库。</p>
+<p>若DNS服务器配置不当，可能导致匿名用户获取某个域的所有记录。造成整个网络的拓扑结构泄露给潜在的攻击者，包括一些安全性较低的内部主机，如测试服务器。凭借这份网络蓝图，攻击者可以节省很少的扫描时间。</p>
+<p>大的互联网厂商通常将内部网络与外部互联网隔离开，一个重要的手段是使用Private DNS。如果内部DNS泄露，将造成极大的安全风险。风险控制不当甚至造成整个内部网络沦陷。</p>
+<h2 id="实验步骤"><a href="#实验步骤" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="1-开启靶机漏洞环境"><a href="#1-开启靶机漏洞环境" class="headerlink" title="1.开启靶机漏洞环境"></a>1.开启靶机漏洞环境</h3><p>登录”Vulhub”靶机，并进入漏洞环境路径，开启docker环境。</p>
+<p>操作步骤如下图所示：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210528/image210528110336952ubo1f.png" alt="image.png"></p>
+<p>图中1处，使用用户名和密码登录靶机，用户名root，密码Sangfor!7890</p>
+<p>图中2处，进入DNS域传输漏洞环境路径，命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">cd ~/vulhub-master/dns/dns-zone-transfer<br></code></pre></td></tr></table></figure>
+
+<p>图中3处，启动漏洞环境，命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">docker-compose up -d<br></code></pre></td></tr></table></figure>
+
+<p>图中4处，查看容器是否启动成功，命令如下，重点看status这一列。有启动时间即可。表示靶机环境已开启。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">docker ps<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-查看靶机ip地址"><a href="#2-查看靶机ip地址" class="headerlink" title="2.查看靶机ip地址"></a>2.查看靶机ip地址</h3><p>使用<code>ifconfig</code>命令，查看当前靶机IP地址。<strong>关注ens18显示的IP地址</strong></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210528/image210528110947297h4vsp.png" alt="image.png"></p>
+<p>图中查看靶机IP地址为<code>192.168.0.161</code>，该地址将用作攻击机解析域名的指定DNS服务器。</p>
+<h3 id="3-漏洞复现"><a href="#3-漏洞复现" class="headerlink" title="3.漏洞复现"></a>3.漏洞复现</h3><p><strong>测试一</strong></p>
+<p>登录攻击机<code>kali</code>，在终端中，使用dig命令，尝试靶机是否存在域传输漏洞。</p>
+<p>操作步骤如下图所示：</p>
+<p>（1）、登录kali主机</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210528/image210528111219643w32yi.png" alt="image.png"></p>
+<p>（2）开启终端，并测试靶机是否存在域传输漏洞</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210528/image2105281114510650y4ml.png" alt="image.png"></p>
+<p>图中1处，点击终端图标，新建一个终端窗口</p>
+<p>图中2处，输入测试命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">dig @192.168.0.161 -t axfr vulhub.org<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>@192.168.0.161</code> 表示指定域名解析服务器，即DNS服务器</p>
+</li>
+<li><p><code>-t axfr</code> 表示请求类型（type）为axfr，即表示域传输请求类型</p>
+</li>
+<li><p><code>vulhub.org</code> 表示请求的域名</p>
+</li>
+</ul>
+<p>发送域传输请求后，得到了关于<code>vulhub.org</code>域名下所有的域名信息，证明域传输漏洞是存在。</p>
+<p><strong>测试二</strong></p>
+<p>使用<code>nmap</code>工具对DNS服务器进行扫描测试。</p>
+<p>命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">nmap --script dns-zone-transfer.nse --script-args &quot;dns-zone-transfer.domain=vulhub.org&quot; -Pn -p 53 192.168.0.161<br></code></pre></td></tr></table></figure>
+
+<p>如下图所示：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210528/image2105281129568190dyrb.png" alt="image.png"></p>
+<p>图中表示，通过<code>nmap</code>扫描脚本，对<code>vulhub.org</code>域名进行域传输测试。</p>
+<ul>
+<li><code>--script dns-zone-transfer.nse</code> 表示使用域传输检测脚本<code>dns-zone-transfer.nse</code></li>
+<li><code>-script-args &quot;dns-zone-transfer.domain=vulhub.org&quot;</code> 配置脚本的参数，即目标域名vulhub.org</li>
+<li><code>-Pn</code>表示进行<code>ping</code>测试</li>
+<li><code>-p 53</code>表示指定端口，此处为53号端口</li>
+</ul>
+<p>测试结果，与测试一结果相同，即证明域传输漏洞是存在。</p>
+<h2 id="实验总结"><a href="#实验总结" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过手动启动靶机测试环境，并通过两种测试方式，向靶机发送域传输请求，以验证是否存在域传输漏洞。</p>
+<h1 id="子域名收集实验"><a href="#子域名收集实验" class="headerlink" title="子域名收集实验"></a>子域名收集实验</h1><h2 id="实验目的-1"><a href="#实验目的-1" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验中子域名收集的方法和常用工具，完成对指定（授权）域名的子域名信息收集。</p>
+<h2 id="实验环境-2"><a href="#实验环境-2" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>用户名：sangfor<br><br>密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-1"><a href="#实验原理-1" class="headerlink" title="实验原理"></a>实验原理</h2><p>通过互联网的公共信息资源，通过相关的方法和工具，实现对指定域名的子域名信息收集，为后续的测试，提供更全面的测试面，提高成功率。</p>
+<h2 id="实验步骤-1"><a href="#实验步骤-1" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="一、子域名爆破工具"><a href="#一、子域名爆破工具" class="headerlink" title="一、子域名爆破工具"></a>一、子域名爆破工具</h3><ul>
+<li>1、安装爆破工具</li>
+</ul>
+<p>登录”Kali”操作机，在终端中输出命令<code>git clone https://github.com/lijiejie/subDomainsBrute</code>，下载子域名爆破工具<code>subDomainsBrute</code>。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531102227218a6co6.png" alt="image.png"></p>
+<p>图中2处，下载安装工具；</p>
+<p>图中3处，下载完毕后，查看当前目录是否新增了该工具的文件夹。</p>
+<ul>
+<li>2、增加执行权限</li>
+</ul>
+<p>进入工具的文件夹，使用命令<code>chomd +x subDomainsBrute</code>给执行脚本程序赋予执行权限</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531102640345lv58u.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531102745108564b6.png" alt="image.png"></p>
+<p>由上图可见，已成功给脚本文件增加执行权限。</p>
+<ul>
+<li>3、使用工具，检测对应的域名存在的子域名</li>
+</ul>
+<p><strong>注意：禁止对非授权域名进行探测、爆破，避免触犯国家相关法律规定。</strong></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531105822277jls72.png" alt="image.png"></p>
+<p>因工具需使用python3中的部分模块（python2中可能不存在），所以在前面指定使用python3执行。</p>
+<p>从图中可见，扫描完成后，生成了<code>txt</code>文件，存放扫描结果，本次探测出91个子域名。</p>
+<p>通过<code>cat</code>命令，可以查看详细信息。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image21053115404233469o7a.png" alt="image.png"></p>
+<h3 id="二、搜索引擎"><a href="#二、搜索引擎" class="headerlink" title="二、搜索引擎"></a>二、搜索引擎</h3><p>使用搜索引擎指定站点语法<code>site：</code>，搜索子域名。</p>
+<p><strong>Google搜索</strong></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531154746444b6llz.png" alt="image.png"></p>
+<p>注：<code>-www</code>表示搜索结果中，去掉包含<code>www</code>字符串的结果。</p>
+<p><strong>Bing搜索</strong></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531154913954m763r.png" alt="image.png"></p>
+<p><strong>Baidu搜索</strong></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531155113732nsimi.png" alt="image.png"></p>
+<h3 id="三、使用theHarvester工具"><a href="#三、使用theHarvester工具" class="headerlink" title="三、使用theHarvester工具"></a>三、使用<code>theHarvester</code>工具</h3><p>在终端中输入<code>theHarvester</code>,可以看到如下界面。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531155506883tj1l0.png" alt="image.png"></p>
+<p>想要查看关于参数的说明文档，可使用<code>theHarvester --help</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531155824847caybf.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531160011536kjdg7.png" alt="image.png"></p>
+<blockquote>
+<p>-d 指定域名</p>
+<p>-g 使用google搜索</p>
+<p>-s 使用shodan搜索</p>
+<p>-b 指定某一种或全部(all)搜索。<strong>如果要使用<code>shodan</code>、<code>github</code>等引擎搜索，需要设置对应的API-key，对应的文件是<code>api-keys.yaml</code>，路径为<code>/etc/theHarvester</code>目录下。</strong></p>
+</blockquote>
+<p>使用<code>bing</code>搜索引擎进行搜索，如下图所示：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image21053116244783775xdy.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531162517875hpfh4.png" alt="image.png"></p>
+<p>在图中可见，除了搜索出子域名和IP地址外，还查询到邮箱地址。</p>
+<p>使用dns爆破参数<code>-c</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image210531161627181isjzr.png" alt="image.png"></p>
+<p>搜索结果：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210531/image21053116221703174ppw.png" alt="image.png"></p>
+<h2 id="实验总结-1"><a href="#实验总结-1" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过使用<code>subDomainsBrute</code>、搜索引擎相关语法、<code>theHarvester</code>，分别完成对指定域名子域名的信息收集，更为全面的了解被测试目标相关联的域名，为后续测试，提供信息支撑。</p>
+<h1 id="子域名收集2"><a href="#子域名收集2" class="headerlink" title="子域名收集2"></a>子域名收集2</h1><h2 id="实验目的-2"><a href="#实验目的-2" class="headerlink" title="实验目的"></a>实验目的</h2><p>本实验将通过aquatone工具集，实现对目标子域名信息的收集，并实现对主机端口的扫描探测。</p>
+<h2 id="实验环境-3"><a href="#实验环境-3" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>用户名：root<br><br>密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-2"><a href="#实验原理-2" class="headerlink" title="实验原理"></a>实验原理</h2><p>aquatone是一个工具集合，通过3个工具的配合，完成目标子域名和相关信息收集。</p>
+<h2 id="实验步骤-2"><a href="#实验步骤-2" class="headerlink" title="实验步骤"></a>实验步骤</h2><h5 id="1-登录”Kali”操作机，打开终端，输入命令aquatone-discover-help查看相关参数的帮助文档"><a href="#1-登录”Kali”操作机，打开终端，输入命令aquatone-discover-help查看相关参数的帮助文档" class="headerlink" title="1.登录”Kali”操作机，打开终端，输入命令aquatone-discover --help查看相关参数的帮助文档"></a>1.登录”Kali”操作机，打开终端，输入命令<code>aquatone-discover --help</code>查看相关参数的帮助文档</h5><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602170504136hxzeq.png" alt="image.png"></p>
+<p>从图中可见，主要涉及几个重要参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">-d,指定目标域名<br>--nameservers，指定使用的名字服务器<br>-t，指定查询线程数<br></code></pre></td></tr></table></figure>
+
+<h4 id="扩展："><a href="#扩展：" class="headerlink" title="扩展："></a>扩展：</h4><p><code>aquatone-discover</code>支持扩展查询，比如<code>shodan</code>搜索引擎，扩展查询需要指定其<code>API Key</code>值。</p>
+<p>第2步骤中的截图，因为没有指定相关扩展查询的<code>API Key</code>，所以显示<code>Skipped</code>（跳过）。</p>
+<p>设置shodan API key，使用shodan搜索更全面的域名信息</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602172951591zsmlq.png" alt="image.png"></p>
+<p>设置完成，key会保存在<code>~/aquatone/</code>目录下的<code>.keys.yml</code>文件中，该文件是隐藏的，可以使用命令<code>ls -la</code>查看到该文件，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602175611264oojbz.png" alt="image.png"></p>
+<p>当没有设定扩展收集器的key时，可以将对应的收集器排除，提高探测效率。对应的参数是<code>--disable-collectors</code>，多个收集器，使用<code>，</code>隔开。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602183549111y8x90.png" alt="image.png"></p>
+<h4 id="2、使用aquatone-discover命令，对已授权目标域名进行信息探测。"><a href="#2、使用aquatone-discover命令，对已授权目标域名进行信息探测。" class="headerlink" title="2、使用aquatone-discover命令，对已授权目标域名进行信息探测。"></a>2、使用<code>aquatone-discover</code>命令，对已授权目标域名进行信息探测。</h4><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602173325903nktf0.png" alt="image.png"></p>
+<p>图中，使用参数<code>-d</code>指定了目标域名；使用<code>-t</code>指定1个线程，<code>-s</code>指定每隔2秒发送查询包。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602174941417oedok.png" alt="image.png"></p>
+<p>上图是工具查询到的信息回显，扫描完成后，会在目录中生成结果文件夹，名称与目标域名一致。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image2106021751402055zdch.png" alt="image.png"></p>
+<p>扫描结束，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image210602192613118cufru.png" alt="image.png"></p>
+<p>图中可见3部分，上方第一部分，为扫描过程中的实时回显，中间部分是按照所属C段解析出了几台主机；最下方显示将结果信息存放到对应路径的文件中（以两种不同的格式，存放了域名和IP的对应关系）。如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image2106021931393382fkhh.png" alt="image.png"></p>
+<h4 id="3、aquatone-scan-扫描"><a href="#3、aquatone-scan-扫描" class="headerlink" title="3、aquatone-scan 扫描"></a>3、aquatone-scan 扫描</h4><p>减少扫描的目标，仅导出<code>www.sanfor.com.cn</code>域名信息，在<code>sangfor.com.cn</code>文件夹下，按照对应格式，编写两个文件（<code>hosts.txt</code>和<code>hosts.json</code>），主要是<code>json</code>格式的文件，用于接下来的端口扫描。详见下图1处。</p>
+<p>扫描命令：<code>aquatone-scan -d sangfor.com.cn -p 22,3389,80,21 -t 1 -s 2</code>，详见图中2处。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">-d，指定域名，此处域名需与 discover 节点扫描的内容一致<br>-p，指定扫描的端口，使用逗号分隔<br>-t，指定线程数<br>-s，指定发送请求时，间隔2秒<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image2106021955094429tu48.png" alt="image.png"></p>
+<p>图中可见，探测出<code>80</code>端口是处于开放状态，相关信息已存放在<code>open_ports.txt</code>和<code>urls.txt</code>文件中。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210602/image2106022006338177u5u5.png" alt="image.png"></p>
+<h2 id="实验总结-2"><a href="#实验总结-2" class="headerlink" title="实验总结"></a>实验总结</h2><p>本实验通过使用<code>aquatone</code>工具集中的<code>discover</code>和<code>scan</code>工具，完成对指定域名的子域名信息收集和端口存活探测。</p>
+<h1 id="C段扫描"><a href="#C段扫描" class="headerlink" title="C段扫描"></a>C段扫描</h1><h2 id="实验目的-3"><a href="#实验目的-3" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过使用常见扫描工具，对C段资产信息扫描和收集。</p>
+<h2 id="实验环境-4"><a href="#实验环境-4" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>    用户名：root<br><br>    密码：Sangfor!7890<br><br>靶机：Ubuntu 18.04.02    <br><br>    用户名：root<br><br>    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-3"><a href="#实验原理-3" class="headerlink" title="实验原理"></a>实验原理</h2><p>通过使用Nmap、Masscan工具，对指定目标信息的探测。</p>
+<h2 id="实验步骤-3"><a href="#实验步骤-3" class="headerlink" title="实验步骤"></a>实验步骤</h2><h4 id="一、Nmap扫描"><a href="#一、Nmap扫描" class="headerlink" title="一、Nmap扫描"></a>一、Nmap扫描</h4><p>1、登录靶机，合用<code>ifconfig</code>命令，查看是否获取到IP地址，如果没有获取到<code>192</code>开头的IP地址，参照下图的命令获取IP地址、查看IP地址。<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20230707/image230707165935927gx8xl.png" alt="image.png"></p>
+<p>2、登录<code>kali</code>主机，在终端中使用nmap工具探测信息资产（IP地址段，以第1步骤为准）。</p>
+<h5 id="命令一：Nmap-–sn-–PE-n-192-168-0-0-24-–oX-out-xml"><a href="#命令一：Nmap-–sn-–PE-n-192-168-0-0-24-–oX-out-xml" class="headerlink" title="命令一：Nmap –sn –PE -n 192.168.0.0/24 –oX out.xml"></a>命令一：<code>Nmap –sn –PE -n 192.168.0.0/24 –oX out.xml</code></h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">-sn    不扫描端口<br>-PE    ICMP 扫描<br>-n    不进行dns解析<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image21060113065966734b1h.png" alt="image.png"></p>
+<p>查看保存路径下，已输出指定文件，文件中保存了扫描的结果。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image2106011309167117udty.png" alt="image.png"></p>
+<h4 id="二、Masscan扫描"><a href="#二、Masscan扫描" class="headerlink" title="二、Masscan扫描"></a>二、Masscan扫描</h4><p>【准备】<br>执行以下命令，完成安装准备。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">1. apt-key adv --refresh-keys --keyserver keyserver.ubuntu.com<br>2. wget -q -O - https://archive.kali.org/archive-key.asc | sudo apt-key add<br>3. apt update<br></code></pre></td></tr></table></figure>
+
+<p>1、安装工具所需依赖环境，命令<code>apt-get install git gcc make libpcap-dev</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601131458398m5ene.png" alt="image.png"></p>
+<p>2、下载工具，并进行编译。命令<code>git clone https://github.com/robertdavidgraham/masscan</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image2106011320156285jlwn.png" alt="image.png"></p>
+<p>3、C段探测。命令<code>masscan –p 80 ip/24 --rate 10000 -oL output.txt</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">-p  设置端口<br>--rate  发包速率<br>-oL 输出位置<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601132434752rpmcx.png" alt="image.png"></p>
+<p>通过<code>vim</code>工具，查看扫描的完整结果。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image2106011326554007qdty.png" alt="image.png"></p>
+<p>从图中可见，当前C段中，80端口开放的主机，共计有13台主机，其中<code>192.168.0.69</code>主机，为我们实验当中的靶机。</p>
+<p>实验至此结束。</p>
+<h2 id="实验总结-3"><a href="#实验总结-3" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过使用Nmap、Masscan工具，对指定目标信息的探测。</p>
+<h1 id="指纹识别"><a href="#指纹识别" class="headerlink" title="指纹识别"></a>指纹识别</h1><h2 id="实验目的-4"><a href="#实验目的-4" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过使用常见工具，对目标资产的类别和版本进行识别。</p>
+<h2 id="实验环境-5"><a href="#实验环境-5" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>    用户名：root<br><br>    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-4"><a href="#实验原理-4" class="headerlink" title="实验原理"></a>实验原理</h2><p>通过使用Nmap、Wafw00f工具，对指定目标资产的类别和版本进行识别。</p>
+<h2 id="实验步骤-4"><a href="#实验步骤-4" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>登录靶机，手动启动本地网卡。使用命令<code>ifup ens18</code>,并使用<code>ifconfig</code>命令查看获取的IP地址。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image2106011720598538imqi.png" alt="image.png"></p>
+<h4 id="一、Nmap工具"><a href="#一、Nmap工具" class="headerlink" title="一、Nmap工具"></a>一、Nmap工具</h4><p>登录<code>kali</code>主机，在终端中使用nmap工具探测资产服务指纹。</p>
+<h5 id="命令一：nmap-–sS-–Pn-–O-192-168-0-85-IP地址需根据目标靶机实际情况，进行修改）"><a href="#命令一：nmap-–sS-–Pn-–O-192-168-0-85-IP地址需根据目标靶机实际情况，进行修改）" class="headerlink" title="命令一：nmap –sS –Pn –O 192.168.0.85 (IP地址需根据目标靶机实际情况，进行修改）"></a>命令一：<code>nmap –sS –Pn –O 192.168.0.85</code> (IP地址需根据目标靶机实际情况，进行修改）</h5><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601165849784ezc70.png" alt="image.png"></p>
+<h5 id="命令二：nmap-sS-sV-192-168-0-85"><a href="#命令二：nmap-sS-sV-192-168-0-85" class="headerlink" title="命令二：nmap -sS -sV 192.168.0.85"></a>命令二：<code>nmap -sS -sV 192.168.0.85</code></h5><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601170116242fakez.png" alt="image.png"></p>
+<h5 id="命令三：nmap-p-80-script-http-waf-fingerprint-192-168-0-85"><a href="#命令三：nmap-p-80-script-http-waf-fingerprint-192-168-0-85" class="headerlink" title="命令三：nmap -p 80 --script http-waf-fingerprint 192.168.0.85"></a>命令三：<code>nmap -p 80 --script http-waf-fingerprint 192.168.0.85</code></h5><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601170248883hjrdh.png" alt="image.png"></p>
+<p>实验环境中未部署waf，所以无waf相关信息显示，下图为实际环境中测试，探测到waf设备的信息</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601170429818t81pi.png" alt="image.png"></p>
+<h4 id="二、Wafw00f工具"><a href="#二、Wafw00f工具" class="headerlink" title="二、Wafw00f工具"></a>二、Wafw00f工具</h4><p>1、下载该工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">git clone https://github.com/EnableSecurity/wafw00f<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image21060117144283905qp3.png" alt="image.png"></p>
+<p>2、使用工具</p>
+<h5 id="命令四：Wafw00f-http-192-168-0-85-IP地址需根据目标靶机实际情况，进行修改，或者输入目标域名）"><a href="#命令四：Wafw00f-http-192-168-0-85-IP地址需根据目标靶机实际情况，进行修改，或者输入目标域名）" class="headerlink" title="命令四：Wafw00f http://192.168.0.85 (IP地址需根据目标靶机实际情况，进行修改，或者输入目标域名）"></a>命令四：<code>Wafw00f http://192.168.0.85</code> (IP地址需根据目标靶机实际情况，进行修改，或者输入目标域名）</h5><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image2106011716044431cfl7.png" alt="image.png"></p>
+<p>实验环境中未部署waf，所以无waf相关信息显示，下图为实际环境中测试，探测到waf设备的信息</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210601/image210601171857148qll3o.png" alt="image.png"></p>
+<p>实验至此结束。</p>
+<h2 id="实验总结-4"><a href="#实验总结-4" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过使用Nmap、Wafw00f工具，对指定目标指纹信息识别、收集。</p>
+<h1 id="Maltego情报收集实验"><a href="#Maltego情报收集实验" class="headerlink" title="Maltego情报收集实验"></a>Maltego情报收集实验</h1><h2 id="实验目的-5"><a href="#实验目的-5" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，熟悉maltego工具对目标信息汇总收集的相关能力。</p>
+<h2 id="实验环境-6"><a href="#实验环境-6" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>用户名：root<br><br>密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-5"><a href="#实验原理-5" class="headerlink" title="实验原理"></a>实验原理</h2><p>Maltego是一款非常优秀的信息收集工具。与其他工具相比，不仅功能强大，而且自动化水平非常高，不需要复杂的命令，就能轻松的完成信息收集。</p>
+<p>通过maltego工具，实现对授权测试目标信息收集、分析。</p>
+<h2 id="实验步骤-5"><a href="#实验步骤-5" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1.登录”Kali”操作机，点击左侧的<code>maltego</code>图标，工具将会自行启动图形界面（或在终端中，输入“maltego”也可启动）。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image240517163332802gab6v.png" alt="image.png"></p>
+<p>2.配置<code>Transform Hub</code>，然后安装需要的功能模块，将鼠标移动到模块上，会自动出现<code>install</code>，点击后将开始自行安装。（在实验过程中，可按需在此处动态添加功能模块，扩大信息查询的能力）。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image240517163725198gq5vw.png" alt="image.png"></p>
+<p>建议增加该插件，该插件主要用于DNS相关信息查询（软件自带的dns查询可能失效，可用该插件实现dns信息查询）。<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image240517163909209lx8zf.png" alt="image.png"></p>
+<p>3.收集目标信息。本次我们的目标是一个域名，所以按下图中的步骤选择<code>footprint L3</code>。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image240517163958346mhmy9.png" alt="image.png"></p>
+<p>输入目标域名：</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image2106031041338725hby6.png" alt="image.png"></p>
+<p>工具会新建一个<strong>画板</strong>，在正中会出现我们设定目标域名为根节点，右下角显示查询进度，随着进度条，会实时将收集到的信息同根节点进行关联，拓扑会自动生长。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603104230179upb3o.png" alt="image.png"></p>
+<p>为了增加信息收集的效率，可以在图标上点击鼠标右键，选择对应查询的类别，比如查询DNS信息，使用【DNSDB】插件。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image240517164433436m2ggz.png" alt="image.png"></p>
+<p>使用过程中，如果弹出以下对话框，可按下图勾选处理。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220310/image220310115942576undt5.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image2405171646120144ktfu.png" alt="image.png"></p>
+<p>该工具在查询过程中，会因使用的插件不同，可能会找到同根节点相关的域名信息，可能不属于根节点真正的域名信息，<code>maltego</code>会给出选项目，让使用者进行选择。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603104505596z0yr9.png" alt="image.png"></p>
+<p>探测完成后，会看到以下拓扑结构的画图，相互的层级关系一目了然。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603104931812yq58z.png" alt="image.png"></p>
+<p>在现有拓扑中的任一节点，进行进一步信息探测。比如在根节点处，想对域名进行DNS查询，只需在图标上点击右键，输入dns，此时和dns相关的<code>tranform</code>工具，将显示出来，使用者可按需选择。当找到对应的关联信息时，会在画板中自动添加。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image2405171716242825y7d9.png" alt="image.png"></p>
+<p>对指定域名进行子域名探测</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20240517/image240517171729092amw5e.png" alt="image.png"></p>
+<p>此处我们安装了<code>shodan</code>模块，按照提示，输入个人<code>API Key</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image2106031106414428tr9t.png" alt="image.png"></p>
+<p>在下方的进度消息处，可看到通过<code>shodan</code>探测到12个实体</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603111330285qbgda.png" alt="image.png"></p>
+<p>4.手工增加实体节点</p>
+<p>工具探测，可能有些信息探测不全面，此时可人工辅助添加已知信息，加入画板中。</p>
+<p>比如，增加一个域名，该域名和根节点域名也相关。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603112400993umwkd.png" alt="image.png"></p>
+<p>在左侧拖拽域名实体，至画板中，双击该图标，修改为我们需要添加的域名信息。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603112753941tttbv.png" alt="image.png"></p>
+<p>当搜索到新增节点的信息，与原画板中已有信息有关联时，会自动添加线条，指向关联节点，图中向上的蓝色线条指向了根节点<code>sangfor.comm.cn</code>。</p>
+<p>5.导出报告</p>
+<p>信息探测完毕后，可以将信息进行汇总导出。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603113132173acsvj.png" alt="image.png"></p>
+<p>下图是导出的报告截图，共计92页，以不同形式展现。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210603/image210603113344977eiy4q.png" alt="image.png"></p>
+<h2 id="实验总结-5"><a href="#实验总结-5" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过maltego工具，实现对授权测试目标信息收集、分析。</p>
+<p>本实验中实现了对域名目标的关联信息探测，手工辅助增加节点，进行信息探测、关联，并完成信息收集结果的报告生成和导出。</p>
+<h1 id="CobaltStrike配置使用实验"><a href="#CobaltStrike配置使用实验" class="headerlink" title="CobaltStrike配置使用实验"></a>CobaltStrike配置使用实验</h1><h2 id="实验目的-6"><a href="#实验目的-6" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，掌握Cobaltstrike工具的配置和简单使用方法。</p>
+<h2 id="实验环境-7"><a href="#实验环境-7" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">服务器：kali<br><br>    用户名：root<br><br>    密码：Sangfor!7890<br><br>攻击机：Windows 10<br><br>    用户名：Administrator<br><br>    密码：Sangfor!7890<br><br>受害机：Windows 10<br><br>    用户名：Administrator<br><br>    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-6"><a href="#实验原理-6" class="headerlink" title="实验原理"></a>实验原理</h2><p>CobaltStrike（以下简称“CS”）工具，是攻击队常用的团队协作工具之一。本实验将由服务器和攻击机，模拟组成攻击队的CS工具环境，完成相关配置，并通过简单的攻击实践，测试协作效果。</p>
+<h2 id="实验步骤-6"><a href="#实验步骤-6" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1.登录”Kali”操作机，在终端中进入CS文件夹，然后使用命令<code>chmod +x teamserver</code>给<code>teamserver</code>文件赋予执行权限，然后查看当前主机的本地IP地址（后面会用到）。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604205517217lo1n3.png" alt="image.png"></p>
+<p>2.启动服务端服务。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604205823451kblxm.png" alt="image.png"></p>
+<p>启动服务的命令为：<code>./teamserver IP(本机） 团队接入口令</code> 。</p>
+<p>如上图所示，本地IP为<code>192.168.0.199</code>，设置团队协作连接的口令为<code>4444</code>（使用时建议采用强口令）。</p>
+<p>至此，服务端配置已完成。</p>
+<p>3.登录攻击机，在桌面找到CS文件夹中的<code>cobaltStrike.exe</code>文件，双击运行。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604210139950fbk9y.png" alt="image.png"></p>
+<p>在弹出框中，输入服务器IP<code>192.168.0.199</code>，端口默认为<code>55050</code>，不用修改；用户（user）可以随意设置；口令（password）为服务端设置的<code>4444</code>。输入完毕后，点击连接。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604210312263tujxv.png" alt="image.png"></p>
+<p>登录成功后，会进入操作界面，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604210803520asp2l.png" alt="image.png"></p>
+<p>4、创建监听端口。点击左上角<code>CobaltStrike</code>菜单中的<code>Listeners</code>.</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604210928752h2epi.png" alt="image.png"></p>
+<p>下方会出现<code>listeners</code>标签，点击<code>Add</code>按钮，在弹出的新建监听器中，输入相关设置参数。如下图所示，图中为该监听器命名为<code>Listenner</code>，选择<code>payload</code>为<code>windows/beacon_http/reverse_http</code>,设定主机为服务器的IP地址，端口为<code>8808</code>。该配置是在服务端会启动一个端口为8808的http服务，用于受害机主动连接服务器。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604211142727sv2cv.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604211549959sj2t6.png" alt="image.png"></p>
+<p>此时主机会显示监听开始。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image2106042116225053wcld.png" alt="image.png"></p>
+<p>服务端也会显示，在端口8808上已开始监听。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image21060421170829767bfe.png" alt="image.png"></p>
+<p>5.生成可执行文件，用于在受害机上运行。选择<code>windows Executable</code>选项，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604212016425ok5mj.png" alt="image.png"></p>
+<p>在弹出框中，选择对应的监听器（此处我们只建了一个监听器，会默认已选择）和输出的文件格式，此处我们选择exe文件类型。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604212125359fpr98.png" alt="image.png"></p>
+<p>将文件保存至本地磁盘中，图中我们选择了桌面的<code>att</code>文件夹，文件名称如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image2106042123238353hdwq.png" alt="image.png"></p>
+<p>6.投递恶意文件。攻击方投递恶意的途径较多，比如诱导受害者在网站上下载，钓鱼邮件等。此处我们模拟一个网站，在受害机上访问并下载该文件。</p>
+<p>使用python http服务模块工具，在本地启动一个http服务。如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604212807203yt27j.png" alt="image.png"></p>
+<p>图中，我们将恶意文件的路径设为网站的根目录，网站的对外端口为8899。此时，在受害机上访问该地址，并下载该文件。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604213001853k711o.png" alt="image.png"></p>
+<p>受害机执行时，操作系统会提示,此时点击<code>仍要运行</code>。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604213127986iuhoj.png" alt="image.png"></p>
+<p>点击后，界面无任务回显，而此时CS端已显示受害机器已上线。如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210604/image210604213352376yoxbu.png" alt="image.png"></p>
+<p>实验至此结束。</p>
+<h2 id="实验总结-6"><a href="#实验总结-6" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过实际操作配置，并结合一次简单完整的操作，理解CS的配置、运行、协作机制。</p>
+<h1 id="CobaltStrikeOffice钓鱼实验"><a href="#CobaltStrikeOffice钓鱼实验" class="headerlink" title="CobaltStrikeOffice钓鱼实验"></a>CobaltStrikeOffice钓鱼实验</h1><h2 id="实验目的-7"><a href="#实验目的-7" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，了解通过cobaltStrike制作Office钓鱼文件，并实现攻击的过程和原理。</p>
+<h2 id="实验环境-8"><a href="#实验环境-8" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">服务器：kali<br><br>    用户名：root<br><br>    密码：Sangfor!7890<br><br>攻击机：Windows 10<br><br>    用户名：Administrator<br><br>    密码：Sangfor!7890<br><br>受害机：Windows 10<br><br>    用户名：Administrator<br><br>    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-7"><a href="#实验原理-7" class="headerlink" title="实验原理"></a>实验原理</h2><p>CobaltStrike（以下简称“CS”）工具，是攻击队常用的团队协作工具之一。</p>
+<p>本实验将通过cobaltStrike工具，制作携带宏脚本的office word文档，并在受害机上运行后，成功控制受害机。</p>
+<h2 id="实验步骤-7"><a href="#实验步骤-7" class="headerlink" title="实验步骤"></a>实验步骤</h2><p>1.登陆kali服务器，在CS目录下，赋予<code>teamserver</code>文件运行权限（命令：<code>chmod +x teamserver）</code>，然后运行CS服务端程序。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210608/image210608114725248t8fdj.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image2106051738086984xm36.png" alt="image.png"></p>
+<p>如上图所示，团队登陆的密码设为<code>4444</code>。</p>
+<p>2、登陆攻击机，找开CS客户端，登陆CS。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605173827134zm9r1.png" alt="image.png"></p>
+<p>3、添加监听端口。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605173913527xruac.png" alt="image.png"></p>
+<p>监听端口设置完成后，在下图中，显示监听端口已启动，已处于监听状态。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605173937436ny6e0.png" alt="image.png"></p>
+<p>下图是在服务端显示为监听端口已启动。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image2106051740095815n2ni.png" alt="image.png"></p>
+<p>4、制作office宏脚本文件</p>
+<p>选择<code>attacks</code>中的<code>packages</code>,在展开的菜单中选择<code>MS Office Maco</code>。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image21060517404069412v42.png" alt="image.png"></p>
+<p>选择监听端口。现在只启动了一个监听端口，默认已选中。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174057291nys51.png" alt="image.png"></p>
+<p>点击生成后，弹出宏文件制作步骤说明。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174114150ti8cp.png" alt="image.png"></p>
+<p>按照步骤说明，打开一个word文档，选择<code>视图</code>中的<code>宏</code>，在下拉菜单中，选择<code>查看宏</code>。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174219784ow6ov.png" alt="image.png"></p>
+<p>在宏的位置处，选择当前文档（因此时是新建的文档，未保存名称，所以显示为<code>文档1</code>）</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174328581c7rlh.png" alt="image.png"></p>
+<p>然后，输入宏名，点击创建。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174410396v1tcf.png" alt="image.png"></p>
+<p>在弹出的宏框中，清除原有宏的内容。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174507062bd6ix.png" alt="image.png"></p>
+<p>然后，点击CS中的<code>Copy Macro(复制宏)</code>，并粘贴至文档的宏框中。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174528575aft2j.png" alt="image.png"></p>
+<p>然后，保存为一个启动宏的word文档（此处可以先保存为后缀为<code>docm</code>文档，保存成功后，去掉后缀中的<code>m</code>即可。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605174602871z8s2m.png" alt="image.png"></p>
+<p>实验环境下，我们将制作好的文档，复制到受害机中，实际的攻击场景中，可通过邮件、社工等方式，完成样本投递。</p>
+<p>此处，我们可以在当前目录下，使用python自动的模块，启动一个简易的网站服务<code>python -m http.server 8888</code>,该命令意思是在当前路径为网站根目录，启动一个端口为8888的网站服务器。然后受害机上，使用浏览器访问攻击机的IP和端口，下载这个文件。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210608/image2106081153257542nxwe.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605175729340nlfzp.png" alt="image.png"></p>
+<p>因office版本和安全设置原因，已禁用宏，在弹出的提示中，我们手动点击<code>启动内容</code>。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image210605175818157vdhz8.png" alt="image.png"></p>
+<p>而此时，在攻击机中，已发现受害机成功上线。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210605/image2106051758476997jp47.png" alt="image.png"></p>
+<h2 id="实验总结-7"><a href="#实验总结-7" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，学员了解CS工具制作office钓鱼宏文档的过程，并结合CS工具，感知攻击完成的过程。</p>
+<h1 id="伪造（钓鱼）邮件实验"><a href="#伪造（钓鱼）邮件实验" class="headerlink" title="伪造（钓鱼）邮件实验"></a>伪造（钓鱼）邮件实验</h1><h2 id="实验目的-8"><a href="#实验目的-8" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过本实验，实现常见的邮件伪造过程，体验邮件伪造的整个过程。</p>
+<h2 id="实验环境-9"><a href="#实验环境-9" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">服务器：kali<br><br>    用户名：root<br><br>    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验原理-8"><a href="#实验原理-8" class="headerlink" title="实验原理"></a>实验原理</h2><p>使用邮件发送协议测试工具<code>swaks</code>，发送虚假邮件给目标邮件地址，为了看到实验效果，建议学员收件地址为自己的邮件地址。</p>
+<p>本实验主要是让学员体验伪造邮件的发送过程，不包括带有恶意攻击向量的内容。</p>
+<h2 id="实验步骤-8"><a href="#实验步骤-8" class="headerlink" title="实验步骤"></a>实验步骤</h2><h3 id="1-登陆kali服务器，打开终端，查看swaks的帮助文档。"><a href="#1-登陆kali服务器，打开终端，查看swaks的帮助文档。" class="headerlink" title="1.登陆kali服务器，打开终端，查看swaks的帮助文档。"></a>1.登陆kali服务器，打开终端，查看<code>swaks</code>的帮助文档。</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210719/image2107191714256280s2zu.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210719/image210719171514502wsg6j.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210719/image210719171613532vhj5z.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210719/image210719171714105kmv2p.png" alt="image.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">命令：<br>    swaks --help<br>    或者<br>    man swaks<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625140022362igp87.png" alt="image.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625140218906xs6at.png" alt="image.png"></p>
+<h3 id="2-使用命令发送虚假邮件"><a href="#2-使用命令发送虚假邮件" class="headerlink" title="2.使用命令发送虚假邮件"></a>2.使用命令发送虚假邮件</h3><p>命令<code>swaks --to 收件人邮箱地址 --from 虚假发送人邮箱地址 --ehlo xxx --body “这是邮件正文” --header “Subject：邮件主题”</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625141321438s2kiz.png" alt="image.png"></p>
+<p>由上图可见，输入发送虚假邮件的命令后，<code>swaks</code>工具会按照smtp相关标准步骤，发送邮件，并回显整个发送过程。由上图可知，该邮件发送成功。</p>
+<h3 id="3-检查收件箱，确认是否收件成功"><a href="#3-检查收件箱，确认是否收件成功" class="headerlink" title="3.检查收件箱，确认是否收件成功"></a>3.检查收件箱，确认是否收件成功</h3><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625141919547v8x37.png" alt="image.png"></p>
+<p>上图可见，收件成功。图中1处，显示为声称的邮件主题，即<code>Subject</code>部分，图中2处为发件人地址（并非真实存在），即<code>--from</code>，图中3处为邮件正文，即<code>--body</code>内容。</p>
+<h3 id="4-以真实的邮件为基准，发送虚假邮件"><a href="#4-以真实的邮件为基准，发送虚假邮件" class="headerlink" title="4. 以真实的邮件为基准，发送虚假邮件"></a>4. 以真实的邮件为基准，发送虚假邮件</h3><p>在选定的伪造邮件中，点击显示邮件原文。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image2106251521072599933k.png" alt="image.png"></p>
+<p>在新页面中，查看到原始邮件内容。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625152257608xdemq.png" alt="image.png"></p>
+<p>在本地另存为<code>mail_content.txt</code>，并去掉其中<code>Received</code>和<code>To</code>行。</p>
+<p>建立新文件，命令<code>touch mail_content.txt</code></p>
+<p>使用vim工具，打开文件，将复制的原始文件内容，按<code>i</code>进入vim工具的编辑模式，按<code>shift+i</code>，完成内容粘贴，然后按<code>esc</code>，并将光标移至<code>Received</code>行，按两次<code>d</code>键，删除该行；然后，同样将光标移至<code>To</code>行，按两次<code>d</code>键，最后，按<code>：</code>，输入<code>wq</code>保存文档，并退出。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625152500209xgr1w.png" alt="image.png"></p>
+<p>使用命令发送邮件，命令为<code>swaks --data mail.content.txt --to 发件人邮箱地址 --from 发送人邮箱</code></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625180331390yj3w1.png" alt="image.png"></p>
+<p>由上图可知，邮件发送成功。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625193742671qh2p3.png" alt="image.png"></p>
+<p>邮箱中收件成功，查看邮件原文，可以看到更多邮件细节。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20210625/image210625194048634uy5ou.png" alt="image.png"></p>
+<h2 id="实验总结-8"><a href="#实验总结-8" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过本实验，学员体验到伪造邮件的发送过程，可结合钓鱼思路，构建钓鱼邮件，深入了解钓鱼邮件的危害，提升安全防护意识。</p>
+<h1 id="Web目录扫描"><a href="#Web目录扫描" class="headerlink" title="Web目录扫描"></a>Web目录扫描</h1><h2 id="实验目的-9"><a href="#实验目的-9" class="headerlink" title="实验目的"></a>实验目的</h2><p>通过使用常见Web目录扫描工具，理解Web目录扫描的原理和意义。</p>
+<p><strong>该类探测仅限于实验环境或符合国家或所在地区法律允许情况下进行，禁止用于非法途径！</strong></p>
+<h2 id="实验环境-10"><a href="#实验环境-10" class="headerlink" title="实验环境"></a>实验环境</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">操作机：kali<br><br>    用户名：root<br><br>    密码：Sangfor!7890<br><br>靶机：DVWA    <br><br>    用户名：root<br><br>    密码：Sangfor!7890<br></code></pre></td></tr></table></figure>
+
+<p>##实验拓扑</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507143224300m1hfr.png" alt="image.png"></p>
+<h2 id="实验原理-9"><a href="#实验原理-9" class="headerlink" title="实验原理"></a>实验原理</h2><p>在<strong>kali</strong>主机的终端中，配置并使用Dirb和dirbuster工具，对目标主机<strong>DVWA</strong>Web目录进行探测，对比结果，结合http协议原理，理解Web目录扫描的原理。</p>
+<h2 id="实验步骤-9"><a href="#实验步骤-9" class="headerlink" title="实验步骤"></a>实验步骤</h2><h4 id="一、Web主机网络可达测试"><a href="#一、Web主机网络可达测试" class="headerlink" title="一、Web主机网络可达测试"></a>一、Web主机网络可达测试</h4><p>1、进入DVWA主机，使用<code>ifconfig</code>查看网络配置情况是否正常。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">此时，发现IP地址未正常获取，使用`dhclient -v`命令，成功获取IP地址。<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507144458549s1nem.png" alt="image.png"></p>
+<p>2、进入<strong>kali</strong>主机，打开终端，通过<code>ping</code>命令和<code>wget</code>命令，对<strong>Web主机</strong>资源进行访问测试。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image22050714502083088h8k.png" alt="image.png"></p>
+<p>从图中可见，ping测试前面存在网络不通，在DVWA主机中重新获取了IP地址后，网络可达；</p>
+<p>然后，使用<code>wget http://IP</code>（IP地址为DVWA主机IP），http状态码为200，资源请示成功。</p>
+<h4 id="二、Dirb工具探测Web目录"><a href="#二、Dirb工具探测Web目录" class="headerlink" title="二、Dirb工具探测Web目录"></a>二、Dirb工具探测Web目录</h4><p>1、查看Dirb工具的帮助。</p>
+<p>使用<code>dirb</code>命令，输出相关帮助内容。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image2205071457166568h5q5.png" alt="image.png"></p>
+<p>图中2处表明，Dirb使用的语法，即，在后面跟上基本的url基地址，再在后面加上指定的常用路径字典；</p>
+<p>图中3处表明，Dirb相关的选项参数，在需要使用相关参数时，添加在dirb命令后面即可，如路径字典后面。</p>
+<p>2、<strong>DVWA主机</strong>Web目录探测</p>
+<p>按照<code>dirb</code>命令语法结构，构建探测命令。在终端中，输入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">dirb http://IP /usr/share/wordlists/dirb/common.txt<br></code></pre></td></tr></table></figure>
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507150831333ngswn.png" alt="image.png"></p>
+<p>其中IP为<strong>DVWA</strong>主机地址，截图中DVWA主机的IP地址为<code>192.168.17.195</code>。</p>
+<p>使用的路径字典为<code>/usr/share/wordlists/dirb/common.txt</code>，在同级目录下，还存在其它字典，根据需要加载即可。</p>
+<p>由上图可见，通过指定字典，总共尝试4612次，其中成功猜解出2个地址。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507151444880q9wnh.png" alt="image.png"></p>
+<p>加载其它字典，可自行尝试。</p>
+<h4 id="三、DirBuster工具探测Web目录"><a href="#三、DirBuster工具探测Web目录" class="headerlink" title="三、DirBuster工具探测Web目录"></a>三、DirBuster工具探测Web目录</h4><p><strong>Dirbuster</strong>在终端中启动后，会出现图形界面，配置相关参数并进行使用。</p>
+<p>1、启动<strong>Dirbuster</strong>工具。</p>
+<p>输入命令<code>dirbuster</code>后，工具自行启动，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507151804849y6dw7.png" alt="image.png"></p>
+<p>2、配置相关参数。</p>
+<p>对<strong>DVWA</strong>测试前，需完成相关参数配置，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image2205071522279128p1gs.png" alt="image.png"></p>
+<p>点击<code>start</code>后，工作界面如下图所示，从图中可知，当前进度为38%（第1处），总共将发起的请求数为87655次，现在已发出33374次请求（第2处）。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507152430976olv3w.png" alt="image.png"></p>
+<p>3、探测结果</p>
+<p>在第2步中所探测结果显示，仅有两个地址猜解成功，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507152734104j0yd6.png" alt="image.png"></p>
+<p>猜解结果同所需字典息息相关，将字典调整为dirb路径下的<code>common.txt</code>，再次探测，配置如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507153108777v07t8.png" alt="image.png"></p>
+<p>结果如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507153239190d1l1z.png" alt="image.png"></p>
+<p><strong>Dirbuster</strong>工具还给出了资源的树状结构，如下图所示。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.edu.sangfor.com.cn/file/20220507/image220507153355291g9q8w.png" alt="image.png"></p>
+<p>实验至此结束。</p>
+<h2 id="实验总结-9"><a href="#实验总结-9" class="headerlink" title="实验总结"></a>实验总结</h2><p>通过在实验环境中，实际操作体验了两款Web目录探测工具，通过对靶机发送实际的交互数据，对web目录进行探测，结合http协议相关原理，有助于理解web目录探测的原理和意义。</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文由FlowsecNagi编写，采用非商业性使用-相同方式共享 4.0 国际](<a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">https://creativecommons.org/licenses/by-nc-sa/4.0/</a>) 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+<div class="related-wrap" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A9R%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86%E4%B8%8E%E9%AA%8C%E8%AF%81/">某厂产业教育 - 逻辑漏洞原理与验证</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/09/13/%E7%BA%A2%E8%93%9D%E6%94%BB%E9%98%B2/%E2%85%A1B%E4%B8%8B%E4%B8%80%E4%BB%A3%E9%98%B2%E7%81%AB%E5%A2%99%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B8%8E%E8%BF%90%E7%BB%B4%E5%AE%9E%E9%AA%8C/">某厂产业教育 - 下一代防火墙基础原理与运维</a></div></section></div>
+
+
+
+
+  <div class="related-wrap md-text" id="comments">
+    <section class='header cmt-title cap theme'>
+      <p>快来参与讨论吧~</p>
+
+    </section>
+    <section class='body cmt-body beaudar'>
+      
+
+<svg class="loading" style="vertical-align:middle;fill:currentColor;overflow:hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="beaudar" repo="ABCkillmen/blog-comments" issue-term="pathname" theme="preferred-color-scheme" input-position="top" comment-order="desc" loading="false" branch="main"></div>
+
+    </section>
+  </div>
+
+
+
+<footer class="page-footer footnote"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs15">博客</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/topic/">专栏</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/categories/">分类</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/tags/">标签</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/archives/">归档</a></div><div class="sitemap-group"><span class="fs15">列表</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/wiki/">项目列表</a><a target="_blank" rel="noopener" href="https://abckillmen.github.io/douban/books/">书籍列表</a></div><div class="sitemap-group"><span class="fs15">社交</span><a target="_blank" rel="noopener" href="https://abckillmen.github.io/friends/">友链</a><a target="_blank" rel="noopener" href="https://github.com/ABCkillmen">GitHub</a><a target="_blank" rel="noopener" href="https://space.bilibili.com/496999871">bilibili</a></div><div class="sitemap-group"><span class="fs15">更多</span><a target="_blank" rel="noopener" href="https://chatgpt.com/">科学ChatGPT</a><a target="_blank" rel="noopener" href="http://nav.luckysec.cn/">网安导航网站</a><a target="_blank" rel="noopener" href="https://sumorio.top/">其他导航网站</a></div></div><div class="text"><p>本站由 <a href="/">FlowsecNagi</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.29.1">Stellar 1.29.1</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class="main-mask" onclick="sidebar.dismiss()"></div></div><aside class="l_right">
+<div class="widgets">
+
+
+<widget class="widget-wrapper tagcloud"><div class="widget-header dis-select"><span class="name">标签云</span></div><div class="widget-body fs14"><a href="/tags/Blue/" style="font-size: 18.67px;" class="tag -6">Blue</a> <a href="/tags/CD/" style="font-size: 12px;" class="tag -0">CD</a> <a href="/tags/CI/" style="font-size: 14.67px;" class="tag -2">CI</a> <a href="/tags/Emergency-Response/" style="font-size: 16px;" class="tag -3">Emergency Response</a> <a href="/tags/HTB/" style="font-size: 20px;" class="tag -7">HTB</a> <a href="/tags/HTB%E5%AD%A6%E9%99%A2/" style="font-size: 12px;" class="tag -0">HTB学院</a> <a href="/tags/Jenkins/" style="font-size: 12px;" class="tag -0">Jenkins</a> <a href="/tags/PDF/" style="font-size: 13.33px;" class="tag -1">PDF</a> <a href="/tags/Poc/" style="font-size: 12px;" class="tag -0">Poc</a> <a href="/tags/Red/" style="font-size: 18.67px;" class="tag -6">Red</a> <a href="/tags/STARTING-POINT/" style="font-size: 18.67px;" class="tag -6">STARTING POINT</a> <a href="/tags/Source-Control/" style="font-size: 12px;" class="tag -0">Source Control</a> <a href="/tags/computational-neuroscience/" style="font-size: 12px;" class="tag -0">computational neuroscience</a> <a href="/tags/cryptography/" style="font-size: 12px;" class="tag -0">cryptography</a> <a href="/tags/devolop/" style="font-size: 12px;" class="tag -0">devolop</a> <a href="/tags/diary/" style="font-size: 13.33px;" class="tag -1">diary</a> <a href="/tags/english/" style="font-size: 14.67px;" class="tag -2">english</a> <a href="/tags/game/" style="font-size: 14.67px;" class="tag -2">game</a> <a href="/tags/listening/" style="font-size: 12px;" class="tag -0">listening</a> <a href="/tags/metaphysics/" style="font-size: 12px;" class="tag -0">metaphysics</a> <a href="/tags/nc/" style="font-size: 12px;" class="tag -0">nc</a> <a href="/tags/nmap/" style="font-size: 12px;" class="tag -0">nmap</a> <a href="/tags/philosophy/" style="font-size: 13.33px;" class="tag -1">philosophy</a> <a href="/tags/php/" style="font-size: 12px;" class="tag -0">php</a> <a href="/tags/python/" style="font-size: 14.67px;" class="tag -2">python</a> <a href="/tags/read/" style="font-size: 17.33px;" class="tag -4">read</a> <a href="/tags/science/" style="font-size: 13.33px;" class="tag -1">science</a> <a href="/tags/speaking/" style="font-size: 12px;" class="tag -0">speaking</a> <a href="/tags/sxf/" style="font-size: 21.33px;" class="tag -8">sxf</a> <a href="/tags/testing/" style="font-size: 13.33px;" class="tag -1">testing</a> <a href="/tags/tools/" style="font-size: 12px;" class="tag -0">tools</a> <a href="/tags/web%E5%BC%80%E5%8F%91/" style="font-size: 12px;" class="tag -0">web开发</a> <a href="/tags/web%E6%94%BB%E9%98%B2/" style="font-size: 21.33px;" class="tag -8">web攻防</a> <a href="/tags/xiaodi8/" style="font-size: 22.67px;" class="tag -9">xiaodi8</a> <a href="/tags/xss/" style="font-size: 12px;" class="tag -0">xss</a> <a href="/tags/%E4%B8%BB%E6%9C%BA%E6%9E%9A%E4%B8%BE/" style="font-size: 12px;" class="tag -0">主机枚举</a> <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" style="font-size: 12px;" class="tag -0">博客搭建</a> <a href="/tags/%E5%93%8E%E5%B0%B1%E6%98%AF%E7%8E%A9/" style="font-size: 13.33px;" class="tag -1">哎就是玩</a> <a href="/tags/%E5%AD%A6%E4%B9%A0/" style="font-size: 12px;" class="tag -0">学习</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 13.33px;" class="tag -1">工具</a> <a href="/tags/%E5%BE%B7%E8%AF%AD/" style="font-size: 12px;" class="tag -0">德语</a> <a href="/tags/%E5%BF%83%E7%90%86%E5%92%A8%E8%AF%A2/" style="font-size: 12px;" class="tag -0">心理咨询</a> <a href="/tags/%E6%B5%8B%E8%AF%95/" style="font-size: 12px;" class="tag -0">测试</a> <a href="/tags/%E6%BC%8F%E6%B4%9E/" style="font-size: 12px;" class="tag -0">漏洞</a> <a href="/tags/%E7%A7%91%E5%B9%BB/" style="font-size: 13.33px;" class="tag -1">科幻</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 24px;" class="tag -10">笔记</a> <a href="/tags/%E8%A7%81%E9%9D%A2%E5%88%86%E4%BA%AB%E4%BC%9A/" style="font-size: 12px;" class="tag -0">见面分享会</a> <a href="/tags/%E8%AF%AD%E8%A8%80/" style="font-size: 12px;" class="tag -0">语言</a> <a href="/tags/%E9%93%81%E7%94%B2%E4%BE%9D%E7%84%B6%E5%9C%A8/" style="font-size: 12px;" class="tag -0">铁甲依然在</a> <a href="/tags/%E9%98%85%E8%AF%BB/" style="font-size: 14.67px;" class="tag -2">阅读</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 14.67px;" class="tag -2">随笔</a> <a href="/tags/%E9%9A%90%E8%97%8F%E5%86%85%E5%AE%B9/" style="font-size: 12px;" class="tag -0">隐藏内容</a> <a href="/tags/%E9%9D%B6%E5%9C%BA/" style="font-size: 13.33px;" class="tag -1">靶场</a></div></widget>
+
+
+<widget class="widget-wrapper toc" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span><a class="cap-action" onclick="sidebar.toggleTOC()" ><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg></a></div><div class="widget-body"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2%E7%BB%BC%E5%90%88%E5%AE%9E%E9%AA%8C"><span class="toc-text">DNS信息查询综合实验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E7%9B%AE%E7%9A%84%E3%80%91"><span class="toc-text">【目的】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E9%A2%84%E8%AE%A1%E5%AE%8C%E6%88%90%E6%97%B6%E9%97%B4%E3%80%91"><span class="toc-text">【预计完成时间】</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">实验环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E7%8E%AF%E5%A2%83%E3%80%91"><span class="toc-text">【环境】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E5%B7%A5%E5%85%B7%E3%80%91"><span class="toc-text">【工具】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E5%8E%9F%E7%90%86%E3%80%91"><span class="toc-text">【原理】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E6%AD%A5%E9%AA%A4%E3%80%91"><span class="toc-text">【步骤】</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%88%A9%E7%94%A8%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4%E8%BF%9B%E8%A1%8C%E9%92%88%E5%AF%B9%E5%9F%9F%E5%90%8D%E7%9A%84%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E3%80%82"><span class="toc-text">1. 利用相关命令进行针对域名的信息收集。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8-whois-%E5%91%BD%E4%BB%A4%E5%AF%B9%E8%AF%A5%E5%9F%9F%E5%90%8D%E8%BF%9B%E8%A1%8C%E6%9F%A5%E8%AF%A2%EF%BC%9A-whois-sangforedu-com-cn"><span class="toc-text">2. 使用 whois 命令对该域名进行查询： whois sangforedu.com.cn</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E5%88%A9%E7%94%A8nslookup%E5%B7%A5%E5%85%B7%E8%BF%9B%E8%A1%8C%E5%9F%9F%E5%90%8D%E6%9F%A5%E8%AF%A2-windows%E4%B8%AD%E7%9A%84%E5%91%BD%E4%BB%A4%E6%8F%90%E7%A4%BA%E7%AC%A6%E4%B8%AD%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C%EF%BC%8Ckali%E7%BB%88%E7%AB%AF%E4%B8%AD%E4%BD%BF%E7%94%A8dig%E8%BF%9B%E8%A1%8C%E6%9F%A5%E8%AF%A2%EF%BC%8C%E8%AF%A6%E8%A7%81%E7%AC%AC4%E6%AD%A5%EF%BC%89%E3%80%82"><span class="toc-text">3. 利用nslookup工具进行域名查询(windows中的命令提示符中进行操作，kali终端中使用dig进行查询，详见第4步）。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E5%88%A9%E7%94%A8dig%E5%B7%A5%E5%85%B7%E6%9F%A5%E8%AF%A2%E5%90%84%E7%B1%BBDNS%E7%9A%84%E8%A7%A3%E6%9E%90%E3%80%82"><span class="toc-text">4. 利用dig工具查询各类DNS的解析。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E4%BD%BF%E7%94%A8DNS%E5%AD%90%E5%9F%9F%E5%90%8D%E7%88%86%E7%A0%B4%E5%B7%A5%E5%85%B7%EF%BC%8C%E9%92%88%E5%AF%B9%E5%AD%90%E5%9F%9F%E5%90%8D%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4%EF%BC%8C%E5%90%8C%E6%97%B6%E8%A7%A3%E6%9E%90%E5%87%BA%E5%AF%B9%E5%BA%94%E7%9A%84IP%E5%9C%B0%E5%9D%80%E3%80%82"><span class="toc-text">5. 使用DNS子域名爆破工具，针对子域名进行爆破，同时解析出对应的IP地址。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E5%88%A9%E7%94%A8%E5%A4%9A%E5%9C%B0Ping%E5%B7%A5%E5%85%B7%EF%BC%8C%E6%9F%A5%E7%9C%8B%E5%9F%9F%E5%90%8D%E7%9C%9F%E5%AE%9EIP%E3%80%82"><span class="toc-text">6. 利用多地Ping工具，查看域名真实IP。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-%E9%92%88%E5%AF%B9%E9%83%A8%E5%88%86IP%E8%BF%9B%E8%A1%8C%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-text">7. 针对部分IP进行信息收集</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%90%E6%80%BB%E7%BB%93%E3%80%91"><span class="toc-text">【总结】</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DNS%E5%9F%9F%E4%BC%A0%E8%BE%93%E5%AE%9E%E9%AA%8C"><span class="toc-text">DNS域传输实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-1"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%BC%80%E5%90%AF%E9%9D%B6%E6%9C%BA%E6%BC%8F%E6%B4%9E%E7%8E%AF%E5%A2%83"><span class="toc-text">1.开启靶机漏洞环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9F%A5%E7%9C%8B%E9%9D%B6%E6%9C%BAip%E5%9C%B0%E5%9D%80"><span class="toc-text">2.查看靶机ip地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-text">3.漏洞复现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E6%94%B6%E9%9B%86%E5%AE%9E%E9%AA%8C"><span class="toc-text">子域名收集实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-1"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-2"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-1"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-1"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AD%90%E5%9F%9F%E5%90%8D%E7%88%86%E7%A0%B4%E5%B7%A5%E5%85%B7"><span class="toc-text">一、子域名爆破工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="toc-text">二、搜索引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BD%BF%E7%94%A8theHarvester%E5%B7%A5%E5%85%B7"><span class="toc-text">三、使用theHarvester工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-1"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E6%94%B6%E9%9B%862"><span class="toc-text">子域名收集2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-2"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-3"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-2"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-2"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E7%99%BB%E5%BD%95%E2%80%9DKali%E2%80%9D%E6%93%8D%E4%BD%9C%E6%9C%BA%EF%BC%8C%E6%89%93%E5%BC%80%E7%BB%88%E7%AB%AF%EF%BC%8C%E8%BE%93%E5%85%A5%E5%91%BD%E4%BB%A4aquatone-discover-help%E6%9F%A5%E7%9C%8B%E7%9B%B8%E5%85%B3%E5%8F%82%E6%95%B0%E7%9A%84%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3"><span class="toc-text">1.登录”Kali”操作机，打开终端，输入命令aquatone-discover --help查看相关参数的帮助文档</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A9%E5%B1%95%EF%BC%9A"><span class="toc-text">扩展：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2%E3%80%81%E4%BD%BF%E7%94%A8aquatone-discover%E5%91%BD%E4%BB%A4%EF%BC%8C%E5%AF%B9%E5%B7%B2%E6%8E%88%E6%9D%83%E7%9B%AE%E6%A0%87%E5%9F%9F%E5%90%8D%E8%BF%9B%E8%A1%8C%E4%BF%A1%E6%81%AF%E6%8E%A2%E6%B5%8B%E3%80%82"><span class="toc-text">2、使用aquatone-discover命令，对已授权目标域名进行信息探测。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3%E3%80%81aquatone-scan-%E6%89%AB%E6%8F%8F"><span class="toc-text">3、aquatone-scan 扫描</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-2"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C%E6%AE%B5%E6%89%AB%E6%8F%8F"><span class="toc-text">C段扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-3"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-4"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-3"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-3"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81Nmap%E6%89%AB%E6%8F%8F"><span class="toc-text">一、Nmap扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E4%B8%80%EF%BC%9ANmap-%E2%80%93sn-%E2%80%93PE-n-192-168-0-0-24-%E2%80%93oX-out-xml"><span class="toc-text">命令一：Nmap –sn –PE -n 192.168.0.0&#x2F;24 –oX out.xml</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Masscan%E6%89%AB%E6%8F%8F"><span class="toc-text">二、Masscan扫描</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-3"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%87%E7%BA%B9%E8%AF%86%E5%88%AB"><span class="toc-text">指纹识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-4"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-5"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-4"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-4"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81Nmap%E5%B7%A5%E5%85%B7"><span class="toc-text">一、Nmap工具</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E4%B8%80%EF%BC%9Anmap-%E2%80%93sS-%E2%80%93Pn-%E2%80%93O-192-168-0-85-IP%E5%9C%B0%E5%9D%80%E9%9C%80%E6%A0%B9%E6%8D%AE%E7%9B%AE%E6%A0%87%E9%9D%B6%E6%9C%BA%E5%AE%9E%E9%99%85%E6%83%85%E5%86%B5%EF%BC%8C%E8%BF%9B%E8%A1%8C%E4%BF%AE%E6%94%B9%EF%BC%89"><span class="toc-text">命令一：nmap –sS –Pn –O 192.168.0.85 (IP地址需根据目标靶机实际情况，进行修改）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E4%BA%8C%EF%BC%9Anmap-sS-sV-192-168-0-85"><span class="toc-text">命令二：nmap -sS -sV 192.168.0.85</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E4%B8%89%EF%BC%9Anmap-p-80-script-http-waf-fingerprint-192-168-0-85"><span class="toc-text">命令三：nmap -p 80 --script http-waf-fingerprint 192.168.0.85</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Wafw00f%E5%B7%A5%E5%85%B7"><span class="toc-text">二、Wafw00f工具</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E5%9B%9B%EF%BC%9AWafw00f-http-192-168-0-85-IP%E5%9C%B0%E5%9D%80%E9%9C%80%E6%A0%B9%E6%8D%AE%E7%9B%AE%E6%A0%87%E9%9D%B6%E6%9C%BA%E5%AE%9E%E9%99%85%E6%83%85%E5%86%B5%EF%BC%8C%E8%BF%9B%E8%A1%8C%E4%BF%AE%E6%94%B9%EF%BC%8C%E6%88%96%E8%80%85%E8%BE%93%E5%85%A5%E7%9B%AE%E6%A0%87%E5%9F%9F%E5%90%8D%EF%BC%89"><span class="toc-text">命令四：Wafw00f http:&#x2F;&#x2F;192.168.0.85 (IP地址需根据目标靶机实际情况，进行修改，或者输入目标域名）</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-4"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Maltego%E6%83%85%E6%8A%A5%E6%94%B6%E9%9B%86%E5%AE%9E%E9%AA%8C"><span class="toc-text">Maltego情报收集实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-5"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-6"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-5"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-5"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-5"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CobaltStrike%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E5%AE%9E%E9%AA%8C"><span class="toc-text">CobaltStrike配置使用实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-6"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-7"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-6"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-6"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-6"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CobaltStrikeOffice%E9%92%93%E9%B1%BC%E5%AE%9E%E9%AA%8C"><span class="toc-text">CobaltStrikeOffice钓鱼实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-7"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-8"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-7"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-7"><span class="toc-text">实验步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-7"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%AA%E9%80%A0%EF%BC%88%E9%92%93%E9%B1%BC%EF%BC%89%E9%82%AE%E4%BB%B6%E5%AE%9E%E9%AA%8C"><span class="toc-text">伪造（钓鱼）邮件实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-8"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-9"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-8"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-8"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%99%BB%E9%99%86kali%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%8C%E6%89%93%E5%BC%80%E7%BB%88%E7%AB%AF%EF%BC%8C%E6%9F%A5%E7%9C%8Bswaks%E7%9A%84%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3%E3%80%82"><span class="toc-text">1.登陆kali服务器，打开终端，查看swaks的帮助文档。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4%E5%8F%91%E9%80%81%E8%99%9A%E5%81%87%E9%82%AE%E4%BB%B6"><span class="toc-text">2.使用命令发送虚假邮件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%A3%80%E6%9F%A5%E6%94%B6%E4%BB%B6%E7%AE%B1%EF%BC%8C%E7%A1%AE%E8%AE%A4%E6%98%AF%E5%90%A6%E6%94%B6%E4%BB%B6%E6%88%90%E5%8A%9F"><span class="toc-text">3.检查收件箱，确认是否收件成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%BB%A5%E7%9C%9F%E5%AE%9E%E7%9A%84%E9%82%AE%E4%BB%B6%E4%B8%BA%E5%9F%BA%E5%87%86%EF%BC%8C%E5%8F%91%E9%80%81%E8%99%9A%E5%81%87%E9%82%AE%E4%BB%B6"><span class="toc-text">4. 以真实的邮件为基准，发送虚假邮件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-8"><span class="toc-text">实验总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Web%E7%9B%AE%E5%BD%95%E6%89%AB%E6%8F%8F"><span class="toc-text">Web目录扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%9B%AE%E7%9A%84-9"><span class="toc-text">实验目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83-10"><span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E5%8E%9F%E7%90%86-9"><span class="toc-text">实验原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%AD%A5%E9%AA%A4-9"><span class="toc-text">实验步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81Web%E4%B8%BB%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%AF%E8%BE%BE%E6%B5%8B%E8%AF%95"><span class="toc-text">一、Web主机网络可达测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Dirb%E5%B7%A5%E5%85%B7%E6%8E%A2%E6%B5%8BWeb%E7%9B%AE%E5%BD%95"><span class="toc-text">二、Dirb工具探测Web目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81DirBuster%E5%B7%A5%E5%85%B7%E6%8E%A2%E6%B5%8BWeb%E7%9B%AE%E5%BD%95"><span class="toc-text">三、DirBuster工具探测Web目录</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E6%80%BB%E7%BB%93-9"><span class="toc-text">实验总结</span></a></li></ol></li></ol></div><div class="widget-footer">
+
+<a class="top" onclick="util.scrollTop()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12c0-4.714 0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22s-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12Z"/><path stroke-linecap="round" stroke-linejoin="round" d="m9 15.5l3-3l3 3m-6-4l3-3l3 3"/></g></svg><span>回到顶部</span></a><a class="buttom" onclick="util.scrollComment()"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M10.46 1.25h3.08c1.603 0 2.86 0 3.864.095c1.023.098 1.861.3 2.6.752a5.75 5.75 0 0 1 1.899 1.899c.452.738.654 1.577.752 2.6c.095 1.004.095 2.261.095 3.865v1.067c0 1.141 0 2.036-.05 2.759c-.05.735-.153 1.347-.388 1.913a5.75 5.75 0 0 1-3.112 3.112c-.805.334-1.721.408-2.977.43a10.81 10.81 0 0 0-.929.036c-.198.022-.275.054-.32.08c-.047.028-.112.078-.224.232c-.121.166-.258.396-.476.764l-.542.916c-.773 1.307-2.69 1.307-3.464 0l-.542-.916a10.605 10.605 0 0 0-.476-.764c-.112-.154-.177-.204-.224-.232c-.045-.026-.122-.058-.32-.08c-.212-.023-.49-.03-.93-.037c-1.255-.021-2.171-.095-2.976-.429A5.75 5.75 0 0 1 1.688 16.2c-.235-.566-.338-1.178-.389-1.913c-.049-.723-.049-1.618-.049-2.76v-1.066c0-1.604 0-2.86.095-3.865c.098-1.023.3-1.862.752-2.6a5.75 5.75 0 0 1 1.899-1.899c.738-.452 1.577-.654 2.6-.752C7.6 1.25 8.857 1.25 10.461 1.25M6.739 2.839c-.914.087-1.495.253-1.959.537A4.25 4.25 0 0 0 3.376 4.78c-.284.464-.45 1.045-.537 1.96c-.088.924-.089 2.11-.089 3.761v1c0 1.175 0 2.019.046 2.685c.045.659.131 1.089.278 1.441a4.25 4.25 0 0 0 2.3 2.3c.515.214 1.173.294 2.429.316h.031c.398.007.747.013 1.037.045c.311.035.616.104.909.274c.29.17.5.395.682.645c.169.232.342.525.538.856l.559.944a.52.52 0 0 0 .882 0l.559-.944c.196-.331.37-.624.538-.856c.182-.25.392-.476.682-.645c.293-.17.598-.24.909-.274c.29-.032.639-.038 1.037-.045h.032c1.255-.022 1.913-.102 2.428-.316a4.25 4.25 0 0 0 2.3-2.3c.147-.352.233-.782.278-1.441c.046-.666.046-1.51.046-2.685v-1c0-1.651 0-2.837-.089-3.762c-.087-.914-.253-1.495-.537-1.959a4.25 4.25 0 0 0-1.403-1.403c-.464-.284-1.045-.45-1.96-.537c-.924-.088-2.11-.089-3.761-.089h-3c-1.651 0-2.837 0-3.762.089" clip-rule="evenodd"/><path fill="currentColor" d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0m4 0a1 1 0 1 1-2 0a1 1 0 0 1 2 0"/></svg><span>参与讨论</span></a></div></widget>
+</div></aside><div class='float-panel blur'>
+  <button type='button' style='display:none' class='laptop-only rightbar-toggle mobile' onclick='sidebar.rightbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+  </button>
+  <button type='button' style='display:none' class='mobile-only leftbar-toggle mobile' onclick='sidebar.leftbar()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+</div><div class="scripts">
+<script type="text/javascript">
+  const ctx = {
+    date_suffix: {
+      just: `刚刚`,
+      min: `分钟前`,
+      hour: `小时前`,
+      day: `天前`,
+    },
+    root : `/`,
+  };
+
+  // required plugins (only load if needs)
+  if (`local_search`) {
+    ctx.search = {};
+    ctx.search.service = `local_search`;
+    if (ctx.search.service == 'local_search') {
+      let service_obj = Object.assign({}, `{"field":"all","path":"/search.json","content":true,"codeblock":true,"sort":"-date"}`);
+      ctx.search[ctx.search.service] = service_obj;
+    }
+  }
+  const def = {
+    avatar: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/3442075.svg`,
+    cover: `https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/cover/76b86c0226ffd.svg`,
+  };
+  const deps = {
+    jquery: `https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js`,
+    marked: `https://cdn.jsdelivr.net/npm/marked@13.0.1/lib/marked.umd.min.js`
+  }
+  
+
+</script>
+
+<script type="text/javascript">
+  const utils = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    css: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    js: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = ctx.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    jq: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        utils.js(deps.jquery).then(fn)
+      } else {
+        fn()
+      }
+    },
+    
+    onLoading: (el) => {
+      if (el) {
+        $(el).append('<div class="loading-wrap"><svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" stroke-opacity=".3" d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="1.3s" values="60;0"/></path><path stroke-dasharray="15" stroke-dashoffset="15" d="M12 3C16.9706 3 21 7.02944 21 12"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="15;0"/><animateTransform attributeName="transform" dur="1.5s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></g></svg></div>');
+      }
+    },
+    onLoadSuccess: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap').remove();
+      }
+    },
+    onLoadFailure: (el) => {
+      if (el) {
+        $(el).find('.loading-wrap svg').remove();
+        $(el).find('.loading-wrap').append('<svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="60" stroke-dashoffset="60" d="M12 3L21 20H3L12 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="60;0"/></path><path stroke-dasharray="6" stroke-dashoffset="6" d="M12 10V14"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="6;0"/></path></g><circle cx="12" cy="17" r="1" fill="currentColor" fill-opacity="0"><animate fill="freeze" attributeName="fill-opacity" begin="0.8s" dur="0.4s" values="0;1"/></circle></svg>');
+        $(el).find('.loading-wrap').addClass('error');
+      }
+    },
+    request: (el, url, callback, onFailure) => {
+      let retryTimes = 3;
+      utils.onLoading(el);
+      function req() {
+        return new Promise((resolve, reject) => {
+          let status = 0; // 0 等待 1 完成 2 超时
+          let timer = setTimeout(() => {
+            if (status === 0) {
+              status = 2;
+              timer = null;
+              reject('请求超时');
+              if (retryTimes == 0) {
+                onFailure();
+              }
+            }
+          }, 5000);
+          fetch(url).then(function(response) {
+            if (status !== 2) {
+              clearTimeout(timer);
+              resolve(response);
+              timer = null;
+              status = 1;
+            }
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error('Network response was not ok.');
+          }).then(function(data) {
+            retryTimes = 0;
+            utils.onLoadSuccess(el);
+            callback(data);
+          }).catch(function(error) {
+            if (retryTimes > 0) {
+              retryTimes -= 1;
+              setTimeout(() => {
+                req();
+              }, 5000);
+            } else {
+              utils.onLoadFailure(el);
+              onFailure();
+            }
+          });
+        });
+      }
+      req();
+    },
+  };
+</script>
+
+<script>
+  const sidebar = {
+    leftbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    rightbar: () => {
+      if (l_body) {
+        l_body.toggleAttribute('rightbar');
+        l_body.removeAttribute('leftbar');
+      }
+    },
+    dismiss: () => {
+      if (l_body) {
+        l_body.removeAttribute('leftbar');
+        l_body.removeAttribute('rightbar');
+      }
+    },
+    toggleTOC: () => {
+      document.querySelector('#data-toc').classList.toggle('collapse');
+    }
+  }
+</script>
+<script type="text/javascript">
+  (() => {
+    const tagSwitchers = document.querySelectorAll('.tag-subtree.parent-tag > a > .tag-switcher-wrapper')
+    for (const tagSwitcher of tagSwitchers) {
+      tagSwitcher.addEventListener('click', (e) => {
+        const parent = e.target.closest('.tag-subtree.parent-tag')
+        parent.classList.toggle('expanded')
+        e.preventDefault()
+      })
+    }
+
+    // Get active tag from query string, then activate it.
+    const urlParams = new URLSearchParams(window.location.search)
+    const activeTag = urlParams.get('tag')
+    if (activeTag) {
+      let tag = document.querySelector(`.tag-subtree[data-tag="${activeTag}"]`)
+      if (tag) {
+        tag.querySelector('a').classList.add('active')
+        
+        while (tag) {
+          tag.classList.add('expanded')
+          tag = tag.parentElement.closest('.tag-subtree.parent-tag')
+        }
+      }
+    }
+  })()
+</script>
+
+
+<!-- required -->
+<script src="/js/main.js?v=1.29.1" defer></script>
+
+<script type="text/javascript">
+  const applyTheme = (theme) => {
+    if (theme === 'auto') {
+      document.documentElement.removeAttribute('data-theme')
+    } else {
+      document.documentElement.setAttribute('data-theme', theme)
+    }
+
+    applyThemeToGiscus(theme)
+  }
+
+  const applyThemeToGiscus = (theme) => {
+    theme = theme === 'auto' ? 'preferred_color_scheme' : theme
+
+    const cmt = document.getElementById('giscus')
+    if (cmt) {
+      // This works before giscus load.
+      cmt.setAttribute('data-theme', theme)
+    }
+
+    const iframe = document.querySelector('#comments > section.giscus > iframe')
+    if (iframe) {
+      // This works after giscus loaded.
+      const src = iframe.src
+      const newSrc = src.replace(/theme=[\w]+/, `theme=${theme}`)
+      iframe.src = newSrc
+    }
+  }
+
+  const switchTheme = () => {
+    // light -> dark -> auto -> light -> ...
+    const currentTheme = document.documentElement.getAttribute('data-theme')
+    let newTheme;
+    switch (currentTheme) {
+      case 'light':
+        newTheme = 'dark'
+        break
+      case 'dark':
+        newTheme = 'auto'
+        break
+      default:
+        newTheme = 'light'
+    }
+    applyTheme(newTheme)
+    window.localStorage.setItem('Stellar.theme', newTheme)
+
+    const messages = {
+      light: `切换到浅色模式`,
+      dark: `切换到深色模式`,
+      auto: `切换到跟随系统配色`,
+    }
+    hud?.toast?.(messages[newTheme])
+  }
+
+  (() => {
+    // Apply user's preferred theme, if any.
+    const theme = window.localStorage.getItem('Stellar.theme')
+    if (theme !== null) {
+      applyTheme(theme)
+    }
+  })()
+</script>
+
+
+<!-- optional -->
+
+  <script type="module">
+  const el = document.querySelector('#comments #beaudar');
+  util.viewportLazyload(el, load_beaudar, false);
+
+  function load_beaudar() {
+    if (!el) return;
+    try {
+      el.innerHTML = '';
+    } catch (error) {
+      console.error(error);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://beaudar.lipk.org/client.js';
+    script.async = true;
+    for (const key of Object.keys(el.attributes)) {
+      const attr = el.attributes[key];
+      if (['class', 'id'].includes(attr.name) === false) {
+        script.setAttribute(attr.name, attr.value);
+      }
+    }
+    el.appendChild(script);
+  }
+</script>
+
+
+
+
+<script defer>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.services = Object.assign({}, JSON.parse(`{"mdrender":{"js":"/js/services/mdrender.js"},"siteinfo":{"js":"/js/services/siteinfo.js","api":null},"ghinfo":{"js":"/js/services/ghinfo.js"},"sites":{"js":"/js/services/sites.js"},"friends":{"js":"/js/services/friends.js"},"timeline":{"js":"/js/services/timeline.js"},"fcircle":{"js":"/js/services/fcircle.js"},"weibo":{"js":"/js/services/weibo.js"},"memos":{"js":"/js/services/memos.js"}}`));
+    for (let id of Object.keys(ctx.services)) {
+      const js = ctx.services[id].js;
+      if (id == 'siteinfo') {
+        ctx.cardlinks = document.querySelectorAll('a.link-card[cardlink]');
+        if (ctx.cardlinks?.length > 0) {
+          utils.js(js, { defer: true }).then(function () {
+            setCardLink(ctx.cardlinks);
+          });
+        }
+      } else {
+        const els = document.getElementsByClassName(`ds-${id}`);
+        if (els?.length > 0) {
+          utils.jq(() => {
+            if (id == 'timeline' || 'memos' || 'marked') {
+              utils.js(deps.marked).then(function () {
+                utils.js(js, { defer: true });
+              });
+            } else {
+              utils.js(js, { defer: true });
+            }
+          });
+        }
+      }
+    }
+  });
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    ctx.search = {
+      path: `/search.json`,
+    }
+    utils.js('/js/search/local-search.js', { defer: true });
+  });
+</script><script>
+  window.FPConfig = {
+    delay: 0,
+    ignoreKeywords: [],
+    maxRPS: 5,
+    hoverDelay: 25
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/flying-pages@2/flying-pages.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazy",
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    window.lazyLoadInstance?.update();
+  });
+</script><script>
+  ctx.fancybox = {
+    selector: `.timenode p>img`,
+    css: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css`,
+    js: `https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js`
+  };
+  var selector = '[data-fancybox]:not(.error)';
+  if (ctx.fancybox.selector) {
+    selector += `, ${ctx.fancybox.selector}`
+  }
+  var needFancybox = document.querySelectorAll(selector).length !== 0;
+  if (!needFancybox) {
+    const els = document.getElementsByClassName('ds-memos');
+    if (els != undefined && els.length > 0) {
+      needFancybox = true;
+    }
+  }
+  if (needFancybox) {
+    utils.css(ctx.fancybox.css);
+    utils.js(ctx.fancybox.js, { defer: true }).then(function () {
+      Fancybox.bind(selector, {
+        hideScrollbar: false,
+        Thumbs: {
+          autoStart: false,
+        },
+        caption: (fancybox, slide) => {
+          return slide.triggerEl.alt || slide.triggerEl.dataset.caption || null
+        }
+      });
+    })
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const swiper_api = document.getElementById('swiper-api');
+    if (swiper_api != undefined) {
+      utils.css(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.css`);
+      utils.js(`https://unpkg.com/swiper@10.3.1/swiper-bundle.min.js`, { defer: true }).then(function () {
+        const effect = swiper_api.getAttribute('effect') || '';
+        var swiper = new Swiper('.swiper#swiper-api', {
+          slidesPerView: 'auto',
+          spaceBetween: 8,
+          centeredSlides: true,
+          effect: effect,
+          rewind: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      })
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    window.codeElements = document.querySelectorAll('.code');
+    if (window.codeElements.length > 0) {
+      ctx.copycode = {
+        default_text: `Copy`,
+        success_text: `Copied`,
+        toast: `复制成功`,
+      };
+      utils.js('/js/plugins/copycode.js');
+    }
+  });
+</script>
+
+
+<!-- inject -->
+
+</div></body></html>
